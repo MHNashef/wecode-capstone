@@ -1,7 +1,10 @@
+import Header from './components/Header';
 import './App.css';
 
 function App() {
-  return null;
+  return (
+    <Header />
+  );
 }
 
 export default App;
