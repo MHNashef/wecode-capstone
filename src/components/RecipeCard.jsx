@@ -9,7 +9,7 @@ export default function RecipeCard() {
   return (
     <>
       <Container>
-        <Card style={{ width: "15rem" }} className="make-it-slow">
+        <Card style={{ width: "15rem" }} className="recipe-hover">
           <Card.Img
             variant="top"
             src="https://via.placeholder.com/210x130.png"
