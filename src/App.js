@@ -1,9 +1,9 @@
-import RecipeCard from './components/RecipeCard';
+import Header from './components/Header';
 import './App.css';
 
 function App() {
   return (
-    <RecipeCard />
+    <Header />
   );
 }
 
