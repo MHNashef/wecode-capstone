@@ -36,3 +36,8 @@ function getFavoriteRecipes() {
         }
     ];
 }
+
+// pagination
+function getRecipesPagination(pageNum, orderBy, isAsc) {
+
+}
