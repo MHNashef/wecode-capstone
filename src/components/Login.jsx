@@ -1,15 +1,15 @@
-import React, {useRef} from "react";
+import React, { useRef } from "react";
 import { Form, Button, Container } from "react-bootstrap";
 
 export default function Login() {
-    const passwordFieldRef = useRef(null);
+  const passwordFieldRef = useRef(null);
 
   function togglePasswordVisibilty() {
     const passwordField = passwordFieldRef.current;
-    if (passwordField.type === 'password') {
-        passwordField.type = 'text';
+    if (passwordField.type === "password") {
+      passwordField.type = "text";
     } else {
-        passwordField.type = 'password'
+      passwordField.type = "password";
     }
   }
 
@@ -27,7 +27,11 @@ export default function Login() {
 
           <Form.Group controlId="userPassword">
             <Form.Label>Password</Form.Label>
-            <Form.Control type="password" placeholder="Password" ref={passwordFieldRef} />
+            <Form.Control
+              type="password"
+              placeholder="Password"
+              ref={passwordFieldRef}
+            />
           </Form.Group>
           <Form.Group controlId="showPasswordCheckbox">
             <Form.Check
