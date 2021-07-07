@@ -1,9 +1,9 @@
 import React from "react";
 import { Card, Button, Container } from "react-bootstrap";
 import { MdFavoriteBorder } from "react-icons/md";
-import "../styles/RecipeCard.css"
+import "../styles/RecipeCard.css";
 
-export default function RecipeCard() {
+export default function RecipeCard({ recipeName }) {
   const iconStyles = { color: "red", fontSize: "1.5em" };
 
   return (
@@ -15,7 +15,7 @@ export default function RecipeCard() {
             src="https://via.placeholder.com/210x130.png"
           />
           <Card.Body>
-            <Card.Title>Recipe Name</Card.Title>
+            <Card.Title>{recipeName}</Card.Title>
             <Button variant="primary" className="btn-sm">
               View Recipe
             </Button>
