@@ -22,7 +22,7 @@ export default function Header() {
             </Nav>
             <Nav>
               <Nav.Link href="/login">Login</Nav.Link>
-              <Nav.Link href="#signup">Sign Up</Nav.Link>
+              <Nav.Link href="/signup">Sign Up</Nav.Link>
             </Nav>
           </Navbar.Collapse>
         </Container>
