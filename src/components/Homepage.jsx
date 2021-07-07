@@ -1,9 +1,26 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Carousel, Container, Col, Row } from "react-bootstrap";
 import "../styles/Homepage.css";
 import RecipeCard from "./RecipeCard";
+import { getRecentRecipes, getPopularRecipes } from "../DAL/api";
 
 export default function Homepage() {
+  const [mostPopularRecipes, setMostPopularRecipes] = useState([]);
+  const [mostRecentRecipes, setMostRecentRecipes] = useState([]);
+
+  function popularJsonResponse(response) {
+    setMostPopularRecipes(response);
+  }
+
+  function recentJsonResponse(response) {
+    setMostRecentRecipes(response);
+  }
+
+  useEffect(() => {
+    getPopularRecipes(popularJsonResponse);
+    getRecentRecipes(recentJsonResponse);
+  }, []);
+
   return (
     <>
       <Container>
@@ -48,18 +65,11 @@ export default function Homepage() {
           </Col>
         </Row>
         <Row xl={4} lg={2} xs={1}>
-          <Col>
-            <RecipeCard />
-          </Col>
-          <Col>
-            <RecipeCard />
-          </Col>
-          <Col>
-            <RecipeCard />
-          </Col>
-          <Col>
-            <RecipeCard />
-          </Col>
+          {mostPopularRecipes.map((recipe) => (
+            <Col>
+              <RecipeCard recipeName={recipe.recipe_name}></RecipeCard>
+            </Col>
+          ))}
         </Row>
         <Row className="mt-5">
           <Col>
@@ -67,18 +77,11 @@ export default function Homepage() {
           </Col>
         </Row>
         <Row xl={4} lg={2} s={1} className="mb-5">
-          <Col>
-            <RecipeCard />
-          </Col>
-          <Col>
-            <RecipeCard />
-          </Col>
-          <Col>
-            <RecipeCard />
-          </Col>
-          <Col>
-            <RecipeCard />
-          </Col>
+          {mostRecentRecipes.map((recipe) => (
+            <Col>
+              <RecipeCard recipeName={recipe.recipe_name}></RecipeCard>
+            </Col>
+          ))}
         </Row>
       </Container>
     </>
