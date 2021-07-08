@@ -13,7 +13,7 @@ export default function Header() {
         className="mb-3"
       >
         <Container>
-          <Navbar.Brand href="#home">Recipe Book</Navbar.Brand>
+          <Navbar.Brand href="#home" style={{fontWeight:"800"}}>Recipe Book</Navbar.Brand>
           <Navbar.Toggle />
           <Navbar.Collapse>
             <Nav className="mr-auto">
@@ -21,8 +21,8 @@ export default function Header() {
               <Nav.Link href="#allRecipes">All Recipes</Nav.Link>
             </Nav>
             <Nav>
-              <Nav.Link href="/login">Login</Nav.Link>
               <Nav.Link href="#signup">Sign Up</Nav.Link>
+              <Nav.Link href="/login">Login</Nav.Link>
             </Nav>
           </Navbar.Collapse>
         </Container>
