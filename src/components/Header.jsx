@@ -1,8 +1,7 @@
-import React from "react"; 
+import React from "react";
 import { Navbar, Nav, Container } from "react-bootstrap";
 
 export default function Header() {
-
   return (
     <>
       <Navbar
@@ -13,7 +12,9 @@ export default function Header() {
         className="mb-3"
       >
         <Container>
-          <Navbar.Brand href="#home" style={{fontWeight:"800"}}>Recipe Book</Navbar.Brand>
+          <Navbar.Brand href="#home" style={{ fontWeight: "800" }}>
+            Recipe Book
+          </Navbar.Brand>
           <Navbar.Toggle />
           <Navbar.Collapse>
             <Nav className="mr-auto">

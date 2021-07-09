@@ -14,7 +14,7 @@ function App() {
           <Route exact path="/">
             <Homepage />
           </Route>
-          <Route exact path="/recipe">
+          <Route exact path="/recipe/:id">
             <RecipePage />
           </Route>
         </Switch>
