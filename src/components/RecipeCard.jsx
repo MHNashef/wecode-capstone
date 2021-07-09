@@ -1,10 +1,16 @@
 import React from "react";
 import { Card, Button, Container } from "react-bootstrap";
 import { MdFavoriteBorder } from "react-icons/md";
+import { useHistory } from "react-router-dom";
 import "../styles/RecipeCard.css";
 
-export default function RecipeCard({ recipeName }) {
+export default function RecipeCard({ recipeName, recipeId }) {
   const iconStyles = { color: "red", fontSize: "1.5em" };
+  const history = useHistory(null);
+
+  function viewRecipe({ target: { parentElement } }) {
+    history.push(`recipe/${parentElement.id}`);
+  }
 
   return (
     <>
@@ -14,9 +20,9 @@ export default function RecipeCard({ recipeName }) {
             variant="top"
             src="https://via.placeholder.com/210x130.png"
           />
-          <Card.Body>
+          <Card.Body id={recipeId}>
             <Card.Title>{recipeName}</Card.Title>
-            <Button variant="primary" className="btn-sm">
+            <Button variant="primary" className="btn-sm" onClick={viewRecipe}>
               View Recipe
             </Button>
             <MdFavoriteBorder className="ml-3" style={iconStyles} />

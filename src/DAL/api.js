@@ -27,33 +27,47 @@ async function getRecentRecipes(resCallback) {
   }
 }
 
-function getFavoriteRecipes() {
-  return [
-    {
-      user_id: 1,
-      recipe_id: 2,
-    },
-  ];
+async function getRecipeById(resCallback, id) {
+  try {
+    const response = await axios.get(
+      `http://localhost:3001/recipes/recipeId/${id}`
+    );
+    resCallback(response.data);
+  } catch (err) {
+    console.error(err);
+  }
+}
+
+async function getRecipeInstructions(resCallback, id) {
+  try {
+    const response = await axios.get(
+      `http://localhost:3001/recipes/recipeId/${id}/instructions`
+    );
+    resCallback(response.data);
+  } catch (err) {
+    console.error(err);
+  }
+}
+
+async function getRecipeIngredients(resCallback, id) {
+  try {
+    const response = await axios.get(
+      `http://localhost:3001/recipes/recipeId/${id}/ingredients`
+    );
+    resCallback(response.data);
+  } catch (err) {
+    console.error(err);
+  }
 }
 
 // pagination
 function getRecipesPagination(pageNum, orderBy, isAsc) {}
 
-export { getRecipes, getPopularRecipes, getRecentRecipes };
-
-
-
-
-
-
-
-
-// let jsoned = null;
-// fetch('http://localhost:3001/recipes', {
-//   method: 'GET',
-//   headers: {
-//     'Content-Type': 'application/json'
-//   }
-// }).then(response => response.json()).then(json => json);
-// // console.log(jsoned);
-// return [];
+export {
+  getRecipes,
+  getPopularRecipes,
+  getRecentRecipes,
+  getRecipeById,
+  getRecipeInstructions,
+  getRecipeIngredients,
+};
