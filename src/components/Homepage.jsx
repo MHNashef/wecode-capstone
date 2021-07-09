@@ -67,7 +67,10 @@ export default function Homepage() {
         <Row xl={4} lg={2} xs={1}>
           {mostPopularRecipes.map((recipe) => (
             <Col>
-              <RecipeCard recipeName={recipe.recipe_name}></RecipeCard>
+              <RecipeCard
+                recipeName={recipe.recipe_name}
+                recipeId={recipe.id}
+              ></RecipeCard>
             </Col>
           ))}
         </Row>
@@ -79,7 +82,10 @@ export default function Homepage() {
         <Row xl={4} lg={2} s={1} className="mb-5">
           {mostRecentRecipes.map((recipe) => (
             <Col>
-              <RecipeCard recipeName={recipe.recipe_name}></RecipeCard>
+              <RecipeCard
+                recipeName={recipe.recipe_name}
+                recipeId={recipe.id}
+              ></RecipeCard>
             </Col>
           ))}
         </Row>
