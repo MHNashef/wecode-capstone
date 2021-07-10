@@ -1,9 +1,12 @@
-import React, { useRef } from "react";
+import React, { useRef, useContext } from "react";
 import { Form, Button, Container } from "react-bootstrap";
 import { useFormik } from "formik";
+import Cookies from "js-cookie";
+import AuthApi from "../AuthApi";
 
 export default function Login() {
   const passwordFieldRef = useRef(null);
+  const Auth = useContext(AuthApi);
 
   function togglePasswordVisibilty() {
     const passwordField = passwordFieldRef.current;
@@ -39,7 +42,9 @@ export default function Login() {
     },
     validate,
     onSubmit: (values) => {
-      alert(JSON.stringify(values, null, 2));
+      Cookies.set("sessionId", '1234');
+      Auth.setAuth(true);
+      // alert(JSON.stringify(values, null, 2));
     },
   });
 

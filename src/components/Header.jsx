@@ -1,7 +1,20 @@
-import React from "react";
+import Cookies from "js-cookie";
+import { useHistory } from "react-router-dom";
+import React, { useContext } from "react";
 import { Navbar, Nav, Container } from "react-bootstrap";
+import AuthApi from "../AuthApi";
 
 export default function Header() {
+  const Auth = useContext(AuthApi);
+  const history = useHistory(null);
+
+  function handleLogout() {
+    // console.log("handle logout");
+    Auth.setAuth(false);
+    Cookies.remove("sessionId");
+    // history.push("/");
+  }
+
   return (
     <>
       <Navbar
@@ -20,10 +33,17 @@ export default function Header() {
             <Nav className="mr-auto">
               <Nav.Link href="/">Home</Nav.Link>
               <Nav.Link href="#allRecipes">All Recipes</Nav.Link>
+              {Auth.auth ? (
+                <Nav.Link href="/createRecipe">Create Recipe</Nav.Link>
+              ) : null}
             </Nav>
             <Nav>
               <Nav.Link href="#signup">Sign Up</Nav.Link>
-              <Nav.Link href="/login">Login</Nav.Link>
+              {!Auth.auth ? (
+                <Nav.Link href="/login">Login</Nav.Link>
+              ) : (
+                <Nav.Link onClick={handleLogout}>Logout</Nav.Link>
+              )}
             </Nav>
           </Navbar.Collapse>
         </Container>
