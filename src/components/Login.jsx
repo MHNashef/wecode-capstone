@@ -54,9 +54,7 @@ export default function Login() {
             <Form.Control
               type="email"
               placeholder="Enter email"
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-              value={formik.values.email}
+              {...formik.getFieldProps('email')}
               isValid={formik.touched.email && !formik.errors.email}
             />
             {formik.touched.email && formik.errors.email ? (
@@ -71,9 +69,7 @@ export default function Login() {
             <Form.Control
               type="password"
               placeholder="Password"
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-              value={formik.values.password}
+              {...formik.getFieldProps('password')}
               ref={passwordFieldRef}
               isValid={formik.touched.password && !formik.errors.password}
             />
