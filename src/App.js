@@ -1,12 +1,8 @@
-import React, { useState, useEffect, useContext } from "react";
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { BrowserRouter as Router } from "react-router-dom";
 import Header from "./components/Header";
-import Homepage from "./components/Homepage";
-import Login from "./components/Login";
-import RecipePage from "./components/RecipePage";
-import createRecipe from "./components/createRecipe";
-import ProtectedRoute from "./components/ProtectedRoute";
-import AuthApi from "./AuthApi";
+import Routes from "./components/Routes";
+import { AuthProvider } from "./AuthContext";
 import Cookies from "js-cookie";
 import "./App.css";
 
@@ -27,23 +23,12 @@ function App() {
   console.log(auth);
   return (
     <>
-      <AuthApi.Provider value={{ auth, setAuth }}>
+      <AuthProvider>
         <Header />
         <Router>
-          <Switch>
-            <Route exact path="/">
-              <Homepage />
-            </Route>
-            <Route exact path="/login">
-              <Login />
-            </Route>
-            <Route exact path="/recipe/:id">
-              <RecipePage />
-            </Route>
-            <ProtectedRoute path="/createRecipe" auth={auth} component={createRecipe} />
-          </Switch>
+          <Routes />
         </Router>
-      </AuthApi.Provider>
+      </AuthProvider>
     </>
   );
 }
