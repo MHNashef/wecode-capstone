@@ -4,7 +4,7 @@ import { MdFavoriteBorder } from "react-icons/md";
 import { useHistory } from "react-router-dom";
 import "../styles/RecipeCard.css";
 
-export default function RecipeCard({ recipeName, recipeId }) {
+export default function RecipeCard({ recipeName, recipeId, recipeImg }) {
   const iconStyles = { color: "red", fontSize: "1.5em" };
   const history = useHistory(null);
 
@@ -18,7 +18,8 @@ export default function RecipeCard({ recipeName, recipeId }) {
         <Card style={{ width: "15rem" }} className="recipe-hover">
           <Card.Img
             variant="top"
-            src="https://via.placeholder.com/210x130.png"
+            src={`http://localhost:3001/${recipeImg}`}
+            style={{ height: "12rem" }}
           />
           <Card.Body id={recipeId}>
             <Card.Title>{recipeName}</Card.Title>
