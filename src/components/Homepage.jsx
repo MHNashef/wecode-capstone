@@ -70,6 +70,7 @@ export default function Homepage() {
               <RecipeCard
                 recipeName={recipe.recipe_name}
                 recipeId={recipe.id}
+                recipeImg={recipe.image}
               ></RecipeCard>
             </Col>
           ))}
@@ -85,6 +86,7 @@ export default function Homepage() {
               <RecipeCard
                 recipeName={recipe.recipe_name}
                 recipeId={recipe.id}
+                recipeImg={recipe.image}
               ></RecipeCard>
             </Col>
           ))}
