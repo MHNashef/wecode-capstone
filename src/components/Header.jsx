@@ -3,14 +3,19 @@ import { useHistory } from "react-router-dom";
 import React from "react";
 import { Navbar, Nav, Container } from "react-bootstrap";
 import { useAuth } from "../AuthContext";
+import { getCurrentUser, userLogout } from "../DAL/userApi";
 
 export default function Header() {
   const [auth, setAuth] = useAuth();
+  const currentUser = getCurrentUser();
   const history = useHistory(null);
 
   const onLogOut = () => {
+    if (currentUser) {
+      userLogout({ sessionid: currentUser.session_id });
+      Cookies.remove("currentuser");
+    }
     setAuth(false);
-    Cookies.remove("sessionid");
   };
 
   return (

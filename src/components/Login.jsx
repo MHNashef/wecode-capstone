@@ -1,12 +1,14 @@
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import { Form, Button, Container } from "react-bootstrap";
 import { useFormik } from "formik";
 import Cookies from "js-cookie";
 import { useAuth } from "../AuthContext";
+import { userLogin } from "../DAL/userApi";
 
 export default function Login() {
   const passwordFieldRef = useRef(null);
   const [auth, setAuth] = useAuth();
+  const [attemptFailedError, setAttemptFailedError] = useState(false);
 
   function togglePasswordVisibilty() {
     const passwordField = passwordFieldRef.current;
@@ -42,11 +44,15 @@ export default function Login() {
     },
     validate,
     onSubmit: (values) => {
-      if (!auth) {
-        setAuth(true);
-        Cookies.set("sessionid", "1234567");
-      }
-      // alert(JSON.stringify(values, null, 2));
+      userLogin((currentUser) => {
+        if (currentUser) {
+          Cookies.set("currentuser", currentUser);
+          setAuth(true);
+        } else {
+          setAttemptFailedError(true);
+          console.log("user login failed");
+        }
+      }, values);
     },
   });
 
