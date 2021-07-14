@@ -99,7 +99,6 @@ export default function CreateRecipePage() {
   }
   console.log(ingredients);
 
-
   function handleAddInstruction() {
     setInstructions([...instructions, editInstructions]);
     setEditInstructions({
@@ -201,13 +200,69 @@ export default function CreateRecipePage() {
           </Form.Group>
           <Form.Group controlId="mealType">
             <Form.Label className="mr-3">Meal Type:</Form.Label>
-            <Form.Check type="checkbox" label="Breakfast" id="1" inline />
-            <Form.Check type="checkbox" label="Lunch" id="2" inline />
-            <Form.Check type="checkbox" label="Dinner" id="3" inline />
-            <Form.Check type="checkbox" label="Snack" id="4" inline />
-            <Form.Check type="checkbox" label="Dessert" id="5" inline />
-            <Form.Check type="checkbox" label="Smoothie" id="6" inline />
-            <Form.Check type="checkbox" label="Pastries" id="7" inline />
+            <Form.Check
+              type="checkbox"
+              label="Breakfast"
+              name="mealType"
+              value="breakfast"
+              onChange={formik.handleChange}
+              id="1"
+              inline
+            />
+            <Form.Check
+              type="checkbox"
+              label="Lunch"
+              name="mealType"
+              value="lunch"
+              onChange={formik.handleChange}
+              id="2"
+              inline
+            />
+            <Form.Check
+              type="checkbox"
+              label="Dinner"
+              name="mealType"
+              value="dinner"
+              onChange={formik.handleChange}
+              id="3"
+              inline
+            />
+            <Form.Check
+              type="checkbox"
+              label="Snack"
+              name="mealType"
+              value="snack"
+              onChange={formik.handleChange}
+              id="4"
+              inline
+            />
+            <Form.Check
+              type="checkbox"
+              label="Dessert"
+              name="mealType"
+              value="dessert"
+              onChange={formik.handleChange}
+              id="5"
+              inline
+            />
+            <Form.Check
+              type="checkbox"
+              label="Smoothie"
+              name="mealType"
+              value="smoothie"
+              onChange={formik.handleChange}
+              id="6"
+              inline
+            />
+            <Form.Check
+              type="checkbox"
+              label="Pastries"
+              name="mealType"
+              value="pastries"
+              onChange={formik.handleChange}
+              id="7"
+              inline
+            />
           </Form.Group>
           <Accordion defaultActiveKey="0">
             <Card>
