@@ -13,7 +13,7 @@ function useAuth() {
 
 function AuthProvider(props) {
   const [auth, setAuth] = React.useState(() => {
-    const sessionid = Cookies.get("sessionid");
+    const sessionid = Cookies.get("currentuser");
     return sessionid ? true : false;
   });
 
