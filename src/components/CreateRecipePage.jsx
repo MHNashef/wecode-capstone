@@ -43,7 +43,8 @@ export default function CreateRecipePage() {
     initialValues: {
       recipeName: "",
       recipeDescription: "",
-      diet: [],
+      dietType: [],
+      mealType: [],
       ingredients: [...ingredients],
       instructions: [...instructions],
     },
@@ -96,6 +97,8 @@ export default function CreateRecipePage() {
     });
     setId(id + 1);
   }
+  console.log(ingredients);
+
 
   function handleAddInstruction() {
     setInstructions([...instructions, editInstructions]);
@@ -113,7 +116,10 @@ export default function CreateRecipePage() {
         <Form onSubmit={formik.handleSubmit}>
           <Row>
             <Col>
-              <Form.Group controlId="recipeName" {...formik.getFieldProps("recipeName")} >
+              <Form.Group
+                controlId="recipeName"
+                {...formik.getFieldProps("recipeName")}
+              >
                 <Form.Label>Recipe Name</Form.Label>
                 <Form.Control type="text" placeholder="Enter recipe name" />
               </Form.Group>
@@ -125,7 +131,10 @@ export default function CreateRecipePage() {
             </Col>
           </Row>
 
-          <Form.Group controlId="recipeDescription" {...formik.getFieldProps("recipeDescription")}>
+          <Form.Group
+            controlId="recipeDescription"
+            {...formik.getFieldProps("recipeDescription")}
+          >
             <Form.Label>Recipe Description</Form.Label>
             <Form.Control
               type="text"
@@ -135,12 +144,60 @@ export default function CreateRecipePage() {
 
           <Form.Group controlId="dietType">
             <Form.Label className="mr-3">Diet Type:</Form.Label>
-            <Form.Check type="checkbox" label="Vegan" id="1" name="diet" inline />
-            <Form.Check type="checkbox" label="Vegetarian" id="2" name="diet" inline />
-            <Form.Check type="checkbox" label="Kosher" id="3" name="diet" inline />
-            <Form.Check type="checkbox" label="Lactose Free" name="diet" id="4" inline />
-            <Form.Check type="checkbox" label="Halal" id="5" name="diet" inline />
-            <Form.Check type="checkbox" label="Gluten Free" name="diet" id="6" inline />
+            <Form.Check
+              type="checkbox"
+              label="Vegan"
+              id="1"
+              name="dietType"
+              value="vegan"
+              onChange={formik.handleChange}
+              inline
+            />
+            <Form.Check
+              type="checkbox"
+              label="Vegetarian"
+              id="2"
+              name="dietType"
+              value="vegetarian"
+              onChange={formik.handleChange}
+              inline
+            />
+            <Form.Check
+              type="checkbox"
+              label="Kosher"
+              id="3"
+              name="dietType"
+              value="kosher"
+              onChange={formik.handleChange}
+              inline
+            />
+            <Form.Check
+              type="checkbox"
+              label="Lactose Free"
+              name="dietType"
+              id="4"
+              value="lactose free"
+              onChange={formik.handleChange}
+              inline
+            />
+            <Form.Check
+              type="checkbox"
+              label="Halal"
+              id="5"
+              name="dietType"
+              value="halal"
+              onChange={formik.handleChange}
+              inline
+            />
+            <Form.Check
+              type="checkbox"
+              label="Gluten Free"
+              name="dietType"
+              id="6"
+              value="gluten free"
+              onChange={formik.handleChange}
+              inline
+            />
           </Form.Group>
           <Form.Group controlId="mealType">
             <Form.Label className="mr-3">Meal Type:</Form.Label>
@@ -276,9 +333,11 @@ export default function CreateRecipePage() {
                   <Table striped borderless size="sm">
                     <tbody>
                       {instructions.map((instruction) => (
-                        <tr >
+                        <tr>
                           <td style={{ width: "10%" }}>
-                              <MdDelete onClick={() => removeInstruction(instruction)} />
+                            <MdDelete
+                              onClick={() => removeInstruction(instruction)}
+                            />
                           </td>
                           <td>{instruction.stepNum}</td>
                           <td>{instruction.instruction}</td>
@@ -293,7 +352,7 @@ export default function CreateRecipePage() {
           <Button
             variant="primary"
             type="submit"
-            className="d-block mx-auto btn-success w-25 mt-5"
+            className="d-block mx-auto btn-success w-25 mt-5 mb-5"
           >
             Create
           </Button>
