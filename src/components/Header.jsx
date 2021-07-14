@@ -23,7 +23,7 @@ export default function Header() {
         className="mb-3"
       >
         <Container>
-          <Navbar.Brand href="#home" style={{ fontWeight: "800" }}>
+          <Navbar.Brand href="/" style={{ fontWeight: "800" }}>
             Recipe Book
           </Navbar.Brand>
           <Navbar.Toggle />
