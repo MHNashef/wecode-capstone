@@ -1,9 +1,14 @@
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import { Form, Button, Container } from "react-bootstrap";
 import { useFormik } from "formik";
+import Cookies from "js-cookie";
+import { useAuth } from "../AuthContext";
+import { userLogin } from "../DAL/userApi";
 
 export default function Login() {
   const passwordFieldRef = useRef(null);
+  const [auth, setAuth] = useAuth();
+  const [attemptFailedError, setAttemptFailedError] = useState(false);
 
   function togglePasswordVisibilty() {
     const passwordField = passwordFieldRef.current;
@@ -39,7 +44,15 @@ export default function Login() {
     },
     validate,
     onSubmit: (values) => {
-      alert(JSON.stringify(values, null, 2));
+      userLogin((currentUser) => {
+        if (currentUser) {
+          Cookies.set("currentuser", currentUser);
+          setAuth(true);
+        } else {
+          setAttemptFailedError(true);
+          console.log("user login failed");
+        }
+      }, values);
     },
   });
 
@@ -48,13 +61,11 @@ export default function Login() {
       <Container>
         <Form onSubmit={formik.handleSubmit}>
           <Form.Group controlId="email">
-            <Form.Label>
-              Email address
-            </Form.Label>
+            <Form.Label>Email address</Form.Label>
             <Form.Control
               type="email"
               placeholder="Enter email"
-              {...formik.getFieldProps('email')}
+              {...formik.getFieldProps("email")}
               isValid={formik.touched.email && !formik.errors.email}
             />
             {formik.touched.email && formik.errors.email ? (
@@ -63,13 +74,11 @@ export default function Login() {
           </Form.Group>
 
           <Form.Group controlId="password">
-            <Form.Label>
-              Password
-            </Form.Label>
+            <Form.Label>Password</Form.Label>
             <Form.Control
               type="password"
               placeholder="Password"
-              {...formik.getFieldProps('password')}
+              {...formik.getFieldProps("password")}
               ref={passwordFieldRef}
               isValid={formik.touched.password && !formik.errors.password}
             />
@@ -84,7 +93,11 @@ export default function Login() {
               onClick={togglePasswordVisibilty}
             />
           </Form.Group>
-          <Button className="btn-success d-block mx-auto w-25" variant="primary" type="submit">
+          <Button
+            className="btn-success d-block mx-auto w-25"
+            variant="primary"
+            type="submit"
+          >
             Login
           </Button>
         </Form>
