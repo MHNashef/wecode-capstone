@@ -32,21 +32,26 @@ export default function CreateRecipePage() {
     notes: "",
   });
 
-  // function validate(values) {
-  //   const errors = {};
-  //   if (!values.recipeName) {
-  //     errors.recipeName = "Required";
-  //   }
-  // }
-  // const formik = useFormik({
-  //   values: {
-  //     recipeName: "",
-  //   },
-  //   validate,
-  //   onSubmit: (values) => {
-  //     alert(JSON.stringify(values, null, 2));
-  //   },
-  // });
+  function validate(values) {
+    const errors = {};
+    if (!values.recipeName) {
+      errors.recipeName = "Required";
+    }
+  }
+  const formik = useFormik({
+    // enableReinitialize: true,
+    initialValues: {
+      recipeName: "",
+      recipeDescription: "",
+      diet: [],
+      ingredients: [...ingredients],
+      instructions: [...instructions],
+    },
+    validate,
+    onSubmit: (values) => {
+      alert(JSON.stringify(values, null, 2));
+    },
+  });
 
   function onChangeIngredient({ target: { value } }, field) {
     switch (field) {
@@ -105,22 +110,22 @@ export default function CreateRecipePage() {
   return (
     <>
       <Container>
-        <Form>
+        <Form onSubmit={formik.handleSubmit}>
           <Row>
             <Col>
-              <Form.Group controlId="recipeName">
+              <Form.Group controlId="recipeName" {...formik.getFieldProps("recipeName")} >
                 <Form.Label>Recipe Name</Form.Label>
                 <Form.Control type="text" placeholder="Enter recipe name" />
               </Form.Group>
             </Col>
             <Col>
               <Form.Group>
-                <Form.File id="exampleFormControlFile1" label="Upload Image" />
+                <Form.File id="image" label="Upload Image" />
               </Form.Group>
             </Col>
           </Row>
 
-          <Form.Group controlId="formBasicPassword">
+          <Form.Group controlId="recipeDescription" {...formik.getFieldProps("recipeDescription")}>
             <Form.Label>Recipe Description</Form.Label>
             <Form.Control
               type="text"
@@ -130,12 +135,12 @@ export default function CreateRecipePage() {
 
           <Form.Group controlId="dietType">
             <Form.Label className="mr-3">Diet Type:</Form.Label>
-            <Form.Check type="checkbox" label="Vegan" id="1" inline />
-            <Form.Check type="checkbox" label="Vegetarian" id="2" inline />
-            <Form.Check type="checkbox" label="Kosher" id="3" inline />
-            <Form.Check type="checkbox" label="Lactose Free" id="4" inline />
-            <Form.Check type="checkbox" label="Halal" id="5" inline />
-            <Form.Check type="checkbox" label="Gluten Free" id="6" inline />
+            <Form.Check type="checkbox" label="Vegan" id="1" name="diet" inline />
+            <Form.Check type="checkbox" label="Vegetarian" id="2" name="diet" inline />
+            <Form.Check type="checkbox" label="Kosher" id="3" name="diet" inline />
+            <Form.Check type="checkbox" label="Lactose Free" name="diet" id="4" inline />
+            <Form.Check type="checkbox" label="Halal" id="5" name="diet" inline />
+            <Form.Check type="checkbox" label="Gluten Free" name="diet" id="6" inline />
           </Form.Group>
           <Form.Group controlId="mealType">
             <Form.Label className="mr-3">Meal Type:</Form.Label>
