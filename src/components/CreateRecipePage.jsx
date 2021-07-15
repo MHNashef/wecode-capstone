@@ -55,7 +55,6 @@ export default function CreateRecipePage() {
     }
   }
   const formik = useFormik({
-    // enableReinitialize: true,
     initialValues: {
       recipeName: "",
       recipeDescription: "",
@@ -70,6 +69,20 @@ export default function CreateRecipePage() {
     onSubmit: (values) => {
       values.ingredients = [...ingredients];
       values.instructions = [...instructions];
+    //   const fd = new FormData();
+    //   fd.append("recipeName", values.recipeName);
+    //   fd.append("recipeDescription", values.recipeDescription);
+    //   fd.append("visibility", values.visibility);
+    //   fd.append("dietType", values.dietType);
+    //   fd.append("mealType", values.mealType);
+    //   fd.append("ingredients", values.ingredients);
+    //   fd.append("instructions", values.instructions);
+
+    //   for (var pair of fd.entries()) {
+    //     // console.log(pair[0]+ ', ' + pair[1]); 
+    //     console.log(pair); 
+    // }
+    
       alert(JSON.stringify(values, null, 2));
     },
   });
@@ -191,7 +204,7 @@ export default function CreateRecipePage() {
               label="Vegan"
               id="1"
               name="dietType"
-              value="vegan"
+              value="1"
               onChange={formik.handleChange}
               inline
             />
@@ -200,7 +213,7 @@ export default function CreateRecipePage() {
               label="Vegetarian"
               id="2"
               name="dietType"
-              value="vegetarian"
+              value="2"
               onChange={formik.handleChange}
               inline
             />
@@ -209,7 +222,7 @@ export default function CreateRecipePage() {
               label="Kosher"
               id="3"
               name="dietType"
-              value="kosher"
+              value="3"
               onChange={formik.handleChange}
               inline
             />
@@ -218,7 +231,7 @@ export default function CreateRecipePage() {
               label="Lactose Free"
               name="dietType"
               id="4"
-              value="lactose free"
+              value="4"
               onChange={formik.handleChange}
               inline
             />
@@ -227,7 +240,7 @@ export default function CreateRecipePage() {
               label="Halal"
               id="5"
               name="dietType"
-              value="halal"
+              value="5"
               onChange={formik.handleChange}
               inline
             />
@@ -236,7 +249,7 @@ export default function CreateRecipePage() {
               label="Gluten Free"
               name="dietType"
               id="6"
-              value="gluten free"
+              value="6"
               onChange={formik.handleChange}
               inline
             />
@@ -247,7 +260,7 @@ export default function CreateRecipePage() {
               type="checkbox"
               label="Breakfast"
               name="mealType"
-              value="breakfast"
+              value="1"
               onChange={formik.handleChange}
               id="1"
               inline
@@ -256,7 +269,7 @@ export default function CreateRecipePage() {
               type="checkbox"
               label="Lunch"
               name="mealType"
-              value="lunch"
+              value="2"
               onChange={formik.handleChange}
               id="2"
               inline
@@ -265,7 +278,7 @@ export default function CreateRecipePage() {
               type="checkbox"
               label="Dinner"
               name="mealType"
-              value="dinner"
+              value="3"
               onChange={formik.handleChange}
               id="3"
               inline
@@ -274,7 +287,7 @@ export default function CreateRecipePage() {
               type="checkbox"
               label="Snack"
               name="mealType"
-              value="snack"
+              value="4"
               onChange={formik.handleChange}
               id="4"
               inline
@@ -283,7 +296,7 @@ export default function CreateRecipePage() {
               type="checkbox"
               label="Dessert"
               name="mealType"
-              value="dessert"
+              value="5"
               onChange={formik.handleChange}
               id="5"
               inline
@@ -292,7 +305,7 @@ export default function CreateRecipePage() {
               type="checkbox"
               label="Smoothie"
               name="mealType"
-              value="smoothie"
+              value="6"
               onChange={formik.handleChange}
               id="6"
               inline
@@ -301,7 +314,7 @@ export default function CreateRecipePage() {
               type="checkbox"
               label="Pastries"
               name="mealType"
-              value="pastries"
+              value="7"
               onChange={formik.handleChange}
               id="7"
               inline
@@ -322,6 +335,7 @@ export default function CreateRecipePage() {
                         <Form.Label>Amount</Form.Label>
                         <Form.Control
                           type="number"
+                          min="1"
                           onChange={(e) => onChangeIngredient(e, "amount")}
                         />
                       </Col>
@@ -401,6 +415,7 @@ export default function CreateRecipePage() {
                         <Form.Label>Step #</Form.Label>
                         <Form.Control
                           type="number"
+                          min="1"
                           onChange={(e) => onChangeInstruction(e, "stepNum")}
                         />
                       </Col>
