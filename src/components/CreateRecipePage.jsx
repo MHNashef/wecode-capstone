@@ -43,6 +43,8 @@ export default function CreateRecipePage() {
     initialValues: {
       recipeName: "",
       recipeDescription: "",
+      image: "",
+      visibility: "",
       dietType: [],
       mealType: [],
       ingredients: [...ingredients],
@@ -50,6 +52,8 @@ export default function CreateRecipePage() {
     },
     validate,
     onSubmit: (values) => {
+      values.ingredients = [...ingredients];
+      values.instructions = [...instructions]
       alert(JSON.stringify(values, null, 2));
     },
   });
@@ -97,7 +101,6 @@ export default function CreateRecipePage() {
     });
     setId(id + 1);
   }
-  console.log(ingredients);
 
   function handleAddInstruction() {
     setInstructions([...instructions, editInstructions]);
@@ -125,7 +128,31 @@ export default function CreateRecipePage() {
             </Col>
             <Col>
               <Form.Group>
-                <Form.File id="image" label="Upload Image" />
+                <Form.Check
+                  type="radio"
+                  label="Public"
+                  name="visibility"
+                  value="1"
+                  inline
+                  onChange={formik.handleChange}
+                  />
+                <Form.Check
+                  type="radio"
+                  label="Private"
+                  name="visibility"
+                  value="0"
+                  inline
+                  onChange={formik.handleChange}
+                />
+              </Form.Group>
+            </Col>
+            <Col>
+              <Form.Group>
+                <Form.File
+                  id="image"
+                  label="Upload Image"
+                  onChange={formik.handleChange}
+                />
               </Form.Group>
             </Col>
           </Row>
@@ -332,7 +359,12 @@ export default function CreateRecipePage() {
                         />
                       </Col>
                       <Col>
-                        <Button onClick={handleAddIngredient}>Add</Button>
+                        <Button
+                          id="instructions"
+                          onClick={handleAddIngredient}
+                        >
+                          Add
+                        </Button>
                       </Col>
                     </Row>
                   </Form.Group>
