@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Form,
   Button,
@@ -10,10 +10,13 @@ import {
   Badge,
   Table,
 } from "react-bootstrap";
+import { getMeasurements, getIngredients } from "../DAL/api";
 import { MdDelete } from "react-icons/md";
 import { useFormik } from "formik";
 
 export default function CreateRecipePage() {
+  const [measurements, setMeasurements] = useState([]);
+  const [ingredientsList, setIngredientsList] = useState([]);
   const [ingredients, setIngredients] = useState([]);
   const [instructions, setInstructions] = useState([]);
   const [id, setId] = useState(0);
@@ -31,6 +34,19 @@ export default function CreateRecipePage() {
     ingredient: "",
     notes: "",
   });
+
+  function measurementJsonResponse(response) {
+    setMeasurements(response);
+  }
+
+  function ingredientListJsonResponse(response) {
+    setIngredientsList(response);
+  }
+
+  useEffect(() => {
+    getMeasurements(measurementJsonResponse);
+    getIngredients(ingredientListJsonResponse);
+  }, []);
 
   function validate(values) {
     const errors = {};
@@ -53,7 +69,7 @@ export default function CreateRecipePage() {
     validate,
     onSubmit: (values) => {
       values.ingredients = [...ingredients];
-      values.instructions = [...instructions]
+      values.instructions = [...instructions];
       alert(JSON.stringify(values, null, 2));
     },
   });
@@ -135,7 +151,7 @@ export default function CreateRecipePage() {
                   value="1"
                   inline
                   onChange={formik.handleChange}
-                  />
+                />
                 <Form.Check
                   type="radio"
                   label="Private"
@@ -317,22 +333,9 @@ export default function CreateRecipePage() {
                           onChange={(e) => onChangeIngredient(e, "measurement")}
                         >
                           <option>Choose...</option>
-                          <option>gram</option>
-                          <option>kilogram</option>
-                          <option>millileter</option>
-                          <option>table spoon</option>
-                          <option>table spoons</option>
-                          <option>tea spoons</option>
-                          <option>quart</option>
-                          <option>quarts</option>
-                          <option>cup</option>
-                          <option>cups</option>
-                          <option>pack</option>
-                          <option>packs</option>
-                          <option>unit</option>
-                          <option>units</option>
-                          <option>slice</option>
-                          <option>slices</option>
+                          {measurements.map((unit) => (
+                            <option>{unit.measurement_name}</option>
+                          ))}
                         </Form.Control>
                       </Col>
                       <Col>
@@ -343,12 +346,9 @@ export default function CreateRecipePage() {
                           onChange={(e) => onChangeIngredient(e, "ingredient")}
                         >
                           <option>Choose...</option>
-                          <option>cheddar cheese</option>
-                          <option>tomato</option>
-                          <option>sliced bread</option>
-                          <option>milk</option>
-                          <option>oatmeal</option>
-                          <option>honey</option>
+                          {ingredientsList.map((ingredient) => (
+                            <option>{ingredient.ingredient_name}</option>
+                          ))}
                         </Form.Control>
                       </Col>
                       <Col className="col-3">
@@ -361,7 +361,7 @@ export default function CreateRecipePage() {
                       <Col className="d-flex align-items-end">
                         <Button
                           id="instructions"
-                          style={{height:"40px"}}
+                          style={{ height: "40px" }}
                           onClick={handleAddIngredient}
                         >
                           Add
@@ -414,7 +414,12 @@ export default function CreateRecipePage() {
                         />
                       </Col>
                       <Col className="d-flex align-items-end">
-                        <Button style={{height:"40px"}} onClick={handleAddInstruction}>Add</Button>
+                        <Button
+                          style={{ height: "40px" }}
+                          onClick={handleAddInstruction}
+                        >
+                          Add
+                        </Button>
                       </Col>
                     </Row>
                   </Form.Group>

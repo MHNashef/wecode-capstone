@@ -60,6 +60,24 @@ async function getRecipeIngredients(resCallback, id) {
   }
 }
 
+async function getMeasurements(resCallback) {
+  try {
+    const response = await axios.get(`http://localhost:3001/recipes/get/measurements`);
+    resCallback(response.data);
+  } catch (err) {
+    console.log(err);
+  }
+}
+
+async function getIngredients(resCallback) {
+  try {
+    const response = await axios.get(`http://localhost:3001/recipes/get/ingredients`);
+    resCallback(response.data);
+  } catch (err) {
+    console.log(err);
+  }
+}
+
 // pagination
 function getRecipesPagination(pageNum, orderBy, isAsc) {}
 
@@ -70,4 +88,6 @@ export {
   getRecipeById,
   getRecipeInstructions,
   getRecipeIngredients,
+  getMeasurements,
+  getIngredients
 };
