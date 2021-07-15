@@ -126,7 +126,7 @@ export default function CreateRecipePage() {
                 <Form.Control type="text" placeholder="Enter recipe name" />
               </Form.Group>
             </Col>
-            <Col>
+            <Col className="d-flex align-items-end">
               <Form.Group>
                 <Form.Check
                   type="radio"
@@ -358,9 +358,10 @@ export default function CreateRecipePage() {
                           onChange={(e) => onChangeIngredient(e, "notes")}
                         />
                       </Col>
-                      <Col>
+                      <Col className="d-flex align-items-end">
                         <Button
                           id="instructions"
+                          style={{height:"40px"}}
                           onClick={handleAddIngredient}
                         >
                           Add
@@ -412,8 +413,8 @@ export default function CreateRecipePage() {
                           }
                         />
                       </Col>
-                      <Col>
-                        <Button onClick={handleAddInstruction}>Add</Button>
+                      <Col className="d-flex align-items-end">
+                        <Button style={{height:"40px"}} onClick={handleAddInstruction}>Add</Button>
                       </Col>
                     </Row>
                   </Form.Group>
