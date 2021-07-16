@@ -9,12 +9,19 @@ import {
   Card,
   Badge,
   Table,
+  Image,
 } from "react-bootstrap";
-import { getMeasurements, getIngredients, createRecipe } from "../DAL/api";
+import {
+  getMeasurements,
+  getIngredients,
+  createRecipe,
+  uploadRecipeImage,
+} from "../DAL/api";
 import { MdDelete } from "react-icons/md";
 import { useFormik } from "formik";
 
 export default function CreateRecipePage() {
+  const [recipeImg, setRecipeImg] = useState(null);
   const [measurements, setMeasurements] = useState([]);
   const [ingredientsList, setIngredientsList] = useState([]);
   const [ingredients, setIngredients] = useState([]);
@@ -99,6 +106,16 @@ export default function CreateRecipePage() {
     }
   }
 
+  function onSelectFile(e) {
+    const formData = new FormData();
+    formData.append("recipeImg", e.target.files[0], e.target.files[0].name);
+    uploadRecipeImage(formData, (response) => {
+      console.log(response);
+      setRecipeImg(response.imgPath);
+    });
+    // setUpdatePic(!updatePic);
+  }
+
   function removeInstruction(instruction) {
     console.log(instruction[0].id);
   }
@@ -160,11 +177,13 @@ export default function CreateRecipePage() {
               </Form.Group>
             </Col>
             <Col>
+              <Image src={`http://localhost:3001/${recipeImg}`} rounded />
               <Form.Group>
                 <Form.File
                   id="image"
+                  name="recipeImg"
                   label="Upload Image"
-                  onChange={formik.handleChange}
+                  onChange={onSelectFile}
                 />
               </Form.Group>
             </Col>

@@ -62,7 +62,9 @@ async function getRecipeIngredients(resCallback, id) {
 
 async function getMeasurements(resCallback) {
   try {
-    const response = await axios.get(`http://localhost:3001/recipes/get/measurements`);
+    const response = await axios.get(
+      `http://localhost:3001/recipes/get/measurements`
+    );
     resCallback(response.data);
   } catch (err) {
     console.log(err);
@@ -71,7 +73,9 @@ async function getMeasurements(resCallback) {
 
 async function getIngredients(resCallback) {
   try {
-    const response = await axios.get(`http://localhost:3001/recipes/get/ingredients`);
+    const response = await axios.get(
+      `http://localhost:3001/recipes/get/ingredients`
+    );
     resCallback(response.data);
   } catch (err) {
     console.log(err);
@@ -80,14 +84,31 @@ async function getIngredients(resCallback) {
 
 async function createRecipe(recipeInfo) {
   try {
-    const response = await axios.post("http://localhost:3001/recipes/create/recipe", recipeInfo);
+    const response = await axios.post(
+      "http://localhost:3001/recipes/create/recipe",
+      recipeInfo
+    );
     console.log(response);
   } catch (err) {
     console.log(err);
   }
 }
 
-// pagination
+async function uploadRecipeImage(fileData, callBack) {
+  // TBD: axios doesn't work, why?
+  // const fetchRes = await axios.post("http://localhost:3001/images/imgUpload", fileData)
+  console.log(fileData);
+  const fetchRes = await fetch("http://localhost:3001/images/imgUpload", {
+    method: "POST",
+    headers: {
+      Accept: "application/json",
+    },
+    body: fileData,
+  });
+  const jsonRes = await fetchRes.json();
+  callBack(jsonRes);
+}
+// pagination  .then(res => res.json()).then(res => callBack(res))
 function getRecipesPagination(pageNum, orderBy, isAsc) {}
 
 export {
@@ -99,5 +120,6 @@ export {
   getRecipeIngredients,
   getMeasurements,
   getIngredients,
-  createRecipe
+  createRecipe,
+  uploadRecipeImage,
 };
