@@ -78,6 +78,15 @@ async function getIngredients(resCallback) {
   }
 }
 
+async function createRecipe(recipeInfo) {
+  try {
+    const response = await axios.post("http://localhost:3001/recipes/create/recipe", recipeInfo);
+    console.log(response);
+  } catch (err) {
+    console.log(err);
+  }
+}
+
 // pagination
 function getRecipesPagination(pageNum, orderBy, isAsc) {}
 
@@ -89,5 +98,6 @@ export {
   getRecipeInstructions,
   getRecipeIngredients,
   getMeasurements,
-  getIngredients
+  getIngredients,
+  createRecipe
 };

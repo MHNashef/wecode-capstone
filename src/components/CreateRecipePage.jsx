@@ -10,7 +10,7 @@ import {
   Badge,
   Table,
 } from "react-bootstrap";
-import { getMeasurements, getIngredients } from "../DAL/api";
+import { getMeasurements, getIngredients, createRecipe } from "../DAL/api";
 import { MdDelete } from "react-icons/md";
 import { useFormik } from "formik";
 
@@ -20,18 +20,16 @@ export default function CreateRecipePage() {
   const [ingredients, setIngredients] = useState([]);
   const [instructions, setInstructions] = useState([]);
   const [id, setId] = useState(0);
-  const [editInstructions, setEditInstructions] = useState([
-    {
-      id,
-      stepNum: "",
-      instruction: "",
-    },
-  ]);
+  const [editInstructions, setEditInstructions] = useState({
+    id,
+    stepNum: "",
+    instruction: "",
+  });
   const [editIngredients, setEditIngredients] = useState({
     id,
     amount: "",
-    measurement: "",
-    ingredient: "",
+    measurement_id: "",
+    ingredient_id: "",
     notes: "",
   });
 
@@ -58,7 +56,6 @@ export default function CreateRecipePage() {
     initialValues: {
       recipeName: "",
       recipeDescription: "",
-      image: "",
       visibility: "",
       dietType: [],
       mealType: [],
@@ -69,21 +66,8 @@ export default function CreateRecipePage() {
     onSubmit: (values) => {
       values.ingredients = [...ingredients];
       values.instructions = [...instructions];
-    //   const fd = new FormData();
-    //   fd.append("recipeName", values.recipeName);
-    //   fd.append("recipeDescription", values.recipeDescription);
-    //   fd.append("visibility", values.visibility);
-    //   fd.append("dietType", values.dietType);
-    //   fd.append("mealType", values.mealType);
-    //   fd.append("ingredients", values.ingredients);
-    //   fd.append("instructions", values.instructions);
-
-    //   for (var pair of fd.entries()) {
-    //     // console.log(pair[0]+ ', ' + pair[1]); 
-    //     console.log(pair); 
-    // }
-    
-      alert(JSON.stringify(values, null, 2));
+      console.log(values);
+      createRecipe(values);
     },
   });
 
@@ -93,10 +77,10 @@ export default function CreateRecipePage() {
         setEditIngredients({ ...editIngredients, amount: value });
         break;
       case "measurement":
-        setEditIngredients({ ...editIngredients, measurement: value });
+        setEditIngredients({ ...editIngredients, measurement_id: value });
         break;
       case "ingredient":
-        setEditIngredients({ ...editIngredients, ingredient: value });
+        setEditIngredients({ ...editIngredients, ingredient_id: value });
         break;
       case "notes":
         setEditIngredients({ ...editIngredients, notes: value });
@@ -348,7 +332,9 @@ export default function CreateRecipePage() {
                         >
                           <option>Choose...</option>
                           {measurements.map((unit) => (
-                            <option>{unit.measurement_name}</option>
+                            <option value={unit.id}>
+                              {unit.measurement_name}
+                            </option>
                           ))}
                         </Form.Control>
                       </Col>
@@ -361,7 +347,9 @@ export default function CreateRecipePage() {
                         >
                           <option>Choose...</option>
                           {ingredientsList.map((ingredient) => (
-                            <option>{ingredient.ingredient_name}</option>
+                            <option value={ingredient.id}>
+                              {ingredient.ingredient_name}
+                            </option>
                           ))}
                         </Form.Control>
                       </Col>
@@ -391,8 +379,18 @@ export default function CreateRecipePage() {
                             <MdDelete />
                           </td>
                           <td>{ingredient.amount}</td>
-                          <td>{ingredient.measurement}</td>
-                          <td>{ingredient.ingredient}</td>
+                          <td>
+                            {
+                              measurements[ingredient.measurement_id - 1]
+                                .measurement_name
+                            }
+                          </td>
+                          <td>
+                            {
+                              ingredientsList[ingredient.ingredient_id - 1]
+                                .ingredient_name
+                            }
+                          </td>
                           <td>{ingredient.notes}</td>
                         </tr>
                       )) || null}
