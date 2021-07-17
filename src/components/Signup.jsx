@@ -1,11 +1,11 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useHistory } from "react-router-dom";
 import { getDietTypes } from "../DAL/api";
-// import { userSignup } from "../DAL/userApi";
+import { userSignup } from "../DAL/userApi";
 import { Form, Button, Container, Row, Col, Alert } from "react-bootstrap";
 import { useFormik } from "formik";
 
-export default function NewUser() {
+export default function Signup() {
   const passwordFieldRef = useRef(null);
   const [dietTypes, setDietTypes] = useState([]);
   const history = useHistory(null);
@@ -66,45 +66,42 @@ export default function NewUser() {
     },
     validate,
     onSubmit: (values) => {
-    //   userSignup((resData) => {
-    //     if (resData?.msg === "User created") {
-    //       setSignup(1);
-    //       setTimeout(() => {
-    //         history.push("/login");
-    //       }, 3000);
-    //     } else {
-    //       setSignup(0);
-    //     }
-    //   }, values);
+      userSignup((resData) => {
+        if (resData?.msg === "User created") {
+          setSignup(1);
+          setTimeout(() => {
+            history.push("/login");
+          }, 3000);
+        } else {
+          setSignup(0);
+        }
+      }, values);
     },
   });
 
   return (
     <>
       <Container>
-        <div
+        <h1
+          className="text-center"
           style={{
-            textAlign: "center",
             width: "100%",
-            fontSize: "24pt",
-            textDecoration: "bold",
             padding: "10px",
           }}
         >
           Welcome to Recipe Book!
-        </div>
-        <div
+        </h1>
+        <h2
+        className="text-center"
           style={{
-            textAlign: "center",
             color: "green",
             width: "100%",
             fontSize: "14pt",
-            textDecoration: "bold",
             padding: "10px",
           }}
         >
           To sign up, enter your information below
-        </div>
+        </h2>
         <Form onSubmit={formik.handleSubmit}>
           <Row>
             <Col>
