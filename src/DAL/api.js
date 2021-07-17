@@ -82,6 +82,15 @@ async function getIngredients(resCallback) {
   }
 }
 
+async function getDietTypes(resCB) {
+  try {
+    const res = await axios.get("http://localhost:3001/users/diettypes");
+    resCB(res.data);
+  } catch (err) {
+    console.error(err);
+  }
+}
+
 async function createRecipe(recipeInfo) {
   try {
     const response = await axios.post(
@@ -108,6 +117,7 @@ async function uploadRecipeImage(fileData, callBack) {
   const jsonRes = await fetchRes.json();
   callBack(jsonRes);
 }
+
 // pagination  .then(res => res.json()).then(res => callBack(res))
 function getRecipesPagination(pageNum, orderBy, isAsc) {}
 
@@ -122,4 +132,5 @@ export {
   getIngredients,
   createRecipe,
   uploadRecipeImage,
+  getDietTypes
 };
