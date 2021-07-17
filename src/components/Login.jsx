@@ -11,12 +11,8 @@ export default function Login() {
   const [attemptFailedError, setAttemptFailedError] = useState(false);
 
   function togglePasswordVisibilty() {
-    const passwordField = passwordFieldRef.current;
-    if (passwordField.type === "password") {
-      passwordField.type = "text";
-    } else {
-      passwordField.type = "password";
-    }
+    passwordFieldRef.current.type =
+      passwordFieldRef.current.type === "password" ? "text" : "password";
   }
 
   function validate(values) {
