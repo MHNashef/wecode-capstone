@@ -3,6 +3,7 @@ import Homepage from "./Homepage";
 import Login from "./Login";
 import RecipePage from "./RecipePage";
 import CreateRecipePage from "./CreateRecipePage";
+import Signup from "./Signup";
 import ProtectedRoute from "./ProtectedRoute";
 import { useAuth } from "../AuthContext";
 import { Switch, Route, Redirect } from "react-router-dom";
@@ -19,6 +20,9 @@ export default function Routes() {
         <ProtectedLogin exact path="/login" auth={auth} component={Login} />
         <Route exact path="/recipe/:id">
           <RecipePage />
+        </Route>
+        <Route exact path="/signup">
+          <Signup />
         </Route>
         <Route exact path="/createRecipe">
           <CreateRecipePage />

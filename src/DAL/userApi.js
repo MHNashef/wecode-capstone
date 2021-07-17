@@ -1,6 +1,19 @@
 import axios from "axios";
 import Cookies from "js-cookie";
 
+async function userSignup(resCB, userData) {
+  try {
+    const res = await axios.post(
+      "http://localhost:3001/users/signup",
+      userData
+    );
+    if (resCB) resCB(res.data);
+  } catch (err) {
+    console.error(err);
+    resCB(null);
+  }
+}
+
 async function userLogin(resCB, creds) {
   try {
     const res = await axios.post("http://localhost:3001/users/login", creds);
@@ -38,4 +51,4 @@ function getCurrentUser() {
   return curUser ? JSON.parse(curUser)[0] : null;
 }
 
-export { userLogin, userLogout, getCurrentUser, valdiateSession };
+export { userLogin, userLogout, getCurrentUser, valdiateSession, userSignup };
