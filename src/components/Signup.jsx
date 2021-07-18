@@ -4,20 +4,44 @@ import { getDietTypes } from "../DAL/api";
 import { userSignup } from "../DAL/userApi";
 import { Form, Button, Container, Row, Col, Alert } from "react-bootstrap";
 import { useFormik } from "formik";
+import { useAuth } from "../AuthContext";
+import { getCurrentUser, getUserById, getUserDiet, updateUser } from "../DAL/userApi";
 
 export default function Signup() {
+  const [auth, setAuth] = useAuth();
   const passwordFieldRef = useRef(null);
   const [dietTypes, setDietTypes] = useState([]);
   const history = useHistory(null);
   const [signup, setSignup] = useState(-1); // a tri-state flag
+  const [currUser, setCurrUser] = useState([]);
+  const [userDiet, setUserDiet] = useState([]);
+  const localUserInfo = getCurrentUser();
+
+  function onUserRes(response) {
+    setCurrUser(response);
+  }
 
   useEffect(() => {
+    if (auth) {
+      getUserById(onUserRes, localUserInfo.id);
+      getUserDiet((res) => {
+        const temp = [];
+        res.forEach((element) => {
+          temp.push(`${element.diet_type_id}`);
+        });
+        setUserDiet(temp);
+      }, localUserInfo.id);
+    }
     getDietTypes((data) => {
       setDietTypes(data);
     });
 
     console.log("useEffect: " + signup);
   }, []);
+
+  console.log(currUser);
+  console.log(localUserInfo);
+  console.log(userDiet);
 
   function togglePasswordVisibilty() {
     passwordFieldRef.current.type =
@@ -57,51 +81,86 @@ export default function Signup() {
   }
 
   const formik = useFormik({
+    enableReinitialize: auth,
     initialValues: {
-      first_name: "",
-      last_name: "",
-      email: "",
-      user_password: "",
-      diettype: [],
+      id: auth ? currUser[0]?.id : "",
+      first_name: auth ? currUser[0]?.first_name : "",
+      last_name: auth ? currUser[0]?.last_name : "",
+      email: auth ? currUser[0]?.email : "",
+      user_password: auth ? currUser[0]?.user_password : "",
+      diettype: [...userDiet],
     },
     validate,
     onSubmit: (values) => {
-      userSignup((resData) => {
-        if (resData?.msg === "User created") {
-          setSignup(1);
-          setTimeout(() => {
-            history.push("/login");
-          }, 3000);
-        } else {
-          setSignup(0);
-        }
-      }, values);
+      if (auth) {
+        updateUser((res) => {
+            console.log(res.msg);
+        }, values);
+      } else {
+        userSignup((resData) => {
+          if (resData?.msg === "User created") {
+            setSignup(1);
+            setTimeout(() => {
+              history.push("/login");
+            }, 3000);
+          } else {
+            setSignup(0);
+          }
+        }, values);
+      }
     },
   });
 
   return (
     <>
       <Container>
-        <h1
-          className="text-center"
-          style={{
-            width: "100%",
-            padding: "10px",
-          }}
-        >
-          Welcome to Recipe Book!
-        </h1>
-        <h2
-        className="text-center"
-          style={{
-            color: "green",
-            width: "100%",
-            fontSize: "14pt",
-            padding: "10px",
-          }}
-        >
-          To sign up, enter your information below
-        </h2>
+        {auth ? (
+          <h1
+            className="text-center"
+            style={{
+              width: "100%",
+              padding: "10px",
+            }}
+          >
+            Edit Profile
+          </h1>
+        ) : (
+          <h1
+            className="text-center"
+            style={{
+              width: "100%",
+              padding: "10px",
+            }}
+          >
+            Welcome to Recipe Book!
+          </h1>
+        )}
+        {auth ? (
+          <h2
+            className="text-center"
+            style={{
+              color: "green",
+              width: "100%",
+              fontSize: "14pt",
+              padding: "10px",
+            }}
+          >
+            Feel free to make changes to your user info
+          </h2>
+        ) : (
+          <h2
+            className="text-center"
+            style={{
+              color: "green",
+              width: "100%",
+              fontSize: "14pt",
+              padding: "10px",
+            }}
+          >
+            To sign up, enter your information below
+          </h2>
+        )}
+
         <Form onSubmit={formik.handleSubmit}>
           <Row>
             <Col>
@@ -179,6 +238,7 @@ export default function Signup() {
               {dietTypes?.map((dtype) => (
                 <Form.Check
                   type="checkbox"
+                  checked={formik.values.diettype.includes(`${dtype.id}`)}
                   label={dtype.diet_type_name}
                   id={dtype.id}
                   value={dtype.id}
@@ -201,13 +261,23 @@ export default function Signup() {
               Signup failed. Please try again
             </Alert>
           ) : null}
-          <Button
-            variant="primary"
-            type="submit"
-            className="d-block mx-auto btn-success w-25 mt-5"
-          >
-            Sign Up
-          </Button>
+          {auth ? (
+            <Button
+              variant="info"
+              type="submit"
+              className="d-block mx-auto btn-success w-25 mt-5"
+            >
+              Update
+            </Button>
+          ) : (
+            <Button
+              variant="primary"
+              type="submit"
+              className="d-block mx-auto btn-success w-25 mt-5"
+            >
+              Sign Up
+            </Button>
+          )}
         </Form>
       </Container>
     </>

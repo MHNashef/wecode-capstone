@@ -45,10 +45,46 @@ async function valdiateSession(resCB, creds) {
   }
 }
 
+async function getUserById(resCB, id) {
+  try {
+    const res = await axios.get(`http://localhost:3001/users/userId/${id}`);
+    resCB(res.data);
+  } catch (err) {
+    console.log(err);
+  }
+}
+
+async function getUserDiet(resCB, id) {
+  try {
+    const res = await axios.get(`http://localhost:3001/users/diet/${id}`);
+    resCB(res.data);
+  } catch (err) {
+    console.log(err);
+  }
+}
+
+async function updateUser(resCB, userInfo) {
+  try {
+    const res = await axios.put(`http://localhost:3001/users/updateUser`, userInfo);
+    resCB(res.data);
+  } catch (err) {
+    if (err) throw err;
+  }
+}
+
 function getCurrentUser() {
   const curUser = Cookies.get("currentuser");
 
   return curUser ? JSON.parse(curUser)[0] : null;
 }
 
-export { userLogin, userLogout, getCurrentUser, valdiateSession, userSignup };
+export {
+  userLogin,
+  userLogout,
+  getCurrentUser,
+  valdiateSession,
+  userSignup,
+  getUserById,
+  getUserDiet,
+  updateUser
+};
