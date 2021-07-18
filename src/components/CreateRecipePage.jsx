@@ -156,7 +156,7 @@ export default function CreateRecipePage() {
                 <Form.Control type="text" placeholder="Enter recipe name" />
               </Form.Group>
             </Col>
-            <Col className="d-flex align-items-end">
+            <Col className="d-flex align-items-center">
               <Form.Group>
                 <Form.Check
                   type="radio"

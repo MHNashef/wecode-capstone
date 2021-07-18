@@ -43,7 +43,7 @@ export default function Header() {
             <Nav>
               {auth ? (
                 <Nav.Link href="/editUser">My Profile</Nav.Link>
-                ) : (
+              ) : (
                 <Nav.Link href="/signup">Sign Up</Nav.Link>
               )}
               {!auth ? (
