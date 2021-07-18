@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from "react";
+import { useRecipe } from "../RecipeContext";
+import { getCurrentUser } from "../DAL/userApi";
 import {
   Form,
   Button,
@@ -14,23 +16,39 @@ import {
 import {
   getMeasurements,
   getIngredients,
+  updateRecipe,
   createRecipe,
   uploadRecipeImage,
+  getRecipeById,
+  getMealTypes,
+  getDietTypes,
+  getRecipeMealType,
+  getRecipeDietType,
+  getRecipeInstructions,
+  getRecipeIngredients,
 } from "../DAL/api";
 import { MdDelete } from "react-icons/md";
 import { useFormik } from "formik";
+import { useParams } from "react-router-dom";
 
 export default function CreateRecipePage() {
+  const { rid } = useParams();
+  const [ctxRecipe] = useRecipe();
   const [recipeImg, setRecipeImg] = useState(null);
   const [measurements, setMeasurements] = useState([]);
   const [ingredientsList, setIngredientsList] = useState([]);
+  const [mealTypes, setMealTypes] = useState([]);
+  const [dietTypes, setDietTypes] = useState([]);
+  const [recipeMealType, setRecipeMealType] = useState([]);
+  const [recipeDietType, setRecipeDietType] = useState([]);
   const [ingredients, setIngredients] = useState([]);
   const [instructions, setInstructions] = useState([]);
+  const [recipe, setRecipe] = useState([]);
   const [id, setId] = useState(0);
   const [editInstructions, setEditInstructions] = useState({
     id,
-    stepNum: "",
-    instruction: "",
+    step_number: 0,
+    step_description: "",
   });
   const [editIngredients, setEditIngredients] = useState({
     id,
@@ -51,6 +69,51 @@ export default function CreateRecipePage() {
   useEffect(() => {
     getMeasurements(measurementJsonResponse);
     getIngredients(ingredientListJsonResponse);
+    getMealTypes((res) => setMealTypes(res));
+    getDietTypes((res) => setDietTypes(res));
+
+    if (ctxRecipe.editMode) {
+      getRecipeById((res) => {
+        setRecipe(res);
+        setRecipeImg({ imgId: res[0].image, imgPath: res[0].img_path });
+      }, rid);
+
+      getRecipeMealType((res) => {
+        const ret = [];
+        res.forEach((element) => {
+          ret.push(`${element.meal_type_id}`);
+        });
+        setRecipeMealType(ret);
+      }, rid);
+
+      getRecipeDietType((res) => {
+        const ret = [];
+        res.forEach((element) => {
+          ret.push(`${element.diet_type_id}`);
+        });
+        setRecipeDietType(ret);
+      }, rid);
+
+      getRecipeInstructions((res) => {
+        let resid = id;
+        res.forEach((element) => {
+          element.id = resid++;
+        });
+        setInstructions(res);
+        setId(resid);
+        setEditInstructions({ ...editInstructions, id: resid });
+      }, rid);
+
+      getRecipeIngredients((res) => {
+        let resid = id;
+        res.forEach((element) => {
+          element.id = resid++;
+        });
+        setIngredients(res);
+        setId(resid);
+        setEditIngredients({ ...editIngredients, id: resid });
+      }, rid);
+    }
   }, []);
 
   function validate(values) {
@@ -60,12 +123,17 @@ export default function CreateRecipePage() {
     }
   }
   const formik = useFormik({
+    enableReinitialize: ctxRecipe.editMode,
     initialValues: {
-      recipeName: "",
-      recipeDescription: "",
-      visibility: "",
-      dietType: [],
-      mealType: [],
+      recipeName: ctxRecipe.editMode ? recipe[0]?.recipe_name : "",
+      recipeDescription: ctxRecipe.editMode ? recipe[0]?.general_info : "",
+      visibility: ctxRecipe.editMode
+        ? recipe[0]?.public.data[0] === 1
+          ? "1"
+          : "0"
+        : "",
+      dietType: [...recipeDietType],
+      mealType: [...recipeMealType],
       ingredients: [...ingredients],
       instructions: [...instructions],
     },
@@ -73,8 +141,15 @@ export default function CreateRecipePage() {
     onSubmit: (values) => {
       values.ingredients = [...ingredients];
       values.instructions = [...instructions];
+      values.image = recipeImg?.imgId;
+      values.user_id = getCurrentUser()?.id;
+      values.recipe_id = rid;
       console.log(values);
-      createRecipe(values);
+      if (ctxRecipe.editMode) {
+        updateRecipe(values);
+      } else {
+        createRecipe(values);
+      }
     },
   });
 
@@ -97,11 +172,14 @@ export default function CreateRecipePage() {
 
   function onChangeInstruction({ target: { value } }, field) {
     switch (field) {
-      case "stepNum":
-        setEditInstructions({ ...editInstructions, stepNum: value });
+      case "step_number":
+        setEditInstructions({
+          ...editInstructions,
+          step_number: Number(value),
+        });
         break;
-      case "instruction":
-        setEditInstructions({ ...editInstructions, instruction: value });
+      case "step_description":
+        setEditInstructions({ ...editInstructions, step_description: value });
         break;
     }
   }
@@ -110,16 +188,23 @@ export default function CreateRecipePage() {
     const formData = new FormData();
     formData.append("recipeImg", e.target.files[0], e.target.files[0].name);
     uploadRecipeImage(formData, (response) => {
-      console.log(response);
-      setRecipeImg(response.imgPath);
+      setRecipeImg(response);
     });
     // setUpdatePic(!updatePic);
   }
 
   function removeInstruction(instruction) {
-    console.log(instruction[0].id);
+    const newInstructions = instructions.filter(
+      (obj) => obj.id !== instruction.id
+    );
+    setInstructions(newInstructions);
   }
-
+  function removeIngredient(ingredient) {
+    const newIngredients = ingredients.filter(
+      (obj) => obj.id !== ingredient.id
+    );
+    setIngredients(newIngredients);
+  }
   function handleAddIngredient() {
     setIngredients([...ingredients, editIngredients]);
     setEditIngredients({
@@ -136,8 +221,8 @@ export default function CreateRecipePage() {
     setInstructions([...instructions, editInstructions]);
     setEditInstructions({
       id: id + 1,
-      stepNum: "",
-      instruction: "",
+      step_number: 0,
+      step_description: "",
     });
     setId(id + 1);
   }
@@ -152,8 +237,12 @@ export default function CreateRecipePage() {
                 controlId="recipeName"
                 {...formik.getFieldProps("recipeName")}
               >
-                <Form.Label>Recipe Name</Form.Label>
-                <Form.Control type="text" placeholder="Enter recipe name" />
+                <Form.Label>Recipe Name </Form.Label>
+                <Form.Control
+                  value={formik.values.recipeName}
+                  type="text"
+                  placeholder="Enter recipe name"
+                />
               </Form.Group>
             </Col>
             <Col className="d-flex align-items-center">
@@ -163,6 +252,7 @@ export default function CreateRecipePage() {
                   label="Public"
                   name="visibility"
                   value="1"
+                  checked={formik.values.visibility === "1"}
                   inline
                   onChange={formik.handleChange}
                 />
@@ -171,13 +261,17 @@ export default function CreateRecipePage() {
                   label="Private"
                   name="visibility"
                   value="0"
+                  checked={formik.values.visibility === "0"}
                   inline
                   onChange={formik.handleChange}
                 />
               </Form.Group>
             </Col>
             <Col>
-              <Image src={`http://localhost:3001/${recipeImg}`} rounded />
+              <Image
+                src={`http://localhost:3001/${recipeImg?.imgPath}`}
+                rounded
+              />
               <Form.Group>
                 <Form.File
                   id="image"
@@ -195,6 +289,7 @@ export default function CreateRecipePage() {
           >
             <Form.Label>Recipe Description</Form.Label>
             <Form.Control
+              value={formik.values.recipeDescription}
               type="text"
               placeholder="short discription about the recipe"
             />
@@ -202,126 +297,33 @@ export default function CreateRecipePage() {
 
           <Form.Group controlId="dietType">
             <Form.Label className="mr-3">Diet Type:</Form.Label>
-            <Form.Check
-              type="checkbox"
-              label="Vegan"
-              id="1"
-              name="dietType"
-              value="1"
-              onChange={formik.handleChange}
-              inline
-            />
-            <Form.Check
-              type="checkbox"
-              label="Vegetarian"
-              id="2"
-              name="dietType"
-              value="2"
-              onChange={formik.handleChange}
-              inline
-            />
-            <Form.Check
-              type="checkbox"
-              label="Kosher"
-              id="3"
-              name="dietType"
-              value="3"
-              onChange={formik.handleChange}
-              inline
-            />
-            <Form.Check
-              type="checkbox"
-              label="Lactose Free"
-              name="dietType"
-              id="4"
-              value="4"
-              onChange={formik.handleChange}
-              inline
-            />
-            <Form.Check
-              type="checkbox"
-              label="Halal"
-              id="5"
-              name="dietType"
-              value="5"
-              onChange={formik.handleChange}
-              inline
-            />
-            <Form.Check
-              type="checkbox"
-              label="Gluten Free"
-              name="dietType"
-              id="6"
-              value="6"
-              onChange={formik.handleChange}
-              inline
-            />
+            {dietTypes.map((dietType) => (
+              <Form.Check
+                type="checkbox"
+                label={dietType.diet_type_name}
+                name="dietType"
+                value={dietType.id}
+                onChange={formik.handleChange}
+                checked={formik.values.dietType.includes(`${dietType.id}`)}
+                id={dietType.id}
+                inline
+              />
+            ))}
           </Form.Group>
           <Form.Group controlId="mealType">
             <Form.Label className="mr-3">Meal Type:</Form.Label>
-            <Form.Check
-              type="checkbox"
-              label="Breakfast"
-              name="mealType"
-              value="1"
-              onChange={formik.handleChange}
-              id="1"
-              inline
-            />
-            <Form.Check
-              type="checkbox"
-              label="Lunch"
-              name="mealType"
-              value="2"
-              onChange={formik.handleChange}
-              id="2"
-              inline
-            />
-            <Form.Check
-              type="checkbox"
-              label="Dinner"
-              name="mealType"
-              value="3"
-              onChange={formik.handleChange}
-              id="3"
-              inline
-            />
-            <Form.Check
-              type="checkbox"
-              label="Snack"
-              name="mealType"
-              value="4"
-              onChange={formik.handleChange}
-              id="4"
-              inline
-            />
-            <Form.Check
-              type="checkbox"
-              label="Dessert"
-              name="mealType"
-              value="5"
-              onChange={formik.handleChange}
-              id="5"
-              inline
-            />
-            <Form.Check
-              type="checkbox"
-              label="Smoothie"
-              name="mealType"
-              value="6"
-              onChange={formik.handleChange}
-              id="6"
-              inline
-            />
-            <Form.Check
-              type="checkbox"
-              label="Pastries"
-              name="mealType"
-              value="7"
-              onChange={formik.handleChange}
-              id="7"
-              inline
-            />
+            {mealTypes.map((mealType) => (
+              <Form.Check
+                type="checkbox"
+                label={mealType.meal_type_name}
+                name="mealType"
+                value={mealType.id}
+                onChange={formik.handleChange}
+                checked={formik.values.mealType.includes(`${mealType.id}`)}
+                id={mealType.id}
+                inline
+              />
+            ))}
           </Form.Group>
           <Accordion defaultActiveKey="0">
             <Card>
@@ -395,19 +397,21 @@ export default function CreateRecipePage() {
                       {ingredients.map((ingredient) => (
                         <tr>
                           <td style={{ width: "10%" }}>
-                            <MdDelete />
+                          <MdDelete
+                              onClick={() => removeIngredient(ingredient)}
+                            />
                           </td>
                           <td>{ingredient.amount}</td>
                           <td>
                             {
                               measurements[ingredient.measurement_id - 1]
-                                .measurement_name
+                                ?.measurement_name
                             }
                           </td>
                           <td>
                             {
                               ingredientsList[ingredient.ingredient_id - 1]
-                                .ingredient_name
+                                ?.ingredient_name
                             }
                           </td>
                           <td>{ingredient.notes}</td>
@@ -433,7 +437,9 @@ export default function CreateRecipePage() {
                         <Form.Control
                           type="number"
                           min="1"
-                          onChange={(e) => onChangeInstruction(e, "stepNum")}
+                          onChange={(e) =>
+                            onChangeInstruction(e, "step_number")
+                          }
                         />
                       </Col>
                       <Col>
@@ -441,7 +447,7 @@ export default function CreateRecipePage() {
                         <Form.Control
                           type="text"
                           onChange={(e) =>
-                            onChangeInstruction(e, "instruction")
+                            onChangeInstruction(e, "step_description")
                           }
                         />
                       </Col>
@@ -464,8 +470,8 @@ export default function CreateRecipePage() {
                               onClick={() => removeInstruction(instruction)}
                             />
                           </td>
-                          <td>{instruction.stepNum}</td>
-                          <td>{instruction.instruction}</td>
+                          <td>{instruction.step_number}</td>
+                          <td>{instruction.step_description}</td>
                         </tr>
                       )) || null}
                     </tbody>
@@ -479,7 +485,7 @@ export default function CreateRecipePage() {
             type="submit"
             className="d-block mx-auto btn-success w-25 mt-5 mb-5"
           >
-            Create
+            {ctxRecipe.editMode ? "Save" : "Create"}
           </Button>
         </Form>
       </Container>
