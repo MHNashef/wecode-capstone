@@ -37,7 +37,49 @@ async function getRecipeById(resCallback, id) {
     console.error(err);
   }
 }
+async function getRecipeMealType(resCallback, id) {
+  try {
+    const response = await axios.get(
+      `http://localhost:3001/recipes/recipeId/${id}/mealtype`
+    );
+    resCallback(response.data);
+  } catch (err) {
+    console.error(err);
+  }
+}
 
+async function getMealTypes(resCallback) {
+  try {
+    const response = await axios.get(
+      `http://localhost:3001/recipes/list/mealtypes`
+    );
+    resCallback(response.data);
+  } catch (err) {
+    console.error(err);
+  }
+}
+
+async function getRecipeDietType(resCallback, id) {
+  try {
+    const response = await axios.get(
+      `http://localhost:3001/recipes/recipeId/${id}/diettype`
+    );
+    resCallback(response.data);
+  } catch (err) {
+    console.error(err);
+  }
+}
+
+async function getDietTypes(resCallback) {
+  try {
+    const response = await axios.get(
+      `http://localhost:3001/recipes/list/diettypes`
+    );
+    resCallback(response.data);
+  } catch (err) {
+    console.error(err);
+  }
+}
 async function getRecipeInstructions(resCallback, id) {
   try {
     const response = await axios.get(
@@ -82,15 +124,26 @@ async function getIngredients(resCallback) {
   }
 }
 
-async function getDietTypes(resCB) {
+// async function getDietTypes(resCB) {
+//   try {
+//     const res = await axios.get("http://localhost:3001/users/diettypes");
+//     resCB(res.data);
+//   } catch (err) {
+//     console.error(err);
+//   }
+// }
+
+async function updateRecipe(recipeInfo) {
   try {
-    const res = await axios.get("http://localhost:3001/users/diettypes");
-    resCB(res.data);
+    const response = await axios.put(
+      "http://localhost:3001/recipes/update/recipe",
+      recipeInfo
+    );
+    console.log(response);
   } catch (err) {
-    console.error(err);
+    console.log(err);
   }
 }
-
 async function createRecipe(recipeInfo) {
   try {
     const response = await axios.post(
@@ -126,11 +179,15 @@ export {
   getPopularRecipes,
   getRecentRecipes,
   getRecipeById,
+  getMealTypes,
+  getDietTypes,
+  getRecipeMealType,
+  getRecipeDietType,
   getRecipeInstructions,
   getRecipeIngredients,
   getMeasurements,
   getIngredients,
+  updateRecipe,
   createRecipe,
   uploadRecipeImage,
-  getDietTypes
 };
