@@ -68,9 +68,10 @@ export default function Homepage() {
           {mostPopularRecipes.map((recipe) => (
             <Col>
               <RecipeCard
+                userId={recipe.user_id}
                 recipeName={recipe.recipe_name}
                 recipeId={recipe.id}
-                recipeImg={recipe.image}
+                recipeImg={recipe.img_path}
               ></RecipeCard>
             </Col>
           ))}
@@ -84,9 +85,10 @@ export default function Homepage() {
           {mostRecentRecipes.map((recipe) => (
             <Col>
               <RecipeCard
+                userId={recipe.user_id}
                 recipeName={recipe.recipe_name}
                 recipeId={recipe.id}
-                recipeImg={recipe.image}
+                recipeImg={recipe.img_path}
               ></RecipeCard>
             </Col>
           ))}
