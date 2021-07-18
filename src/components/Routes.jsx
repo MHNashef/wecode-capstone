@@ -21,20 +21,13 @@ export default function Routes() {
         <Route exact path="/recipe/:id">
           <RecipePage />
         </Route>
-        <Route exact path="/signup">
-          <Signup />
-        </Route>
-        <Route exact path="/editUser/">
-          <Signup />
-        </Route>
-        <Route exact path="/createRecipe">
-          <CreateRecipePage />
-        </Route>
-        {/* <ProtectedRoute
+        <ProtectedLogin path="/signup" auth={auth} component={Signup} />
+        <ProtectedRoute path="/editUser/" auth={auth} component={Signup} />
+        <ProtectedRoute
           path="/createRecipe"
           auth={auth}
           component={CreateRecipePage}
-        /> */}
+        />
       </Switch>
     </>
   );
