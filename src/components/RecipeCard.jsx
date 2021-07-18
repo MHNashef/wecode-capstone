@@ -1,17 +1,28 @@
 import React from "react";
 import { Card, Button, Container } from "react-bootstrap";
-import { MdFavoriteBorder } from "react-icons/md";
+import { MdFavoriteBorder, MdEdit } from "react-icons/md";
 import { useHistory } from "react-router-dom";
+import { getCurrentUser } from "../DAL/userApi";
 import "../styles/RecipeCard.css";
 
-export default function RecipeCard({ recipeName, recipeId, recipeImg }) {
-  const iconStyles = { color: "red", fontSize: "1.5em" };
+export default function RecipeCard({
+  userId,
+  recipeName,
+  recipeId,
+  recipeImg,
+}) {
+  const favStyles = { color: "red", fontSize: "1.5em" };
+  const editStyles = { color: "#007bff", fontSize: "1.5em" };
   const history = useHistory(null);
+  const user = getCurrentUser();
 
   function viewRecipe({ target: { parentElement } }) {
     history.push(`recipe/${parentElement.id}`);
   }
-
+  function editRecipe({ target: { parentElement } }) {
+    // console.log(e);
+    history.push(`editRecipe/${parentElement.parentElement.id}`);
+  }
   return (
     <>
       <Container>
@@ -26,7 +37,14 @@ export default function RecipeCard({ recipeName, recipeId, recipeImg }) {
             <Button variant="primary" className="btn-sm" onClick={viewRecipe}>
               View Recipe
             </Button>
-            <MdFavoriteBorder className="ml-3" style={iconStyles} />
+            {user?.id == userId ? (
+              <MdEdit
+                className="ml-3"
+                style={editStyles}
+                onClick={editRecipe}
+              />
+            ) : null}
+            <MdFavoriteBorder className="ml-3" style={favStyles} />
           </Card.Body>
         </Card>
       </Container>
