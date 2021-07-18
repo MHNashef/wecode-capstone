@@ -63,6 +63,15 @@ async function getUserDiet(resCB, id) {
   }
 }
 
+async function updateUser(resCB, userInfo) {
+  try {
+    const res = await axios.put(`http://localhost:3001/users/updateUser`, userInfo);
+    resCB(res.data);
+  } catch (err) {
+    if (err) throw err;
+  }
+}
+
 function getCurrentUser() {
   const curUser = Cookies.get("currentuser");
 
@@ -76,5 +85,6 @@ export {
   valdiateSession,
   userSignup,
   getUserById,
-  getUserDiet
+  getUserDiet,
+  updateUser
 };

@@ -5,7 +5,7 @@ import { userSignup } from "../DAL/userApi";
 import { Form, Button, Container, Row, Col, Alert } from "react-bootstrap";
 import { useFormik } from "formik";
 import { useAuth } from "../AuthContext";
-import { getCurrentUser, getUserById, getUserDiet } from "../DAL/userApi";
+import { getCurrentUser, getUserById, getUserDiet, updateUser } from "../DAL/userApi";
 
 export default function Signup() {
   const [auth, setAuth] = useAuth();
@@ -93,7 +93,9 @@ export default function Signup() {
     validate,
     onSubmit: (values) => {
       if (auth) {
-        alert(JSON.stringify(values, null, 2));
+        updateUser((res) => {
+            console.log(res.msg);
+        }, values);
       } else {
         userSignup((resData) => {
           if (resData?.msg === "User created") {
