@@ -1,6 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { FaFacebook, FaTwitter, FaPinterest } from "react-icons/fa";
-import { Container, Row, Col, ListGroup, Spinner, Image } from "react-bootstrap";
+import {
+  Container,
+  Row,
+  Col,
+  ListGroup,
+  Spinner,
+  Image,
+} from "react-bootstrap";
 import { useParams } from "react-router-dom";
 import {
   getRecipeById,
@@ -59,11 +66,16 @@ export default function RecipePage() {
         </Row>
         <Row>
           <Col>
-          {<Image src={`http://localhost:3001/${recipe[0]?.image}`} rounded /> || (
-                <Spinner animation="border" role="status">
-                  <span className="sr-only">Loading...</span>
-                </Spinner>
-              )}
+            {(
+              <Image
+                src={`http://localhost:3001/${recipe[0]?.img_path}`}
+                rounded
+              />
+            ) || (
+              <Spinner animation="border" role="status">
+                <span className="sr-only">Loading...</span>
+              </Spinner>
+            )}
           </Col>
         </Row>
         <Row className="mt-5">
