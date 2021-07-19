@@ -26,7 +26,7 @@ export default function RecipeCard({
   return (
     <>
       <Container>
-        <Card style={{ width: "15rem" }} className="recipe-hover">
+        <Card style={{ width: "15rem"}} className="recipe-hover">
           <Card.Img
             variant="top"
             src={`http://localhost:3001/${recipeImg}`}
@@ -44,7 +44,6 @@ export default function RecipeCard({
                 onClick={editRecipe}
               />
             ) : null}
-            <MdFavoriteBorder className="ml-3" style={favStyles} />
           </Card.Body>
         </Card>
       </Container>
