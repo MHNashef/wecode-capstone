@@ -13,6 +13,7 @@ import {
   getRecipeById,
   getRecipeInstructions,
   getRecipeIngredients,
+  incrementViews
 } from "../DAL/api";
 
 export default function RecipePage() {
@@ -37,12 +38,13 @@ export default function RecipePage() {
     getRecipeById(onJsonResponse, id);
     getRecipeInstructions(instructionsJsonResponse, id);
     getRecipeIngredients(ingredientsJsonResponse, id);
+    incrementViews(id);
   }, []);
 
   return (
     <>
       <Container>
-        <Row>
+        <Row className="mt-5">
           <Col>
             <h1 style={{ fontWeight: "800" }}>
               {recipe[0]?.recipe_name || (

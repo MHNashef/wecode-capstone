@@ -1,8 +1,10 @@
-import React from "react";
-import { Card, Button, Container } from "react-bootstrap";
-import { MdFavoriteBorder, MdEdit } from "react-icons/md";
+import React, { useEffect, useState } from "react";
+import { Card, Container } from "react-bootstrap";
+import { MdEdit } from "react-icons/md";
+import { GrView } from "react-icons/gr";
 import { useHistory } from "react-router-dom";
 import { getCurrentUser } from "../DAL/userApi";
+import { getRecipeViews } from "../DAL/api";
 import "../styles/RecipeCard.css";
 
 export default function RecipeCard({
@@ -11,10 +13,10 @@ export default function RecipeCard({
   recipeId,
   recipeImg,
 }) {
-  const favStyles = { color: "red", fontSize: "1.5em" };
   const editStyles = { color: "#007bff", fontSize: "1.5em", cursor: "pointer" };
   const history = useHistory(null);
   const user = getCurrentUser();
+  const [recipeViews, setRecipeViews] = useState(0);
 
   function viewRecipe({ target: { id } }) {
     console.log(id);
@@ -25,9 +27,11 @@ export default function RecipeCard({
     history.push(`editRecipe/${parentElement.parentElement.id}`);
   }
 
-  function test(e) {
-    console.log(e);
-  }
+  useEffect(() => {
+    getRecipeViews(recipeId, (response) => {
+      setRecipeViews(response);
+    });
+  }, []);
 
   return (
     <>
@@ -44,15 +48,13 @@ export default function RecipeCard({
             style={{ height: "12rem" }}
             id={recipeId}
           />
-          <Card.Body>
+          <Card.Body id={recipeId}>
             <Card.Title id={recipeId}>{recipeName}</Card.Title>
             {user?.id == userId ? (
-              <MdEdit
-                className="ml-3"
-                style={editStyles}
-                onClick={editRecipe}
-              />
+              <MdEdit style={editStyles} onClick={editRecipe} />
             ) : null}
+            <GrView />
+            <small className="ml-2">{recipeViews[0]?.views}</small>
           </Card.Body>
         </Card>
       </Container>

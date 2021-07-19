@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useHistory } from "react-router-dom";
 import { useRecipe } from "../RecipeContext";
 import { getCurrentUser } from "../DAL/userApi";
 import {
@@ -32,6 +33,7 @@ import { useFormik } from "formik";
 import { useParams } from "react-router-dom";
 
 export default function CreateRecipePage() {
+  const history = useHistory();
   const { rid } = useParams();
   const [ctxRecipe] = useRecipe();
   const [recipeImg, setRecipeImg] = useState(null);
@@ -45,6 +47,7 @@ export default function CreateRecipePage() {
   const [instructions, setInstructions] = useState([]);
   const [recipe, setRecipe] = useState([]);
   const [id, setId] = useState(0);
+  const [newRecipeId, setNewRecipeId] = useState(0);
   const [editInstructions, setEditInstructions] = useState({
     id,
     step_number: 0,
@@ -229,7 +232,7 @@ export default function CreateRecipePage() {
 
   return (
     <>
-      <Container>
+      <Container className="mt-5">
         <Form onSubmit={formik.handleSubmit}>
           <Row>
             <Col>
@@ -290,7 +293,7 @@ export default function CreateRecipePage() {
             <Form.Label>Recipe Description</Form.Label>
             <Form.Control
               value={formik.values.recipeDescription}
-              type="text"
+              as="textarea"
               placeholder="short discription about the recipe"
             />
           </Form.Group>
@@ -445,7 +448,7 @@ export default function CreateRecipePage() {
                       <Col>
                         <Form.Label>Instruction</Form.Label>
                         <Form.Control
-                          type="text"
+                          as="textarea"
                           onChange={(e) =>
                             onChangeInstruction(e, "step_description")
                           }

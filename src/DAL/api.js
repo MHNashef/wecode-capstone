@@ -144,7 +144,7 @@ async function updateRecipe(recipeInfo) {
     console.log(err);
   }
 }
-async function createRecipe(recipeInfo) {
+async function createRecipe(recipeInfo, resCB) {
   try {
     const response = await axios.post(
       "http://localhost:3001/recipes/create/recipe",
@@ -180,6 +180,23 @@ async function getSearchRes(searchStr, resCallBack) {
   }
 }
 
+async function getRecipeViews(recipeId, resCB) {
+  try {
+    const res = await axios.get(`http://localhost:3001/recipes/get/views/${recipeId}`);
+    resCB(res.data);
+  } catch (err) {
+    console.log(err);
+  }
+}
+
+async function incrementViews(recipeId) {
+  try {
+    const res = await axios.put(`http://localhost:3001/recipes/increment/views/${recipeId}`);
+  } catch (err) {
+    console.log(err);
+  }
+}
+
 // pagination  .then(res => res.json()).then(res => callBack(res))
 function getRecipesPagination(pageNum, orderBy, isAsc) {}
 
@@ -199,5 +216,7 @@ export {
   updateRecipe,
   createRecipe,
   uploadRecipeImage,
-  getSearchRes
+  getSearchRes,
+  getRecipeViews,
+  incrementViews
 };

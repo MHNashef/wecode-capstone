@@ -113,13 +113,14 @@ export default function Signup() {
 
   return (
     <>
-      <Container>
+      <Container className="mt-5">
         {auth ? (
           <h1
             className="text-center"
             style={{
               width: "100%",
               padding: "10px",
+              fontWeight: "800"
             }}
           >
             Edit Profile
@@ -130,6 +131,7 @@ export default function Signup() {
             style={{
               width: "100%",
               padding: "10px",
+              fontWeight: "800"
             }}
           >
             Welcome to Recipe Book!
