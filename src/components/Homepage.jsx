@@ -1,12 +1,22 @@
 import React, { useEffect, useState } from "react";
-import { Carousel, Container, Col, Row } from "react-bootstrap";
+import {
+  Carousel,
+  Container,
+  Col,
+  Row,
+  Form,
+  FormControl,
+  Button,
+} from "react-bootstrap";
 import "../styles/Homepage.css";
 import RecipeCard from "./RecipeCard";
-import { getRecentRecipes, getPopularRecipes } from "../DAL/api";
+import { getRecentRecipes, getPopularRecipes, getSearchRes } from "../DAL/api";
 
 export default function Homepage() {
   const [mostPopularRecipes, setMostPopularRecipes] = useState([]);
   const [mostRecentRecipes, setMostRecentRecipes] = useState([]);
+  const [searchRes, setSearchRes] = useState([]);
+  const [searchStr, setSearchStr] = useState("");
 
   function popularJsonResponse(response) {
     setMostPopularRecipes(response);
@@ -16,11 +26,17 @@ export default function Homepage() {
     setMostRecentRecipes(response);
   }
 
+  function searchForRecipe() {
+    getSearchRes(searchStr, (res) => {
+      setSearchRes(res);
+    })
+  }
+
   useEffect(() => {
     getPopularRecipes(popularJsonResponse);
     getRecentRecipes(recentJsonResponse);
   }, []);
-
+console.log(searchRes);
   return (
     <>
       <Container>
@@ -59,6 +75,39 @@ export default function Homepage() {
           </Carousel.Item>
         </Carousel>
 
+        <Row>
+          <Col className="mt-3">
+            <Form className="d-flex">
+              <FormControl
+                type="search"
+                placeholder="Search"
+                className="mr-2"
+                aria-label="Search"
+                onChange={(e) => setSearchStr(e.target.value)}
+              />
+              <Button variant="outline-primary" onClick={searchForRecipe}>
+                Search
+              </Button>
+            </Form>
+          </Col>
+        </Row>
+        <Row>
+          <Col>
+            <h3>search results</h3>
+          </Col>
+        </Row>
+        <Row>
+          {searchRes?.map((recipe) => (
+            <Col>
+              <RecipeCard
+                userId={recipe.user_id}
+                recipeName={recipe.recipe_name}
+                recipeId={recipe.id}
+                recipeImg={recipe.img_path}
+              ></RecipeCard>
+            </Col>
+          ))}
+        </Row>
         <Row className="mt-5">
           <Col>
             <h3>Most Popular</h3>
