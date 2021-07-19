@@ -16,26 +16,36 @@ export default function RecipeCard({
   const history = useHistory(null);
   const user = getCurrentUser();
 
-  function viewRecipe({ target: { parentElement } }) {
-    history.push(`recipe/${parentElement.id}`);
+  function viewRecipe({ target: { id } }) {
+    console.log(id);
+    history.push(`recipe/${id}`);
   }
+
   function editRecipe({ target: { parentElement } }) {
     history.push(`editRecipe/${parentElement.parentElement.id}`);
   }
+
+  function test(e) {
+    console.log(e);
+  }
+
   return (
     <>
       <Container>
-        <Card style={{ width: "15rem" }} className="recipe-hover">
+        <Card
+          style={{ width: "15rem", cursor: "pointer" }}
+          className="recipe-hover"
+          onClick={viewRecipe}
+          id={recipeId}
+        >
           <Card.Img
             variant="top"
             src={`http://localhost:3001/${recipeImg}`}
             style={{ height: "12rem" }}
+            id={recipeId}
           />
-          <Card.Body id={recipeId}>
-            <Card.Title>{recipeName}</Card.Title>
-            <Button variant="primary" className="btn-sm" onClick={viewRecipe}>
-              View Recipe
-            </Button>
+          <Card.Body>
+            <Card.Title id={recipeId}>{recipeName}</Card.Title>
             {user?.id == userId ? (
               <MdEdit
                 className="ml-3"
