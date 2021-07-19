@@ -171,6 +171,15 @@ async function uploadRecipeImage(fileData, callBack) {
   callBack(jsonRes);
 }
 
+async function getSearchRes(searchStr, resCallBack) {
+  try {
+    const res = await axios.get(`http://localhost:3001/search/'${searchStr}'`);
+    resCallBack(res.data);
+  } catch (err) {
+    console.log(err);
+  }
+}
+
 // pagination  .then(res => res.json()).then(res => callBack(res))
 function getRecipesPagination(pageNum, orderBy, isAsc) {}
 
@@ -190,4 +199,5 @@ export {
   updateRecipe,
   createRecipe,
   uploadRecipeImage,
+  getSearchRes
 };
