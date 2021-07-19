@@ -25,7 +25,7 @@ export default function Header() {
         expand="md"
         bg="dark"
         variant="dark"
-        className="mb-3"
+        // className="mb-3"
       >
         <Container>
           <Navbar.Brand href="/" style={{ fontWeight: "800" }}>

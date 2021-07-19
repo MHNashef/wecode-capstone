@@ -12,7 +12,7 @@ export default function RecipeCard({
   recipeImg,
 }) {
   const favStyles = { color: "red", fontSize: "1.5em" };
-  const editStyles = { color: "#007bff", fontSize: "1.5em" };
+  const editStyles = { color: "#007bff", fontSize: "1.5em", cursor: "pointer" };
   const history = useHistory(null);
   const user = getCurrentUser();
 
@@ -20,13 +20,12 @@ export default function RecipeCard({
     history.push(`recipe/${parentElement.id}`);
   }
   function editRecipe({ target: { parentElement } }) {
-    // console.log(e);
     history.push(`editRecipe/${parentElement.parentElement.id}`);
   }
   return (
     <>
       <Container>
-        <Card style={{ width: "15rem"}} className="recipe-hover">
+        <Card style={{ width: "15rem" }} className="recipe-hover">
           <Card.Img
             variant="top"
             src={`http://localhost:3001/${recipeImg}`}
