@@ -1,3 +1,21 @@
+/* body {
+    height: 100vh;
+    width: 100vw;
+} */
+
 .carousel-img {
-    max-height: 650px;
+  max-height: 650px;
+}
+
+.parallax {
+  background-image: url("../images/ting-tian-_79ZJS8pV70-unsplash.jpg");
+
+  /* Set a specific height */
+  min-height: 500px;
+
+  /* Create the parallax scrolling effect */
+  background-attachment: fixed;
+  background-position: top;
+  background-repeat: no-repeat;
+  background-size: 100%;
 }

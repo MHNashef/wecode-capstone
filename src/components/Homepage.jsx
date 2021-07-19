@@ -29,52 +29,18 @@ export default function Homepage() {
   function searchForRecipe() {
     getSearchRes(searchStr, (res) => {
       setSearchRes(res);
-    })
+    });
   }
 
   useEffect(() => {
     getPopularRecipes(popularJsonResponse);
     getRecentRecipes(recentJsonResponse);
   }, []);
-console.log(searchRes);
+  console.log(searchRes);
   return (
     <>
+      <div className="parallax"></div>
       <Container>
-        <Carousel fade controls={false}>
-          <Carousel.Item>
-            <img
-              className="d-block w-100 carousel-img"
-              src="https://images.unsplash.com/photo-1614277786110-1a64e457c4c3?ixid=MnwxMjA3fDB8MHxzZWFyY2h8MzV8fGZvb2QlMjBiYWNrZ3JvdW5kfGVufDB8fDB8fA%3D%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=400&q=60"
-              alt="First slide"
-            />
-            <Carousel.Caption>
-              <h3>Welcome, (username)</h3>
-            </Carousel.Caption>
-          </Carousel.Item>
-          <Carousel.Item>
-            <img
-              className="d-block w-100 carousel-img"
-              src="https://images.unsplash.com/photo-1615653633551-25dd80d2765a?ixid=MnwxMjA3fDB8MHxzZWFyY2h8NXx8Zm9vZCUyMGJhY2tncm91bmR8ZW58MHx8MHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=400&q=60"
-              alt="Second slide"
-            />
-
-            <Carousel.Caption>
-              <h3>Welcome, (username)</h3>
-            </Carousel.Caption>
-          </Carousel.Item>
-          <Carousel.Item>
-            <img
-              className="d-block w-100 carousel-img"
-              src="https://images.unsplash.com/photo-1614277786539-abd7a3cd46bf?ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mjh8fGZvb2QlMjBiYWNrZ3JvdW5kfGVufDB8fDB8fA%3D%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=400&q=60"
-              alt="Third slide"
-            />
-
-            <Carousel.Caption>
-              <h3>Welcome, (username)</h3>
-            </Carousel.Caption>
-          </Carousel.Item>
-        </Carousel>
-
         <Row>
           <Col className="mt-3">
             <Form className="d-flex">
