@@ -8,6 +8,7 @@ import {
   FormControl,
   Button,
   Pagination,
+  FormGroup,
 } from "react-bootstrap";
 import "../styles/Homepage.css";
 import RecipeCard from "./RecipeCard";
@@ -17,6 +18,7 @@ import {
   getSearchRes,
   getRecipes,
   getRecipesPaged,
+  getSearchResPaged,
 } from "../DAL/api";
 
 export default function Homepage() {
@@ -25,11 +27,13 @@ export default function Homepage() {
   const [mostRecentRecipes, setMostRecentRecipes] = useState([]);
   const [searchRes, setSearchRes] = useState([]);
   const [searchStr, setSearchStr] = useState("");
-// paging stuff
-const [pageItems, setPageItems] = useState([]);
-const [currentPage, setCurrentPage] = useState(1);
-const maxPageResults = 3;
-let resultCount = 0;
+
+  // paging stuff
+  const [pageItems, setPageItems] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [inSearchMode, setInSearchMode] = useState(false);
+  const maxPageResults = 8;
+  let resultCount = 0;
 
   function popularJsonResponse(response) {
     setMostPopularRecipes(response);
@@ -40,10 +44,39 @@ let resultCount = 0;
   }
 
   function searchForRecipe() {
-    getSearchRes(searchStr, (res) => {
-      setSearchRes(res);
-    });
+    setPageItems([]);
+    setInSearchMode(true);
+    setCurrentPage(1);
+    pagSearch();
   }
+
+  function pagSearch() {
+    getSearchRes(
+      searchStr,
+      (res) => {
+        resultCount = res[0].count;
+        console.log(res);
+        if (maxPageResults >= resultCount) {
+          getSearchRes(searchStr, (res) => {
+            setAllRecipes(res);
+          });
+        } else {
+          // get paginated results
+          getSearchResPaged(
+            searchStr,
+            (res) => {
+              setAllRecipes(res);
+              buildPageItems(resultCount);
+            },
+            maxPageResults,
+            currentPage
+          );
+        }
+      },
+      true
+    );
+  }
+
   function onPageItem(pageid) {
     const lastPage = Math.ceil(resultCount / maxPageResults);
     let clickedPage;
@@ -64,8 +97,8 @@ let resultCount = 0;
       default:
         clickedPage = Number(pageid);
     }
-    clickedPage = clickedPage < 1 ? 1: clickedPage;
-    clickedPage = clickedPage > lastPage? lastPage: clickedPage;
+    clickedPage = clickedPage < 1 ? 1 : clickedPage;
+    clickedPage = clickedPage > lastPage ? lastPage : clickedPage;
 
     setCurrentPage(clickedPage);
   }
@@ -82,6 +115,10 @@ let resultCount = 0;
       numberOfItems
     );
 
+    console.log(currentPage);
+    console.log(resCount);
+    console.log(rangeFirstPage);
+    console.log(numberOfRanges);
     tempItems.push(
       <Pagination.First
         onClick={() => {
@@ -134,42 +171,58 @@ let resultCount = 0;
     setPageItems(tempItems);
   }
   useEffect(() => {
-    getPopularRecipes(popularJsonResponse);
-    getRecentRecipes(recentJsonResponse);
-    getRecipes((res) => {
-      resultCount = res[0].count;
-      
-      if (maxPageResults >= resultCount) {
-        getRecipes((res) => {
-          setAllRecipes(res);
-        });
-      } else {
-        // get paginated results
-        getRecipesPaged(
-          (res) => {
+    // getPopularRecipes(popularJsonResponse);
+    // getRecentRecipes(recentJsonResponse);
+    console.log(inSearchMode);
+    if (!searchStr) {
+      getRecipes((res) => {
+        resultCount = res[0].count;
+
+        if (maxPageResults >= resultCount) {
+          getRecipes((res) => {
             setAllRecipes(res);
-            buildPageItems(resultCount);
-          },
-          maxPageResults,
-          currentPage
-        );
-      }
-    }, true);
-  }, [currentPage]);
+          });
+        } else {
+          // get paginated results
+          getRecipesPaged(
+            (res) => {
+              setAllRecipes(res);
+              buildPageItems(resultCount);
+            },
+            maxPageResults,
+            currentPage
+          );
+        }
+      }, true);
+    } else if (inSearchMode) {
+      pagSearch();
+      console.log("useEffect");
+    }
+  }, [currentPage, searchStr]);
 
   return (
     <>
       <div className="parallax">
-        <Form className="d-flex flex-column align-items-center searchBox">
-          <FormControl
-            type="search"
-            placeholder="Enter recipe name"
-            className="mr-2 mb-3 w-50"
-            aria-label="Search"
-            onChange={(e) => setSearchStr(e.target.value)}
-          />
+        <Form className="d-flex flex-column h-100 searchBox">
+          <FormGroup>
+            <FormControl
+              type="search"
+              placeholder="Search by recipe name"
+              style={{ width: "60%" }}
+              className="mx-auto"
+              aria-label="Search"
+              onChange={(e) => {
+                if (!e.target.value) {
+                  setCurrentPage(1);
+                }
+                setSearchStr(e.target.value);
+                setInSearchMode(false);
+              }}
+            />
+          </FormGroup>
           <Button
             style={{ width: "20%" }}
+            className="mx-auto"
             variant="danger"
             onClick={searchForRecipe}
           >
@@ -178,61 +231,7 @@ let resultCount = 0;
         </Form>
       </div>
       <Container>
-        <Row>
-          <Col className="mt-3"></Col>
-        </Row>
-        <Row>
-          <Col>
-            <h3>search results</h3>
-          </Col>
-        </Row>
-        <Row>
-          {searchRes?.map((recipe) => (
-            <Col>
-              <RecipeCard
-                userId={recipe.user_id}
-                recipeName={recipe.recipe_name}
-                recipeId={recipe.id}
-                recipeImg={recipe.img_path}
-              ></RecipeCard>
-            </Col>
-          ))}
-        </Row>
-        <Row className="mt-5">
-          <Col>
-            <h3>Most Popular</h3>
-          </Col>
-        </Row>
-        <Row xl={4} lg={2} xs={1}>
-          {/* {mostPopularRecipes.map((recipe) => (
-            <Col>
-              <RecipeCard
-                userId={recipe.user_id}
-                recipeName={recipe.recipe_name}
-                recipeId={recipe.id}
-                recipeImg={recipe.img_path}
-              ></RecipeCard>
-            </Col>
-          ))} */}
-        </Row>
-        <Row className="mt-5">
-          <Col>
-            <h3>Most Recent</h3>
-          </Col>
-        </Row>
-        <Row xl={4} lg={2} s={1} className="mb-5">
-          {/* {mostRecentRecipes.map((recipe) => (
-            <Col>
-              <RecipeCard
-                userId={recipe.user_id}
-                recipeName={recipe.recipe_name}
-                recipeId={recipe.id}
-                recipeImg={recipe.img_path}
-              ></RecipeCard>
-            </Col>
-          ))} */}
-        </Row>
-        <Row xl={4} lg={2} xs={1}>
+        <Row lg={4} md={2} sm={1} xs={1} className="mt-5">
           {allRecipes.map((recipe) => (
             <Col>
               <RecipeCard
@@ -240,11 +239,12 @@ let resultCount = 0;
                 recipeName={recipe.recipe_name}
                 recipeId={recipe.id}
                 recipeImg={recipe.img_path}
+                recipeViews={recipe.views}
               ></RecipeCard>
             </Col>
           ))}
         </Row>
-        <Row>
+        <Row className="mt-5 d-flex justify-content-center">
           <Pagination>{pageItems}</Pagination>
         </Row>
       </Container>

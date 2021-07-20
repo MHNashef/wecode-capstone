@@ -19,6 +19,17 @@ async function getRecipesPaged(resCallback, limit, page) {
     console.error(err);
   }
 }
+
+async function getSearchResPaged(searchStr, resCB, limit, page) {
+  try {
+    const myUrl = `http://localhost:3001/search/${searchStr}/l/${limit}/p/${page}`;
+    const response = await axios.get(myUrl);
+    resCB(response.data);
+  } catch (err) {
+    console.error(err);
+  }
+}
+
 async function getPopularRecipes(resCallback) {
   try {
     const response = await axios.get("http://localhost:3001/recipes/popular/4");
@@ -181,9 +192,11 @@ async function uploadRecipeImage(fileData, callBack) {
   callBack(jsonRes);
 }
 
-async function getSearchRes(searchStr, resCallBack) {
+async function getSearchRes(searchStr, resCallBack, count) {
   try {
-    const res = await axios.get(`http://localhost:3001/search/'${searchStr}'`);
+    const myUrl =
+      `http://localhost:3001/search/${searchStr}` + (count ? "/count" : "");
+    const res = await axios.get(myUrl);
     resCallBack(res.data);
   } catch (err) {
     console.log(err);
@@ -192,7 +205,9 @@ async function getSearchRes(searchStr, resCallBack) {
 
 async function getRecipeViews(recipeId, resCB) {
   try {
-    const res = await axios.get(`http://localhost:3001/recipes/get/views/${recipeId}`);
+    const res = await axios.get(
+      `http://localhost:3001/recipes/get/views/${recipeId}`
+    );
     resCB(res.data);
   } catch (err) {
     console.log(err);
@@ -201,7 +216,9 @@ async function getRecipeViews(recipeId, resCB) {
 
 async function incrementViews(recipeId) {
   try {
-    const res = await axios.put(`http://localhost:3001/recipes/increment/views/${recipeId}`);
+    const res = await axios.put(
+      `http://localhost:3001/recipes/increment/views/${recipeId}`
+    );
   } catch (err) {
     console.log(err);
   }
@@ -229,5 +246,6 @@ export {
   uploadRecipeImage,
   getSearchRes,
   getRecipeViews,
-  incrementViews
+  incrementViews,
+  getSearchResPaged
 };

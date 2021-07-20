@@ -12,11 +12,12 @@ export default function RecipeCard({
   recipeName,
   recipeId,
   recipeImg,
+  recipeViews,
 }) {
   const editStyles = { color: "#000", fontSize: "1.5em", cursor: "pointer" };
   const history = useHistory(null);
   const user = getCurrentUser();
-  const [recipeViews, setRecipeViews] = useState(0);
+  // const [recipeViews, setRecipeViews] = useState(0);
 
   function viewRecipe({ target: { id } }) {
     console.log(id);
@@ -28,42 +29,37 @@ export default function RecipeCard({
     history.push(`editRecipe/${recipeId}`);
   }
 
-  useEffect(() => {
-    getRecipeViews(recipeId, (response) => {
-      setRecipeViews(response);
-    });
-  }, []);
-
   return (
     <>
-      <Container>
-        <Card
-          style={{ width: "15rem", cursor: "pointer" }}
-          className="recipe-hover"
+      {/* <Container> */}
+      <Card
+        style={{ cursor: "pointer" }}
+        className="recipe-hover mx-auto my-3"
+        id={recipeId}
+      >
+        <Card.Img
+          onClick={viewRecipe}
+          variant="top"
+          src={`http://localhost:3001/${recipeImg}`}
+          style={{ height: "12rem", objectFit: "cover" }}
           id={recipeId}
-        >
-          <Card.Img
-            onClick={viewRecipe}
-            variant="top"
-            src={`http://localhost:3001/${recipeImg}`}
-            style={{ height: "12rem" }}
-            id={recipeId}
+        />
+        <Card.Body id={recipeId}>
+          <Card.Title style={{ height: "70px" }} id={recipeId}>
+            {recipeName}
+          </Card.Title>
+          <GrView />
+          <small className="ml-2">{recipeViews}</small>
+          {user?.id == userId ? (
+            <MdEdit
+              style={editStyles}
+              onClick={() => editRecipe(recipeId)}
+              className="ml-3"
             />
-          <Card.Body id={recipeId} >
-            
-            <Card.Title id={recipeId}>{recipeName}</Card.Title>
-            <GrView />
-            <small className="ml-2">{recipeViews[0]?.views}</small>
-            {user?.id == userId ? (
-              <MdEdit
-                style={editStyles}
-                onClick={() => editRecipe(recipeId)}
-                className="ml-3"
-              />
-            ) : null}
-          </Card.Body>
-        </Card>
-      </Container>
+          ) : null}
+        </Card.Body>
+      </Card>
+      {/* </Container> */}
     </>
   );
 }

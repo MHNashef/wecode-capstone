@@ -354,7 +354,7 @@ export default function CreateRecipePage() {
                 <Card.Body>
                   <Form.Group>
                     <Row>
-                      <Col className="col-2">
+                      <Col className="col-2" >
                         <Form.Label>Amount</Form.Label>
                         <Form.Control
                           ref={amountRef}
