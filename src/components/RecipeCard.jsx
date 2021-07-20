@@ -23,8 +23,9 @@ export default function RecipeCard({
     history.push(`recipe/${id}`);
   }
 
-  function editRecipe({ target: { parentElement } }) {
-    history.push(`editRecipe/${parentElement.parentElement.id}`);
+  function editRecipe(recipeId) {
+    // console.log(recipeId);
+    history.push(`editRecipe/${recipeId}`);
   }
 
   useEffect(() => {
@@ -39,21 +40,26 @@ export default function RecipeCard({
         <Card
           style={{ width: "15rem", cursor: "pointer" }}
           className="recipe-hover"
-          onClick={viewRecipe}
           id={recipeId}
         >
           <Card.Img
+            onClick={viewRecipe}
             variant="top"
             src={`http://localhost:3001/${recipeImg}`}
             style={{ height: "12rem" }}
             id={recipeId}
-          />
-          <Card.Body id={recipeId}>
+            />
+          <Card.Body id={recipeId} >
+            
             <Card.Title id={recipeId}>{recipeName}</Card.Title>
             <GrView />
             <small className="ml-2">{recipeViews[0]?.views}</small>
             {user?.id == userId ? (
-              <MdEdit style={editStyles} onClick={editRecipe}  className="ml-3"/>
+              <MdEdit
+                style={editStyles}
+                onClick={() => editRecipe(recipeId)}
+                className="ml-3"
+              />
             ) : null}
           </Card.Body>
         </Card>
