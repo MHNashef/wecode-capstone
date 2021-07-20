@@ -2,10 +2,23 @@ import React, { useEffect, useRef, useState } from "react";
 import { useHistory } from "react-router-dom";
 import { getDietTypes } from "../DAL/api";
 import { userSignup } from "../DAL/userApi";
-import { Form, Button, Container, Row, Col, Alert } from "react-bootstrap";
+import {
+  Form,
+  Button,
+  Container,
+  Row,
+  Col,
+  Alert,
+  Card,
+} from "react-bootstrap";
 import { useFormik } from "formik";
 import { useAuth } from "../AuthContext";
-import { getCurrentUser, getUserById, getUserDiet, updateUser } from "../DAL/userApi";
+import {
+  getCurrentUser,
+  getUserById,
+  getUserDiet,
+  updateUser,
+} from "../DAL/userApi";
 
 export default function Signup() {
   const [auth, setAuth] = useAuth();
@@ -94,7 +107,7 @@ export default function Signup() {
     onSubmit: (values) => {
       if (auth) {
         updateUser((res) => {
-            console.log(res.msg);
+          console.log(res.msg);
         }, values);
       } else {
         userSignup((resData) => {
@@ -114,58 +127,56 @@ export default function Signup() {
   return (
     <>
       <Container className="mt-5">
-        {auth ? (
-          <h1
-            className="text-center"
-            style={{
-              width: "100%",
-              padding: "10px",
-              fontWeight: "800"
-            }}
-          >
-            Edit Profile
-          </h1>
-        ) : (
-          <h1
-            className="text-center"
-            style={{
-              width: "100%",
-              padding: "10px",
-              fontWeight: "800"
-            }}
-          >
-            Welcome to Recipe Book!
-          </h1>
-        )}
-        {auth ? (
-          <h2
-            className="text-center"
-            style={{
-              color: "green",
-              width: "100%",
-              fontSize: "14pt",
-              padding: "10px",
-            }}
-          >
-            Feel free to make changes to your user info
-          </h2>
-        ) : (
-          <h2
-            className="text-center"
-            style={{
-              color: "green",
-              width: "100%",
-              fontSize: "14pt",
-              padding: "10px",
-            }}
-          >
-            To sign up, enter your information below
-          </h2>
-        )}
+        <Card className="form-card mx-auto">
+          <Card.Body>
+            {auth ? (
+              <h1
+                className="text-center"
+                style={{
+                  width: "100%",
+                  padding: "10px",
+                  fontWeight: "800",
+                }}
+              >
+                Edit Profile
+              </h1>
+            ) : (
+              <h1
+                className="text-center"
+                style={{
+                  width: "100%",
+                  padding: "10px",
+                  fontWeight: "800",
+                }}
+              >
+                Welcome to Recipe Book
+              </h1>
+            )}
+            {auth ? (
+              <h2
+                className="text-center pb-5"
+                style={{
+                  color: "#7d8ca3",
+                  width: "100%",
+                  fontSize: "14pt",
+                }}
+              >
+                Feel free to make changes to your user info
+              </h2>
+            ) : (
+              <h2
+                className="text-center pb-5"
+                style={{
+                  color: "#7d8ca3",
+                  width: "100%",
+                  fontSize: "14pt",
+                }}
+              >
+                We're excited you're here!
+              </h2>
+            )}
 
-        <Form onSubmit={formik.handleSubmit}>
-          <Row>
-            <Col>
+            <Form onSubmit={formik.handleSubmit}>
               <Form.Group controlId="first_name">
                 <Form.Control
                   type="text"
@@ -179,8 +190,6 @@ export default function Signup() {
                   <div className="text-danger">{formik.errors.first_name}</div>
                 ) : null}
               </Form.Group>
-            </Col>
-            <Col>
               <Form.Group controlId="last_name">
                 <Form.Control
                   type="text"
@@ -192,10 +201,6 @@ export default function Signup() {
                   <div className="text-danger">{formik.errors.last_name}</div>
                 ) : null}
               </Form.Group>
-            </Col>
-          </Row>
-          <Row>
-            <Col>
               <Form.Group controlId="email">
                 <Form.Control
                   type="email"
@@ -207,8 +212,6 @@ export default function Signup() {
                   <div className="text-danger">{formik.errors.email}</div>
                 ) : null}
               </Form.Group>
-            </Col>
-            <Col>
               <Form.Group controlId="user_password">
                 <Form.Control
                   type="password"
@@ -232,55 +235,55 @@ export default function Signup() {
                   onClick={togglePasswordVisibilty}
                 />
               </Form.Group>
-            </Col>
-          </Row>
-          <Row>
-            <Form.Group controlId="diettype">
-              <Form.Label className="mr-3">Your diet type:</Form.Label>
-              {dietTypes?.map((dtype) => (
-                <Form.Check
-                  type="checkbox"
-                  checked={formik.values.diettype.includes(`${dtype.id}`)}
-                  label={dtype.diet_type_name}
-                  id={dtype.id}
-                  value={dtype.id}
-                  name="diettype"
-                  onChange={formik.handleChange}
-                  inline
-                />
-              )) || null}
-            </Form.Group>
-          </Row>
-          {signup === -1 ? <Alert></Alert> : null}
+              <Form.Group controlId="diettype">
+                <Form.Label className="mr-3" style={{ display: "block" }}>
+                  Your diet type:
+                </Form.Label>
+                {dietTypes?.map((dtype) => (
+                  <Form.Check
+                    type="checkbox"
+                    checked={formik.values.diettype.includes(`${dtype.id}`)}
+                    label={dtype.diet_type_name}
+                    id={dtype.id}
+                    value={dtype.id}
+                    name="diettype"
+                    onChange={formik.handleChange}
+                    inline
+                  />
+                )) || null}
+              </Form.Group>
+              {signup === -1 ? <Alert></Alert> : null}
 
-          {signup === 1 ? (
-            <Alert key="alert" variant="success">
-              You're all set! We'll now take you to the login page
-            </Alert>
-          ) : null}
-          {signup === 0 ? (
-            <Alert key="alert" variant="danger">
-              Signup failed. Please try again
-            </Alert>
-          ) : null}
-          {auth ? (
-            <Button
-              variant="info"
-              type="submit"
-              className="d-block mx-auto btn-success w-25 mt-5"
-            >
-              Update
-            </Button>
-          ) : (
-            <Button
-              variant="primary"
-              type="submit"
-              className="d-block mx-auto btn-success w-25 mt-5"
-            >
-              Sign Up
-            </Button>
-          )}
-        </Form>
+              {signup === 1 ? (
+                <Alert key="alert" variant="success">
+                  You're all set! We'll now take you to the login page
+                </Alert>
+              ) : null}
+              {signup === 0 ? (
+                <Alert key="alert" variant="danger">
+                  Signup failed. Please try again
+                </Alert>
+              ) : null}
+              {auth ? (
+                <Button
+                  variant="info"
+                  type="submit"
+                  className="d-block mx-auto btn-success w-25"
+                >
+                  Update
+                </Button>
+              ) : (
+                <Button
+                  variant="primary"
+                  type="submit"
+                  className="d-block mx-auto btn-success w-50"
+                >
+                  Sign Up
+                </Button>
+              )}
+            </Form>
+          </Card.Body>
+        </Card>
       </Container>
     </>
   );
