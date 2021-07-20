@@ -266,7 +266,7 @@ export default function Signup() {
               ) : null}
               {auth ? (
                 <Button
-                  variant="info"
+                  variant="danger"
                   type="submit"
                   className="d-block mx-auto btn-success w-25"
                 >
@@ -274,7 +274,7 @@ export default function Signup() {
                 </Button>
               ) : (
                 <Button
-                  variant="primary"
+                  variant="danger"
                   type="submit"
                   className="d-block mx-auto btn-success w-50"
                 >

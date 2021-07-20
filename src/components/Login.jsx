@@ -105,7 +105,7 @@ export default function Login() {
               </Form.Group>
               <Button
                 className="btn-success d-block mx-auto w-50"
-                variant="primary"
+                variant="danger"
                 type="submit"
               >
                 Login
