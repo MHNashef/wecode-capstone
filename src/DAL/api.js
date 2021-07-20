@@ -1,14 +1,24 @@
 import axios from "axios";
 
-async function getRecipes(resCallback) {
+async function getRecipes(resCallback, count) {
   try {
-    const response = await axios.get("http://localhost:3001/recipes");
+    const myUrl = "http://localhost:3001/recipes" + (count ? "/count" : "");
+    console.log(myUrl);
+    const response = await axios.get(myUrl);
     resCallback(response.data);
   } catch (err) {
     console.error(err);
   }
 }
-
+async function getRecipesPaged(resCallback, limit, page) {
+  try {
+    const myUrl = `http://localhost:3001/recipes/l/${limit}/p/${page}`;
+    const response = await axios.get(myUrl);
+    resCallback(response.data);
+  } catch (err) {
+    console.error(err);
+  }
+}
 async function getPopularRecipes(resCallback) {
   try {
     const response = await axios.get("http://localhost:3001/recipes/popular/4");
@@ -202,6 +212,7 @@ function getRecipesPagination(pageNum, orderBy, isAsc) {}
 
 export {
   getRecipes,
+  getRecipesPaged,
   getPopularRecipes,
   getRecentRecipes,
   getRecipeById,
