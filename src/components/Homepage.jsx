@@ -36,41 +36,26 @@ export default function Homepage() {
     getPopularRecipes(popularJsonResponse);
     getRecentRecipes(recentJsonResponse);
   }, []);
-  // console.log(searchRes);
+
   return (
     <>
-      <div className="parallax h-100">
-        <div>
-          <Form className="d-flex">
+      <div className="parallax">
+          <Form className="d-flex flex-column align-items-center searchBox">
             <FormControl
               type="search"
-              placeholder="Search"
-              className="mr-2"
+              placeholder="Enter recipe name"
+              className="mr-2 mb-3 w-50"
               aria-label="Search"
               onChange={(e) => setSearchStr(e.target.value)}
             />
-            <Button variant="outline-primary" onClick={searchForRecipe}>
+            <Button style={{width:"20%"}} variant="danger" onClick={searchForRecipe}>
               Search
             </Button>
           </Form>
-        </div>
       </div>
       <Container>
         <Row>
-          <Col className="mt-3">
-            {/* <Form className="d-flex">
-              <FormControl
-                type="search"
-                placeholder="Search"
-                className="mr-2"
-                aria-label="Search"
-                onChange={(e) => setSearchStr(e.target.value)}
-              />
-              <Button variant="outline-primary" onClick={searchForRecipe}>
-                Search
-              </Button>
-            </Form> */}
-          </Col>
+          <Col className="mt-3"></Col>
         </Row>
         <Row>
           <Col>

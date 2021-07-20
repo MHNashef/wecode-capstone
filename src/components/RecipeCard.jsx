@@ -13,7 +13,7 @@ export default function RecipeCard({
   recipeId,
   recipeImg,
 }) {
-  const editStyles = { color: "#007bff", fontSize: "1.5em", cursor: "pointer" };
+  const editStyles = { color: "#000", fontSize: "1.5em", cursor: "pointer" };
   const history = useHistory(null);
   const user = getCurrentUser();
   const [recipeViews, setRecipeViews] = useState(0);
@@ -50,11 +50,11 @@ export default function RecipeCard({
           />
           <Card.Body id={recipeId}>
             <Card.Title id={recipeId}>{recipeName}</Card.Title>
-            {user?.id == userId ? (
-              <MdEdit style={editStyles} onClick={editRecipe} />
-            ) : null}
             <GrView />
             <small className="ml-2">{recipeViews[0]?.views}</small>
+            {user?.id == userId ? (
+              <MdEdit style={editStyles} onClick={editRecipe}  className="ml-3"/>
+            ) : null}
           </Card.Body>
         </Card>
       </Container>
