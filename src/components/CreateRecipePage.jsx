@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useHistory } from "react-router-dom";
 import { useRecipe } from "../RecipeContext";
 import { getCurrentUser } from "../DAL/userApi";
@@ -33,6 +33,13 @@ import { useFormik } from "formik";
 import { useParams } from "react-router-dom";
 
 export default function CreateRecipePage() {
+  const stepNumRef = useRef(null);
+  const instructionRef = useRef(null);
+  const amountRef = useRef(null);
+  const measurementRef = useRef(null);
+  const ingredientRef = useRef(null);
+  const notesRef = useRef(null);
+
   const history = useHistory();
   const { rid } = useParams();
   const [ctxRecipe] = useRecipe();
@@ -217,6 +224,10 @@ export default function CreateRecipePage() {
       ingredient: "",
       notes: "",
     });
+    amountRef.current.value = null;
+    measurementRef.current.value = "Choose...";
+    ingredientRef.current.value = "Choose...";
+    notesRef.current.value = "";
     setId(id + 1);
   }
 
@@ -227,6 +238,8 @@ export default function CreateRecipePage() {
       step_number: 0,
       step_description: "",
     });
+    stepNumRef.current.value = null;
+    instructionRef.current.value = "";
     setId(id + 1);
   }
 
@@ -270,6 +283,8 @@ export default function CreateRecipePage() {
                 />
               </Form.Group>
             </Col>
+          </Row>
+          <Row>
             <Col>
               <Image
                 src={`http://localhost:3001/${recipeImg?.imgPath}`}
@@ -342,6 +357,7 @@ export default function CreateRecipePage() {
                       <Col className="col-2">
                         <Form.Label>Amount</Form.Label>
                         <Form.Control
+                          ref={amountRef}
                           type="number"
                           min="1"
                           onChange={(e) => onChangeIngredient(e, "amount")}
@@ -350,6 +366,7 @@ export default function CreateRecipePage() {
                       <Col>
                         <Form.Label>Measurement</Form.Label>
                         <Form.Control
+                          ref={measurementRef}
                           as="select"
                           defaultValue="Choose..."
                           onChange={(e) => onChangeIngredient(e, "measurement")}
@@ -365,6 +382,7 @@ export default function CreateRecipePage() {
                       <Col>
                         <Form.Label>Ingredient</Form.Label>
                         <Form.Control
+                          ref={ingredientRef}
                           as="select"
                           defaultValue="Choose..."
                           onChange={(e) => onChangeIngredient(e, "ingredient")}
@@ -380,6 +398,7 @@ export default function CreateRecipePage() {
                       <Col className="col-3">
                         <Form.Label>Notes</Form.Label>
                         <Form.Control
+                          ref={notesRef}
                           type="text"
                           onChange={(e) => onChangeIngredient(e, "notes")}
                         />
@@ -400,7 +419,7 @@ export default function CreateRecipePage() {
                       {ingredients.map((ingredient) => (
                         <tr>
                           <td style={{ width: "10%" }}>
-                          <MdDelete
+                            <MdDelete
                               onClick={() => removeIngredient(ingredient)}
                             />
                           </td>
@@ -438,6 +457,7 @@ export default function CreateRecipePage() {
                       <Col className="col-2">
                         <Form.Label>Step #</Form.Label>
                         <Form.Control
+                          ref={stepNumRef}
                           type="number"
                           min="1"
                           onChange={(e) =>
@@ -448,6 +468,7 @@ export default function CreateRecipePage() {
                       <Col>
                         <Form.Label>Instruction</Form.Label>
                         <Form.Control
+                          ref={instructionRef}
                           as="textarea"
                           onChange={(e) =>
                             onChangeInstruction(e, "step_description")
