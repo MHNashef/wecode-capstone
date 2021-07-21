@@ -10,6 +10,7 @@ import {
   Col,
   Alert,
   Card,
+  Spinner,
 } from "react-bootstrap";
 import { useFormik } from "formik";
 import { useAuth } from "../AuthContext";
@@ -29,12 +30,16 @@ export default function Signup() {
   const [currUser, setCurrUser] = useState([]);
   const [userDiet, setUserDiet] = useState([]);
   const localUserInfo = getCurrentUser();
+  const [spinnerOn, setSpinnerOn] = useState(true);
 
   function onUserRes(response) {
     setCurrUser(response);
   }
 
   useEffect(() => {
+    setTimeout(() => {
+      setSpinnerOn(false);
+    }, 1000);
     if (auth) {
       getUserById(onUserRes, localUserInfo.id);
       getUserDiet((res) => {
@@ -126,167 +131,182 @@ export default function Signup() {
 
   return (
     <>
-      <Container className="mt-5">
-        <Card className="form-card mx-auto">
-          <Card.Body>
-            {auth ? (
-              <h1
-                className="text-center"
-                style={{
-                  width: "100%",
-                  padding: "10px",
-                  fontWeight: "800",
-                }}
-              >
-                Edit Profile
-              </h1>
-            ) : (
-              <h1
-                className="text-center"
-                style={{
-                  width: "100%",
-                  padding: "10px",
-                  fontWeight: "800",
-                }}
-              >
-                Welcome to Recipe Book
-              </h1>
-            )}
-            {auth ? (
-              <h2
-                className="text-center pb-5"
-                style={{
-                  color: "#7d8ca3",
-                  width: "100%",
-                  fontSize: "14pt",
-                }}
-              >
-                Feel free to make changes to your user info
-              </h2>
-            ) : (
-              <h2
-                className="text-center pb-5"
-                style={{
-                  color: "#7d8ca3",
-                  width: "100%",
-                  fontSize: "14pt",
-                }}
-              >
-                We're excited you're here!
-              </h2>
-            )}
+      {spinnerOn ? (
+        <Spinner
+          className="spinner"
+          animation="border"
+          role="status"
+          variant="danger"
+        />
+      ) : (
+        <Container className="mt-5 mb-5">
+          <Card className="form-card mx-auto">
+            <Card.Body>
+              {auth ? (
+                <h1
+                  className="text-center"
+                  style={{
+                    width: "100%",
+                    padding: "10px",
+                    fontWeight: "800",
+                  }}
+                >
+                  Edit Profile
+                </h1>
+              ) : (
+                <h1
+                  className="text-center"
+                  style={{
+                    width: "100%",
+                    padding: "10px",
+                    fontWeight: "800",
+                  }}
+                >
+                  Welcome to Recipe Book
+                </h1>
+              )}
+              {auth ? (
+                <h2
+                  className="text-center pb-5"
+                  style={{
+                    color: "#7d8ca3",
+                    width: "100%",
+                    fontSize: "14pt",
+                  }}
+                >
+                  Feel free to make changes to your user info
+                </h2>
+              ) : (
+                <h2
+                  className="text-center pb-5"
+                  style={{
+                    color: "#7d8ca3",
+                    width: "100%",
+                    fontSize: "14pt",
+                  }}
+                >
+                  We're excited you're here!
+                </h2>
+              )}
 
-            <Form onSubmit={formik.handleSubmit}>
-              <Form.Group controlId="first_name">
-                <Form.Control
-                  type="text"
-                  placeholder="First Name"
-                  {...formik.getFieldProps("first_name")}
-                  isValid={
-                    formik.touched.first_name && !formik.errors.first_name
-                  }
-                />
-                {formik.touched.first_name && formik.errors.first_name ? (
-                  <div className="text-danger">{formik.errors.first_name}</div>
-                ) : null}
-              </Form.Group>
-              <Form.Group controlId="last_name">
-                <Form.Control
-                  type="text"
-                  placeholder="Last Name"
-                  {...formik.getFieldProps("last_name")}
-                  isValid={formik.touched.last_name && !formik.errors.last_name}
-                />
-                {formik.touched.last_name && formik.errors.last_name ? (
-                  <div className="text-danger">{formik.errors.last_name}</div>
-                ) : null}
-              </Form.Group>
-              <Form.Group controlId="email">
-                <Form.Control
-                  type="email"
-                  placeholder="Email"
-                  {...formik.getFieldProps("email")}
-                  isValid={formik.touched.email && !formik.errors.email}
-                />
-                {formik.touched.email && formik.errors.email ? (
-                  <div className="text-danger">{formik.errors.email}</div>
-                ) : null}
-              </Form.Group>
-              <Form.Group controlId="user_password">
-                <Form.Control
-                  type="password"
-                  placeholder="Password"
-                  {...formik.getFieldProps("user_password")}
-                  ref={passwordFieldRef}
-                  isValid={
-                    formik.touched.user_password && !formik.errors.user_password
-                  }
-                />
-                {formik.touched.user_password && formik.errors.user_password ? (
-                  <div className="text-danger">
-                    {formik.errors.user_password}
-                  </div>
-                ) : null}
-              </Form.Group>
-              <Form.Group controlId="showPasswordCheckbox">
-                <Form.Check
-                  type="checkbox"
-                  label="show password"
-                  onClick={togglePasswordVisibilty}
-                />
-              </Form.Group>
-              <Form.Group controlId="diettype">
-                <Form.Label className="mr-3" style={{ display: "block" }}>
-                  Your diet type:
-                </Form.Label>
-                {dietTypes?.map((dtype) => (
+              <Form onSubmit={formik.handleSubmit}>
+                <Form.Group controlId="first_name">
+                  <Form.Control
+                    type="text"
+                    placeholder="First Name"
+                    {...formik.getFieldProps("first_name")}
+                    isValid={
+                      formik.touched.first_name && !formik.errors.first_name
+                    }
+                  />
+                  {formik.touched.first_name && formik.errors.first_name ? (
+                    <div className="text-danger">
+                      {formik.errors.first_name}
+                    </div>
+                  ) : null}
+                </Form.Group>
+                <Form.Group controlId="last_name">
+                  <Form.Control
+                    type="text"
+                    placeholder="Last Name"
+                    {...formik.getFieldProps("last_name")}
+                    isValid={
+                      formik.touched.last_name && !formik.errors.last_name
+                    }
+                  />
+                  {formik.touched.last_name && formik.errors.last_name ? (
+                    <div className="text-danger">{formik.errors.last_name}</div>
+                  ) : null}
+                </Form.Group>
+                <Form.Group controlId="email">
+                  <Form.Control
+                    type="email"
+                    placeholder="Email"
+                    {...formik.getFieldProps("email")}
+                    isValid={formik.touched.email && !formik.errors.email}
+                  />
+                  {formik.touched.email && formik.errors.email ? (
+                    <div className="text-danger">{formik.errors.email}</div>
+                  ) : null}
+                </Form.Group>
+                <Form.Group controlId="user_password">
+                  <Form.Control
+                    type="password"
+                    placeholder="Password"
+                    {...formik.getFieldProps("user_password")}
+                    ref={passwordFieldRef}
+                    isValid={
+                      formik.touched.user_password &&
+                      !formik.errors.user_password
+                    }
+                  />
+                  {formik.touched.user_password &&
+                  formik.errors.user_password ? (
+                    <div className="text-danger">
+                      {formik.errors.user_password}
+                    </div>
+                  ) : null}
+                </Form.Group>
+                <Form.Group controlId="showPasswordCheckbox">
                   <Form.Check
                     type="checkbox"
-                    checked={formik.values.diettype.includes(`${dtype.id}`)}
-                    label={dtype.diet_type_name}
-                    id={dtype.id}
-                    value={dtype.id}
-                    name="diettype"
-                    onChange={formik.handleChange}
-                    inline
+                    label="show password"
+                    onClick={togglePasswordVisibilty}
                   />
-                )) || null}
-              </Form.Group>
-              {signup === -1 ? <Alert></Alert> : null}
+                </Form.Group>
+                <Form.Group controlId="diettype">
+                  <Form.Label className="mr-3" style={{ display: "block" }}>
+                    Your diet type:
+                  </Form.Label>
+                  {dietTypes?.map((dtype) => (
+                    <Form.Check
+                      type="checkbox"
+                      checked={formik.values.diettype.includes(`${dtype.id}`)}
+                      label={dtype.diet_type_name}
+                      id={dtype.id}
+                      value={dtype.id}
+                      name="diettype"
+                      onChange={formik.handleChange}
+                      inline
+                    />
+                  )) || null}
+                </Form.Group>
+                {signup === -1 ? <Alert></Alert> : null}
 
-              {signup === 1 ? (
-                <Alert key="alert" variant="success">
-                  You're all set! We'll now take you to the login page
-                </Alert>
-              ) : null}
-              {signup === 0 ? (
-                <Alert key="alert" variant="danger">
-                  Signup failed. Please try again
-                </Alert>
-              ) : null}
-              {auth ? (
-                <Button
-                  style={{ fontWeight: "800" }}
-                  variant="danger"
-                  type="submit"
-                  className="d-block mx-auto btn-success w-25"
-                >
-                  Update
-                </Button>
-              ) : (
-                <Button
-                  style={{ fontWeight: "800" }}
-                  variant="danger"
-                  type="submit"
-                  className="d-block mx-auto btn-success w-50"
-                >
-                  Sign Up
-                </Button>
-              )}
-            </Form>
-          </Card.Body>
-        </Card>
-      </Container>
+                {signup === 1 ? (
+                  <Alert key="alert" variant="success">
+                    You're all set! We'll now take you to the login page
+                  </Alert>
+                ) : null}
+                {signup === 0 ? (
+                  <Alert key="alert" variant="danger">
+                    Signup failed. Please try again
+                  </Alert>
+                ) : null}
+                {auth ? (
+                  <Button
+                    style={{ fontWeight: "800" }}
+                    variant="danger"
+                    type="submit"
+                    className="d-block mx-auto btn-success w-25"
+                  >
+                    Update
+                  </Button>
+                ) : (
+                  <Button
+                    style={{ fontWeight: "800" }}
+                    variant="danger"
+                    type="submit"
+                    className="d-block mx-auto btn-success w-50"
+                  >
+                    Sign Up
+                  </Button>
+                )}
+              </Form>
+            </Card.Body>
+          </Card>
+        </Container>
+      )}
     </>
   );
 }

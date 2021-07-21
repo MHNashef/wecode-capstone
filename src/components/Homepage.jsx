@@ -9,6 +9,7 @@ import {
   Button,
   Pagination,
   FormGroup,
+  Spinner,
 } from "react-bootstrap";
 import "../styles/Homepage.css";
 import RecipeCard from "./RecipeCard";
@@ -27,6 +28,7 @@ export default function Homepage() {
   const [mostRecentRecipes, setMostRecentRecipes] = useState([]);
   const [searchRes, setSearchRes] = useState([]);
   const [searchStr, setSearchStr] = useState("");
+  const [spinnerOn, setSpinnerOn] = useState(true);
 
   // paging stuff
   const [pageItems, setPageItems] = useState([]);
@@ -104,7 +106,7 @@ export default function Homepage() {
   }
 
   function buildPageItems(resCount) {
-    const maxRangeLength = 3;
+    const maxRangeLength = 5;
     const tempItems = [];
     const numberOfItems = Math.ceil(resCount / maxPageResults); // this is the last page
     const numberOfRanges = Math.ceil(numberOfItems / maxRangeLength);
@@ -171,8 +173,9 @@ export default function Homepage() {
     setPageItems(tempItems);
   }
   useEffect(() => {
-    // getPopularRecipes(popularJsonResponse);
-    // getRecentRecipes(recentJsonResponse);
+    setTimeout(() => {
+      setSpinnerOn(false);
+    }, 2000);
     console.log(inSearchMode);
     if (!searchStr) {
       getRecipes((res) => {
@@ -202,52 +205,67 @@ export default function Homepage() {
 
   return (
     <>
-      <div className="parallax">
-        <Form className="d-flex flex-column h-100 searchBox">
-          <FormGroup>
-            <FormControl
-              type="search"
-              placeholder="Search by recipe name"
-              style={{ width: "60%" }}
-              className="mx-auto"
-              aria-label="Search"
-              onChange={(e) => {
-                if (!e.target.value) {
-                  setCurrentPage(1);
-                }
-                setSearchStr(e.target.value);
-                setInSearchMode(false);
-              }}
-            />
-          </FormGroup>
-          <Button
-            style={{ width: "22%", backgroundColor:"#ba3b46", fontWeight:"800" }}
-            className="mx-auto"
-            variant="danger"
-            onClick={searchForRecipe}
-          >
-            Search
-          </Button>
-        </Form>
-      </div>
-      <Container>
-        <Row lg={4} md={2} sm={1} xs={1} className="mt-5">
-          {allRecipes.map((recipe) => (
-            <Col>
-              <RecipeCard
-                userId={recipe.user_id}
-                recipeName={recipe.recipe_name}
-                recipeId={recipe.id}
-                recipeImg={recipe.img_path}
-                recipeViews={recipe.views}
-              ></RecipeCard>
-            </Col>
-          ))}
-        </Row>
-        <Row className="mt-5 d-flex justify-content-center">
-          <Pagination>{pageItems}</Pagination>
-        </Row>
-      </Container>
+      {spinnerOn ? (
+        <Spinner
+          className="spinner"
+          animation="border"
+          role="status"
+          variant="danger"
+        />
+      ) : (
+        <>
+          <div className="parallax">
+            <Form className="d-flex flex-column h-100 searchBox">
+              <FormGroup>
+                <FormControl
+                  type="search"
+                  placeholder="Search by recipe name"
+                  style={{ width: "60%" }}
+                  className="mx-auto"
+                  aria-label="Search"
+                  onChange={(e) => {
+                    if (!e.target.value) {
+                      setCurrentPage(1);
+                    }
+                    setSearchStr(e.target.value);
+                    setInSearchMode(false);
+                  }}
+                />
+              </FormGroup>
+              <Button
+                style={{
+                  width: "22%",
+                  backgroundColor: "#ba3b46",
+                  fontWeight: "800",
+                }}
+                className="mx-auto"
+                variant="danger"
+                onClick={searchForRecipe}
+              >
+                Search
+              </Button>
+            </Form>
+          </div>
+          <Container>
+            <Row lg={4} md={2} sm={1} xs={1} className="mt-5">
+              {allRecipes.map((recipe) => (
+                <Col>
+                  <RecipeCard
+                    userId={recipe.user_id}
+                    recipeName={recipe.recipe_name}
+                    recipeId={recipe.id}
+                    recipeImg={recipe.img_path}
+                    recipeViews={recipe.views}
+                  ></RecipeCard>
+                </Col>
+              ))}
+            </Row>
+            <Row className="mt-5 d-flex justify-content-center">
+              <Pagination>{pageItems}</Pagination>
+            </Row>
+          </Container>
+        </>
+      )}
     </>
   );
 }
