@@ -86,7 +86,7 @@ export default function Login() {
               </h2>
               <Form onSubmit={formik.handleSubmit}>
                 {attemptFailedError ? (
-                  <Alert variant="danger">invalid username or password</Alert>
+                  <Alert variant="danger">invalid email or password</Alert>
                 ) : null}
                 <Form.Group controlId="email">
                   <Form.Control
