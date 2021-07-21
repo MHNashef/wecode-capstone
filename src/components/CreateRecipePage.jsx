@@ -524,6 +524,7 @@ export default function CreateRecipePage() {
               </Card>
             </Accordion>
             <Button
+              style={{fontWeight: "800"}}
               variant="danger"
               type="submit"
               className="d-block mx-auto btn-success w-25 mt-5 mb-5"
