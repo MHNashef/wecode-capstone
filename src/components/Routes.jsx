@@ -9,6 +9,7 @@ import ProtectedRoute from "./ProtectedRoute";
 import { useAuth } from "../AuthContext";
 import { RecipeProvider } from "../RecipeContext";
 import { Switch, Route, Redirect } from "react-router-dom";
+import UserFavorites from "./UserFavorites";
 
 export default function Routes() {
   const [auth] = useAuth();
@@ -22,6 +23,9 @@ export default function Routes() {
         <ProtectedLogin exact path="/login" auth={auth} component={Login} />
         <Route exact path="/recipe/:id">
           <RecipePage />
+        </Route>
+        <Route exact path="/userFavorites">
+          <UserFavorites />
         </Route>
         <ProtectedLogin path="/signup" auth={auth} component={Signup} />
         <ProtectedRoute path="/editUser/" auth={auth} component={Signup} />
