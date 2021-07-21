@@ -245,24 +245,25 @@ export default function Homepage() {
               </Button>
             </Form>
           </div>
-          <Container>
-            <Row>
-              <Form.Control
-                as="select"
-                defaultValue="Most Recent"
-                onChange={(e) => {
-                  if (e.target.value === "Most Popular") {
-                    setSortByMostRecent(false);
-                  } else {
-                    setSortByMostRecent(true);
-                  }
-                }}
-              >
-                <option>Most Recent</option>
-                <option>Most Popular</option>
-              </Form.Control>
-            </Row>
-            <Row lg={4} md={2} sm={1} xs={1} className="mt-5">
+          <Container className="mt-5">
+            <Form.Label className="mr-1">Sort By:</Form.Label>
+            <Form.Control
+              as="select"
+              size="sm"
+              style={{display:"inline", width: "15%"}}
+              defaultValue="Most Recent"
+              onChange={(e) => {
+                if (e.target.value === "Most Popular") {
+                  setSortByMostRecent(false);
+                } else {
+                  setSortByMostRecent(true);
+                }
+              }}
+            >
+              <option>Most Recent</option>
+              <option>Most Popular</option>
+            </Form.Control>
+            <Row lg={4} md={2} sm={1} xs={1} className="mt-2">
               {allRecipes.map((recipe) => (
                 <Col>
                   <RecipeCard
