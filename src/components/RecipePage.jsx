@@ -38,7 +38,7 @@ export default function RecipePage() {
   useEffect(() => {
     setTimeout(() => {
       setSpinnerOn(false);
-    }, 2000);
+    }, 1500);
     getRecipeById(onJsonResponse, id);
     getRecipeInstructions(instructionsJsonResponse, id);
     getRecipeIngredients(ingredientsJsonResponse, id);

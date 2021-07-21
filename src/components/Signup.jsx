@@ -6,8 +6,6 @@ import {
   Form,
   Button,
   Container,
-  Row,
-  Col,
   Alert,
   Card,
   Spinner,
@@ -31,6 +29,8 @@ export default function Signup() {
   const [userDiet, setUserDiet] = useState([]);
   const localUserInfo = getCurrentUser();
   const [spinnerOn, setSpinnerOn] = useState(true);
+  const [userUpdated, setUserUpdated] = useState(false);
+  const [updatedSpinner, setUpdatedSpinner] = useState(false);
 
   function onUserRes(response) {
     setCurrUser(response);
@@ -72,10 +72,14 @@ export default function Signup() {
 
     if (!values.first_name) {
       errors.first_name = reqd;
+    } else if (values.first_name.length > 10) {
+      errors.first_name = "must be 10 characters or less";
     }
 
     if (!values.last_name) {
       errors.last_name = reqd;
+    } else if (values.last_name.length > 15) {
+      errors.first_name = "must be 15 characters or less";
     }
 
     if (!values.email) {
@@ -95,6 +99,7 @@ export default function Signup() {
     ) {
       errors.user_password = "Invalid password";
     }
+
     return errors;
   }
 
@@ -114,6 +119,11 @@ export default function Signup() {
         updateUser((res) => {
           console.log(res.msg);
         }, values);
+        setUserUpdated(true);
+        setUpdatedSpinner(true);
+        setTimeout(() => {
+          history.push("/");
+        }, 1500);
       } else {
         userSignup((resData) => {
           if (resData?.msg === "User created") {
@@ -190,9 +200,13 @@ export default function Signup() {
               )}
 
               <Form onSubmit={formik.handleSubmit}>
+                {userUpdated ? (
+                  <Alert variant="success">Your changes have been saved</Alert>
+                ) : null}
                 <Form.Group controlId="first_name">
                   <Form.Control
                     type="text"
+                    name="first_name"
                     placeholder="First Name"
                     {...formik.getFieldProps("first_name")}
                     isValid={
@@ -245,7 +259,11 @@ export default function Signup() {
                     <div className="text-danger">
                       {formik.errors.user_password}
                     </div>
-                  ) : null}
+                  ) : (
+                    <Form.Text className="text-muted">
+                      Minimum 8 characters
+                    </Form.Text>
+                  )}
                 </Form.Group>
                 <Form.Group controlId="showPasswordCheckbox">
                   <Form.Check
@@ -256,7 +274,7 @@ export default function Signup() {
                 </Form.Group>
                 <Form.Group controlId="diettype">
                   <Form.Label className="mr-3" style={{ display: "block" }}>
-                    Your diet type:
+                    Your diet preferences:
                   </Form.Label>
                   {dietTypes?.map((dtype) => (
                     <Form.Check

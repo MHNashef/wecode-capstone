@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import {
-  Carousel,
   Container,
   Col,
   Row,
@@ -14,8 +13,6 @@ import {
 import "../styles/Homepage.css";
 import RecipeCard from "./RecipeCard";
 import {
-  getRecentRecipes,
-  getPopularRecipes,
   getSearchRes,
   getRecipes,
   getRecipesPaged,
@@ -24,11 +21,10 @@ import {
 
 export default function Homepage() {
   const [allRecipes, setAllRecipes] = useState([]);
-  const [mostPopularRecipes, setMostPopularRecipes] = useState([]);
-  const [mostRecentRecipes, setMostRecentRecipes] = useState([]);
   const [searchRes, setSearchRes] = useState([]);
   const [searchStr, setSearchStr] = useState("");
   const [spinnerOn, setSpinnerOn] = useState(true);
+  const [sortByMostRecent, setSortByMostRecent] = useState(true);
 
   // paging stuff
   const [pageItems, setPageItems] = useState([]);
@@ -36,14 +32,6 @@ export default function Homepage() {
   const [inSearchMode, setInSearchMode] = useState(false);
   const maxPageResults = 8;
   let resultCount = 0;
-
-  function popularJsonResponse(response) {
-    setMostPopularRecipes(response);
-  }
-
-  function recentJsonResponse(response) {
-    setMostRecentRecipes(response);
-  }
 
   function searchForRecipe() {
     setPageItems([]);
@@ -59,9 +47,13 @@ export default function Homepage() {
         resultCount = res[0].count;
         console.log(res);
         if (maxPageResults >= resultCount) {
-          getSearchRes(searchStr, (res) => {
-            setAllRecipes(res);
-          });
+          getSearchRes(
+            searchStr,
+            (res) => {
+              setAllRecipes(res);
+            },
+            sortByMostRecent
+          );
         } else {
           // get paginated results
           getSearchResPaged(
@@ -71,10 +63,12 @@ export default function Homepage() {
               buildPageItems(resultCount);
             },
             maxPageResults,
-            currentPage
+            currentPage,
+            sortByMostRecent
           );
         }
       },
+      true,
       true
     );
   }
@@ -175,33 +169,38 @@ export default function Homepage() {
   useEffect(() => {
     setTimeout(() => {
       setSpinnerOn(false);
-    }, 2000);
+    }, 1000);
     console.log(inSearchMode);
     if (!searchStr) {
-      getRecipes((res) => {
-        resultCount = res[0].count;
+      getRecipes(
+        (res) => {
+          resultCount = res[0].count;
 
-        if (maxPageResults >= resultCount) {
-          getRecipes((res) => {
-            setAllRecipes(res);
-          });
-        } else {
-          // get paginated results
-          getRecipesPaged(
-            (res) => {
+          if (maxPageResults >= resultCount) {
+            getRecipes((res) => {
               setAllRecipes(res);
-              buildPageItems(resultCount);
-            },
-            maxPageResults,
-            currentPage
-          );
-        }
-      }, true);
+            }, sortByMostRecent);
+          } else {
+            // get paginated results
+            getRecipesPaged(
+              (res) => {
+                setAllRecipes(res);
+                buildPageItems(resultCount);
+              },
+              maxPageResults,
+              currentPage,
+              sortByMostRecent
+            );
+          }
+        },
+        true,
+        true
+      );
     } else if (inSearchMode) {
       pagSearch();
       console.log("useEffect");
     }
-  }, [currentPage, searchStr]);
+  }, [currentPage, searchStr, sortByMostRecent]);
 
   return (
     <>
@@ -247,6 +246,22 @@ export default function Homepage() {
             </Form>
           </div>
           <Container>
+            <Row>
+              <Form.Control
+                as="select"
+                defaultValue="Most Recent"
+                onChange={(e) => {
+                  if (e.target.value === "Most Popular") {
+                    setSortByMostRecent(false);
+                  } else {
+                    setSortByMostRecent(true);
+                  }
+                }}
+              >
+                <option>Most Recent</option>
+                <option>Most Popular</option>
+              </Form.Control>
+            </Row>
             <Row lg={4} md={2} sm={1} xs={1} className="mt-5">
               {allRecipes.map((recipe) => (
                 <Col>

@@ -1,5 +1,5 @@
 import React, { useRef, useState, useEffect } from "react";
-import { Form, Button, Container, Card, Spinner } from "react-bootstrap";
+import { Form, Button, Container, Card, Spinner, Alert } from "react-bootstrap";
 import { useFormik } from "formik";
 import Cookies from "js-cookie";
 import { useAuth } from "../AuthContext";
@@ -62,7 +62,12 @@ export default function Login() {
   return (
     <>
       {spinnerOn ? (
-        <Spinner className="spinner" animation="border" role="status" variant="danger" />
+        <Spinner
+          className="spinner"
+          animation="border"
+          role="status"
+          variant="danger"
+        />
       ) : (
         <Container className="mt-5">
           <Card className="form-card mx-auto">
@@ -80,8 +85,10 @@ export default function Login() {
                 Welcome Back!
               </h2>
               <Form onSubmit={formik.handleSubmit}>
+                {attemptFailedError ? (
+                  <Alert variant="danger">invalid username or password</Alert>
+                ) : null}
                 <Form.Group controlId="email">
-                  {/* <Form.Label>Email address</Form.Label> */}
                   <Form.Control
                     type="email"
                     placeholder="Enter email"
@@ -94,7 +101,6 @@ export default function Login() {
                 </Form.Group>
 
                 <Form.Group controlId="password">
-                  {/* <Form.Label>Password</Form.Label> */}
                   <Form.Control
                     type="password"
                     placeholder="Password"

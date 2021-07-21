@@ -1,10 +1,9 @@
-import React, { useEffect, useState } from "react";
-import { Card, Container } from "react-bootstrap";
+import React from "react";
+import { Card } from "react-bootstrap";
 import { MdEdit } from "react-icons/md";
 import { GrView } from "react-icons/gr";
 import { useHistory } from "react-router-dom";
 import { getCurrentUser } from "../DAL/userApi";
-import { getRecipeViews } from "../DAL/api";
 import "../styles/RecipeCard.css";
 
 export default function RecipeCard({
@@ -18,7 +17,6 @@ export default function RecipeCard({
   const viewStyles = { fontSize: "1em", fontWeight: "800" };
   const history = useHistory(null);
   const user = getCurrentUser();
-  // const [recipeViews, setRecipeViews] = useState(0);
 
   function viewRecipe({ target: { id } }) {
     console.log(id);
@@ -26,13 +24,11 @@ export default function RecipeCard({
   }
 
   function editRecipe(recipeId) {
-    // console.log(recipeId);
     history.push(`editRecipe/${recipeId}`);
   }
 
   return (
     <>
-      {/* <Container> */}
       <Card
         style={{ cursor: "pointer" }}
         className="recipe-hover mx-auto my-3"
@@ -63,7 +59,6 @@ export default function RecipeCard({
           ) : null}
         </Card.Body>
       </Card>
-      {/* </Container> */}
     </>
   );
 }

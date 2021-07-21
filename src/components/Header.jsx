@@ -32,8 +32,6 @@ export default function Header() {
           <Navbar.Toggle />
           <Navbar.Collapse>
             <Nav className="mr-auto">
-              {/* <Nav.Link href="/">Home</Nav.Link> */}
-              {/* <Nav.Link href="#allRecipes">All Recipes</Nav.Link> */}
               {auth ? (
                 <Nav.Link href="/createRecipe">Create Recipe</Nav.Link>
               ) : null}

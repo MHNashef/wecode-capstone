@@ -134,8 +134,9 @@ export default function CreateRecipePage() {
   function validate(values) {
     const errors = {};
     if (!values.recipeName) {
-      errors.recipeName = "Required";
+      errors.recipeName = "required";
     }
+    return errors;
   }
   const formik = useFormik({
     enableReinitialize: ctxRecipe.editMode,
@@ -166,7 +167,6 @@ export default function CreateRecipePage() {
       } else {
         createRecipe(values);
         history.push("/");
-        // console.log(response);
       }
     },
   });
@@ -208,7 +208,6 @@ export default function CreateRecipePage() {
     uploadRecipeImage(formData, (response) => {
       setRecipeImg(response);
     });
-    // setUpdatePic(!updatePic);
   }
 
   function removeInstruction(instruction) {
@@ -254,23 +253,30 @@ export default function CreateRecipePage() {
   return (
     <>
       {spinnerOn ? (
-        <Spinner className="spinner" animation="border" role="status" variant="danger" />
+        <Spinner
+          className="spinner"
+          animation="border"
+          role="status"
+          variant="danger"
+        />
       ) : (
         <Container className="mt-5">
           <Form onSubmit={formik.handleSubmit}>
             <Row>
               <Col>
-                <Form.Group
-                  controlId="recipeName"
-                  {...formik.getFieldProps("recipeName")}
-                >
+                <Form.Group controlId="recipeName">
                   <Form.Label>Recipe Name </Form.Label>
                   <Form.Control
+                    name="recipeName"
                     value={formik.values.recipeName}
                     type="text"
                     placeholder="Enter recipe name"
+                    {...formik.getFieldProps("recipeName")}
                   />
                 </Form.Group>
+                {formik.touched.recipeName && formik.errors.recipeName ? (
+                  <div style={{ color: "red" }}>{formik.errors.recipeName}</div>
+                ) : null}
               </Col>
               <Col className="d-flex align-items-center">
                 <Form.Group>
