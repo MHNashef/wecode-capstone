@@ -72,6 +72,15 @@ async function updateUser(resCB, userInfo) {
   }
 }
 
+async function getUserRecipes(resCB, userId) {
+  try {
+    const res = await axios.get(`http://localhost:3001/recipes/recipe/userId/${userId}`);
+    resCB(res.data);
+  } catch (err) {
+    if (err) throw err;
+  }
+}
+
 function getCurrentUser() {
   const curUser = Cookies.get("currentuser");
 
@@ -86,5 +95,6 @@ export {
   userSignup,
   getUserById,
   getUserDiet,
-  updateUser
+  updateUser,
+  getUserRecipes
 };

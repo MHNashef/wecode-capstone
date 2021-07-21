@@ -10,6 +10,7 @@ import { useAuth } from "../AuthContext";
 import { RecipeProvider } from "../RecipeContext";
 import { Switch, Route, Redirect } from "react-router-dom";
 import UserFavorites from "./UserFavorites";
+import UserRecipes from "./UserRecipes";
 
 export default function Routes() {
   const [auth] = useAuth();
@@ -21,6 +22,7 @@ export default function Routes() {
           <Homepage />
         </Route>
         <ProtectedLogin exact path="/login" auth={auth} component={Login} />
+        <ProtectedRoute path="/userRecipes" auth={auth} component={UserRecipes} />
         <Route exact path="/recipe/:id">
           <RecipePage />
         </Route>
@@ -60,7 +62,7 @@ const ProtectedRecipeRoute = ({
             <Component />{" "}
           </RecipeProvider>
         ) : (
-          <Redirect to="/" />
+          <Redirect to="/signup" />
         )
       }
     />
