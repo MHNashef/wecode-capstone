@@ -15,6 +15,13 @@
   right: 50%;
 }
 
+.jumbo-bg {
+  background-image: url("./images/brooke-lark-wMzx2nBdeng-unsplash.jpg");
+  background-size: cover;
+  color: #000;
+  height: 200px;
+}
+
 @media all and (max-width: 990px) {
   .prep-list {
     margin-top: 50px;

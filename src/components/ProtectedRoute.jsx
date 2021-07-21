@@ -8,12 +8,10 @@ export default function ProtectedRoutes({
 }) {
   return (
     <>
-      (
       <Route
         {...rest}
         render={() => (auth ? <Component /> : <Redirect to="/login" />)}
       />
-      );
     </>
   );
 }
