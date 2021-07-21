@@ -1,6 +1,7 @@
 import React from "react";
-import { Card, Button, Container } from "react-bootstrap";
-import { MdFavoriteBorder, MdEdit } from "react-icons/md";
+import { Card } from "react-bootstrap";
+import { MdEdit } from "react-icons/md";
+import { GrView } from "react-icons/gr";
 import { useHistory } from "react-router-dom";
 import { getCurrentUser } from "../DAL/userApi";
 import "../styles/RecipeCard.css";
@@ -10,44 +11,54 @@ export default function RecipeCard({
   recipeName,
   recipeId,
   recipeImg,
+  recipeViews,
 }) {
-  const favStyles = { color: "red", fontSize: "1.5em" };
-  const editStyles = { color: "#007bff", fontSize: "1.5em" };
+  const editStyles = { color: "#000", fontSize: "1.5em", cursor: "pointer" };
+  const viewStyles = { fontSize: "1em", fontWeight: "800" };
   const history = useHistory(null);
   const user = getCurrentUser();
 
-  function viewRecipe({ target: { parentElement } }) {
-    history.push(`recipe/${parentElement.id}`);
+  function viewRecipe({ target: { id } }) {
+    console.log(id);
+    history.push(`recipe/${id}`);
   }
-  function editRecipe({ target: { parentElement } }) {
-    // console.log(e);
-    history.push(`editRecipe/${parentElement.parentElement.id}`);
+
+  function editRecipe(recipeId) {
+    history.push(`editRecipe/${recipeId}`);
   }
+
   return (
     <>
-      <Container>
-        <Card style={{ width: "15rem" }} className="recipe-hover">
-          <Card.Img
-            variant="top"
-            src={`http://localhost:3001/${recipeImg}`}
-            style={{ height: "12rem" }}
-          />
-          <Card.Body id={recipeId}>
-            <Card.Title>{recipeName}</Card.Title>
-            <Button variant="primary" className="btn-sm" onClick={viewRecipe}>
-              View Recipe
-            </Button>
-            {user?.id == userId ? (
-              <MdEdit
-                className="ml-3"
-                style={editStyles}
-                onClick={editRecipe}
-              />
-            ) : null}
-            <MdFavoriteBorder className="ml-3" style={favStyles} />
-          </Card.Body>
-        </Card>
-      </Container>
+      <Card
+        style={{ cursor: "pointer" }}
+        className="recipe-hover mx-auto my-3"
+        id={recipeId}
+      >
+        <Card.Img
+          onClick={viewRecipe}
+          variant="top"
+          src={`http://localhost:3001/${recipeImg}`}
+          style={{ height: "12rem", objectFit: "cover" }}
+          id={recipeId}
+        />
+        <Card.Body id={recipeId}>
+          <Card.Title
+            style={{ height: "70px", fontWeight: "800" }}
+            id={recipeId}
+          >
+            {recipeName}
+          </Card.Title>
+          <GrView style={viewStyles} />
+          <small className="ml-2">{recipeViews}</small>
+          {user?.id == userId ? (
+            <MdEdit
+              style={editStyles}
+              onClick={() => editRecipe(recipeId)}
+              className="ml-3"
+            />
+          ) : null}
+        </Card.Body>
+      </Card>
     </>
   );
 }
