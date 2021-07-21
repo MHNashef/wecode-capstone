@@ -263,7 +263,7 @@ export default function Homepage() {
               <option>Most Recent</option>
               <option>Most Popular</option>
             </Form.Control>
-            <Row lg={4} md={2} sm={1} xs={1} className="mt-2">
+            <Row lg={4} md={2} sm={1} xs={1} className="mt-1">
               {allRecipes.map((recipe) => (
                 <Col>
                   <RecipeCard
