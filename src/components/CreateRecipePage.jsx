@@ -81,7 +81,7 @@ export default function CreateRecipePage() {
   useEffect(() => {
     setTimeout(() => {
       setSpinnerOn(false);
-    }, 2000);
+    }, 1000);
     getMeasurements(measurementJsonResponse);
     getIngredients(ingredientListJsonResponse);
     getMealTypes((res) => setMealTypes(res));
