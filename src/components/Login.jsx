@@ -104,6 +104,7 @@ export default function Login() {
                 />
               </Form.Group>
               <Button
+              style={{fontWeight:"800"}}
                 className="btn-success d-block mx-auto w-50"
                 variant="danger"
                 type="submit"

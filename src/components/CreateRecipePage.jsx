@@ -314,7 +314,7 @@ export default function CreateRecipePage() {
           </Form.Group>
 
           <Form.Group controlId="dietType">
-            <Form.Label className="mr-3">Diet Type:</Form.Label>
+            <Form.Label className="mr-3 categ-checks">Diet Type:</Form.Label>
             {dietTypes.map((dietType) => (
               <Form.Check
                 type="checkbox"
@@ -329,7 +329,7 @@ export default function CreateRecipePage() {
             ))}
           </Form.Group>
           <Form.Group controlId="mealType">
-            <Form.Label className="mr-3">Meal Type:</Form.Label>
+            <Form.Label className="mr-3 categ-checks">Meal Type:</Form.Label>
             {mealTypes.map((mealType) => (
               <Form.Check
                 type="checkbox"
@@ -346,15 +346,13 @@ export default function CreateRecipePage() {
           <Accordion defaultActiveKey="0">
             <Card>
               <Accordion.Toggle as={Card.Header} eventKey="0">
-                <Badge pill variant="primary">
-                  Add Ingredients
-                </Badge>
+                Add Ingredients
               </Accordion.Toggle>
               <Accordion.Collapse eventKey="0">
                 <Card.Body>
                   <Form.Group>
-                    <Row>
-                      <Col className="col-2" >
+                    <Row lg={5} md={2} sm={1} xs={1}>
+                      <Col >
                         <Form.Label>Amount</Form.Label>
                         <Form.Control
                           ref={amountRef}
@@ -395,7 +393,7 @@ export default function CreateRecipePage() {
                           ))}
                         </Form.Control>
                       </Col>
-                      <Col className="col-3">
+                      <Col >
                         <Form.Label>Notes</Form.Label>
                         <Form.Control
                           ref={notesRef}
@@ -403,8 +401,9 @@ export default function CreateRecipePage() {
                           onChange={(e) => onChangeIngredient(e, "notes")}
                         />
                       </Col>
-                      <Col className="d-flex align-items-end">
+                      <Col className="d-flex align-items-end add-btn">
                         <Button
+                          variant="danger"
                           id="instructions"
                           style={{ height: "40px" }}
                           onClick={handleAddIngredient}
@@ -446,15 +445,13 @@ export default function CreateRecipePage() {
             </Card>
             <Card>
               <Accordion.Toggle as={Card.Header} eventKey="1">
-                <Badge pill variant="primary">
-                  Add Cooking Instructions
-                </Badge>
+                Add Cooking Instructions
               </Accordion.Toggle>
               <Accordion.Collapse eventKey="1">
                 <Card.Body>
                   <Form.Group>
-                    <Row>
-                      <Col className="col-2">
+                    <Row lg={3} md={2} sm={1} xs={1}>
+                      <Col >
                         <Form.Label>Step #</Form.Label>
                         <Form.Control
                           ref={stepNumRef}
@@ -475,8 +472,9 @@ export default function CreateRecipePage() {
                           }
                         />
                       </Col>
-                      <Col className="d-flex align-items-end">
+                      <Col className="d-flex align-items-end add-btn">
                         <Button
+                          variant="danger"
                           style={{ height: "40px" }}
                           onClick={handleAddInstruction}
                         >
@@ -505,7 +503,7 @@ export default function CreateRecipePage() {
             </Card>
           </Accordion>
           <Button
-            variant="primary"
+            variant="danger"
             type="submit"
             className="d-block mx-auto btn-success w-25 mt-5 mb-5"
           >

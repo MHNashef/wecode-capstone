@@ -43,7 +43,7 @@ export default function RecipePage() {
 
   return (
     <>
-      <Container>
+      <Container className="mb-5">
         <Row className="mt-5">
           <Col>
             <h1 style={{ fontWeight: "800" }}>
@@ -95,7 +95,7 @@ export default function RecipePage() {
             <FaPinterest color="#E60023" size="1.7em" className="ml-3" />
           </Col>
         </Row>
-        <Row className="mt-3">
+        <Row className="mt-3" lg={2} md={1} sm={1} xs={1}>
           <Col>
             <h2 style={{ fontSize: "1.5rem", fontWeight: "800" }}>
               Ingredients
@@ -111,7 +111,7 @@ export default function RecipePage() {
               ))}
             </ListGroup>
           </Col>
-          <Col>
+          <Col className="prep-list">
             <h2 style={{ fontSize: "1.5rem", fontWeight: "800" }}>
               Preparation
             </h2>

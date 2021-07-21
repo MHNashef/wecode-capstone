@@ -20,16 +20,20 @@ export default function Header() {
 
   return (
     <>
-      <Navbar collapseOnSelect expand="md" bg="dark" variant="dark">
+      <Navbar
+        collapseOnSelect
+        expand="md"
+        bg="dark"
+        variant="dark"
+        style={{ fontWeight: "800" }}
+      >
         <Container>
-          <Navbar.Brand href="/" style={{ fontWeight: "800" }}>
-            Recipe Book
-          </Navbar.Brand>
+          <Navbar.Brand href="/">Recipe Book</Navbar.Brand>
           <Navbar.Toggle />
           <Navbar.Collapse>
             <Nav className="mr-auto">
               {/* <Nav.Link href="/">Home</Nav.Link> */}
-              <Nav.Link href="#allRecipes">All Recipes</Nav.Link>
+              {/* <Nav.Link href="#allRecipes">All Recipes</Nav.Link> */}
               {auth ? (
                 <Nav.Link href="/createRecipe">Create Recipe</Nav.Link>
               ) : null}

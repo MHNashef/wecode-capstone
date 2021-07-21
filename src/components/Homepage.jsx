@@ -221,7 +221,7 @@ export default function Homepage() {
             />
           </FormGroup>
           <Button
-            style={{ width: "20%", backgroundColor:"#ba3b46" }}
+            style={{ width: "22%", backgroundColor:"#ba3b46", fontWeight:"800" }}
             className="mx-auto"
             variant="danger"
             onClick={searchForRecipe}

@@ -266,6 +266,7 @@ export default function Signup() {
               ) : null}
               {auth ? (
                 <Button
+                  style={{ fontWeight: "800" }}
                   variant="danger"
                   type="submit"
                   className="d-block mx-auto btn-success w-25"
@@ -274,6 +275,7 @@ export default function Signup() {
                 </Button>
               ) : (
                 <Button
+                  style={{ fontWeight: "800" }}
                   variant="danger"
                   type="submit"
                   className="d-block mx-auto btn-success w-50"

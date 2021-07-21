@@ -12,6 +12,22 @@
   box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
 }
 
+@media all and (max-width: 990px) {
+  .prep-list {
+    margin-top: 50px;
+  }
+
+  .add-btn {
+    margin-top: 45px;
+    position: relative;
+    left: 40%;
+  }
+
+  .categ-checks {
+    display: block;
+  }
+}
+
 button {
   background-color: #ba3b46 !important;
 }

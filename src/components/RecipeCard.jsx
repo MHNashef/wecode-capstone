@@ -15,6 +15,7 @@ export default function RecipeCard({
   recipeViews,
 }) {
   const editStyles = { color: "#000", fontSize: "1.5em", cursor: "pointer" };
+  const viewStyles = { fontSize: "1em", fontWeight: "800" };
   const history = useHistory(null);
   const user = getCurrentUser();
   // const [recipeViews, setRecipeViews] = useState(0);
@@ -45,10 +46,13 @@ export default function RecipeCard({
           id={recipeId}
         />
         <Card.Body id={recipeId}>
-          <Card.Title style={{ height: "70px" }} id={recipeId}>
+          <Card.Title
+            style={{ height: "70px", fontWeight: "800" }}
+            id={recipeId}
+          >
             {recipeName}
           </Card.Title>
-          <GrView />
+          <GrView style={viewStyles} />
           <small className="ml-2">{recipeViews}</small>
           {user?.id == userId ? (
             <MdEdit
