@@ -42,7 +42,7 @@ export default function Header() {
                   title={`Welcome, ${currentUser?.first_name}`}
                   id="basic-nav-dropdown"
                 >
-                  <NavDropdown.Item href="#action/3.2">
+                  <NavDropdown.Item href="/userRecipes">
                     My Recipes
                   </NavDropdown.Item>
                   <NavDropdown.Item href="#action/3.3">
