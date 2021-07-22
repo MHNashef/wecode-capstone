@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { FaFacebook, FaTwitter, FaPinterest } from "react-icons/fa";
+import { MdFavorite, MdFavoriteBorder } from "react-icons/md";
 import {
   Container,
   Row,
@@ -15,6 +16,12 @@ import {
   getRecipeIngredients,
   incrementViews,
 } from "../DAL/api";
+import {
+  getCurrentUser,
+  getIsFavorite,
+  removeFavorite,
+  setAsFavorite,
+} from "../DAL/userApi";
 
 export default function RecipePage() {
   const { id } = useParams();
@@ -22,6 +29,8 @@ export default function RecipePage() {
   const [recipeInstructions, setRecipeInstructions] = useState([]);
   const [recipeIngredients, setRecipeIngredients] = useState([]);
   const [spinnerOn, setSpinnerOn] = useState(true);
+  const [isFavorite, setIsFavorite] = useState(false);
+  const currUser = getCurrentUser();
 
   function onJsonResponse(response) {
     setRecipe(response);
@@ -35,10 +44,31 @@ export default function RecipePage() {
     setRecipeIngredients(response);
   }
 
+  function handleFavorite() {
+    if (isFavorite) {
+      removeFavorite({ recipeId: id, userId: currUser.id });
+      setIsFavorite(false);
+    } else {
+      setAsFavorite({ recipeId: id, userId: currUser.id });
+      setIsFavorite(true);
+    }
+  }
+
   useEffect(() => {
     setTimeout(() => {
       setSpinnerOn(false);
     }, 1000);
+    getIsFavorite(
+      (response) => {
+        if (response[0].count >= 1) {
+          setIsFavorite(true);
+        } else {
+          setIsFavorite(false);
+        }
+      },
+      currUser.id,
+      id
+    );
     getRecipeById(onJsonResponse, id);
     getRecipeInstructions(instructionsJsonResponse, id);
     getRecipeIngredients(ingredientsJsonResponse, id);
@@ -58,13 +88,37 @@ export default function RecipePage() {
         <Container className="mb-5">
           <Row className="mt-5">
             <Col>
-              <h1 style={{ fontWeight: "800" }}>
+              <h1
+                style={{ fontWeight: "800", display: "inline-block" }}
+                className="mr-5"
+              >
                 {recipe[0]?.recipe_name || (
                   <Spinner animation="border" role="status">
                     <span className="sr-only">Loading...</span>
                   </Spinner>
                 )}
               </h1>
+              {isFavorite ? (
+                <MdFavorite
+                  className="mb-3"
+                  style={{
+                    fontSize: "1.7em",
+                    color: "#ba3b46",
+                    cursor: "pointer",
+                  }}
+                  onClick={handleFavorite}
+                />
+              ) : (
+                <MdFavoriteBorder
+                  className="mb-3"
+                  style={{
+                    fontSize: "1.7em",
+                    color: "#ba3b46",
+                    cursor: "pointer",
+                  }}
+                  onClick={handleFavorite}
+                />
+              )}
             </Col>
           </Row>
           <Row>

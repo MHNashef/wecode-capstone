@@ -65,7 +65,10 @@ async function getUserDiet(resCB, id) {
 
 async function updateUser(resCB, userInfo) {
   try {
-    const res = await axios.put(`http://localhost:3001/users/updateUser`, userInfo);
+    const res = await axios.put(
+      `http://localhost:3001/users/updateUser`,
+      userInfo
+    );
     resCB(res.data);
   } catch (err) {
     if (err) throw err;
@@ -74,8 +77,51 @@ async function updateUser(resCB, userInfo) {
 
 async function getUserRecipes(resCB, userId) {
   try {
-    const res = await axios.get(`http://localhost:3001/recipes/recipe/userId/${userId}`);
+    const res = await axios.get(
+      `http://localhost:3001/recipes/recipe/userId/${userId}`
+    );
     resCB(res.data);
+  } catch (err) {
+    if (err) throw err;
+  }
+}
+
+async function getFavorites(resCB, userId) {
+  try {
+    const res = await axios.get(
+      `http://localhost:3001/users/getFavorites/user/${userId}`
+    );
+    resCB(res.data);
+  } catch (err) {
+    if (err) throw err;
+  }
+}
+
+async function getIsFavorite(resCB, userId, recipeId) {
+  try {
+    const res = await axios.get(
+      `http://localhost:3001/users/isFavorite/user/${userId}/recipe/${recipeId}`
+    );
+    resCB(res.data);
+  } catch (err) {
+    if (err) throw err;
+  }
+}
+
+async function removeFavorite(body) {
+  try {
+    const res = await axios.put(
+      `http://localhost:3001/users/removeFavorite`,
+      body
+    );
+  } catch (err) {
+    if (err) throw err;
+  }
+}
+
+async function setAsFavorite(body) {
+  try {
+    const res = await axios.post(`http://localhost:3001/users/setFavorite`, body);
   } catch (err) {
     if (err) throw err;
   }
@@ -96,5 +142,9 @@ export {
   getUserById,
   getUserDiet,
   updateUser,
-  getUserRecipes
+  getUserRecipes,
+  getFavorites,
+  getIsFavorite,
+  removeFavorite,
+  setAsFavorite
 };
