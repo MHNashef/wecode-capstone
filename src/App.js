@@ -4,6 +4,7 @@ import Header from "./components/Header";
 import Routes from "./components/Routes";
 import { AuthProvider } from "./AuthContext";
 import "./App.css";
+import Footer from "./components/Footer";
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
         <Router>
           <Routes />
         </Router>
+        {/* <Footer /> */}
       </AuthProvider>
     </>
   );

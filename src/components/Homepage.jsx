@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from "react";
+import { FaLinkedin } from "react-icons/fa";
+import { AiFillGithub } from "react-icons/ai";
 import {
   Container,
   Col,
@@ -233,7 +235,7 @@ export default function Homepage() {
               </FormGroup>
               <Button
                 style={{
-                  width: "22%",
+                  width: "25%",
                   backgroundColor: "#ba3b46",
                   fontWeight: "800",
                 }}
@@ -250,7 +252,7 @@ export default function Homepage() {
             <Form.Control
               as="select"
               size="sm"
-              style={{display:"inline", width: "15%"}}
+              style={{ display: "inline", width: "15%" }}
               defaultValue="Most Recent"
               onChange={(e) => {
                 if (e.target.value === "Most Popular") {
@@ -276,10 +278,41 @@ export default function Homepage() {
                 </Col>
               ))}
             </Row>
-            <Row className="mt-5 d-flex justify-content-center">
+            <Row className="mt-5 mb-3 d-flex justify-content-center">
               <Pagination>{pageItems}</Pagination>
             </Row>
           </Container>
+          <footer
+            className="footer mt-auto py-2"
+            style={{ backgroundColor: "#343a40", color: "white" }}
+          >
+            <Container>
+              <p className="mx-auto my-auto">
+                Made by{" "}
+                <a
+                  style={{ color: "#ba3b46", fontWeight: "bold" }}
+                  href="https://github.com/MHNashef"
+                >
+                  Hisham{" "}
+                  <span style={{ color: "white", fontWeight: "bolder" }}>
+                    |
+                  </span>
+                </a>
+                <a href="https://github.com/MHNashef">
+                  <AiFillGithub
+                    className="ml-2"
+                    style={{ fontSize: "1.5em", color: "white" }}
+                  />
+                </a>
+                <a href="https://www.linkedin.com/in/hishamnashef/">
+                  <FaLinkedin
+                    className="ml-2"
+                    style={{ fontSize: "1.5em", color: "white" }}
+                  />
+                </a>
+              </p>
+            </Container>
+          </footer>
         </>
       )}
     </>

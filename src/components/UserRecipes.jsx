@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Container, Row, Col, Spinner } from "react-bootstrap";
 import RecipeCard from "./RecipeCard";
 import { getCurrentUser, getUserRecipes } from "../DAL/userApi";
+import Footer from "./Footer.jsx";
 
 export default function UserRecipes() {
   const currUser = getCurrentUser();
@@ -36,7 +37,7 @@ export default function UserRecipes() {
             </div>
           </div>
           <Container>
-            <Row lg={4} md={2} sm={1} xs={1} className="mt-1">
+            <Row lg={4} md={2} sm={1} xs={1} className="mt-1 mb-5">
               {currUserRecipes.map((recipe) => (
                 <Col>
                   <RecipeCard
@@ -50,6 +51,7 @@ export default function UserRecipes() {
               ))}
             </Row>
           </Container>
+          <Footer />
         </>
       )}
     </>
