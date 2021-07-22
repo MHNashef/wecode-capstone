@@ -32,6 +32,7 @@ import {
 import { MdDelete } from "react-icons/md";
 import { useFormik } from "formik";
 import { useParams } from "react-router-dom";
+import Footer from "./Footer.jsx";
 
 export default function CreateRecipePage() {
   const stepNumRef = useRef(null);
@@ -260,279 +261,288 @@ export default function CreateRecipePage() {
           variant="danger"
         />
       ) : (
-        <Container className="mt-5">
-          <Form onSubmit={formik.handleSubmit}>
-            <Row>
-              <Col>
-                <Form.Group controlId="recipeName">
-                  <Form.Label>Recipe Name </Form.Label>
-                  <Form.Control
-                    name="recipeName"
-                    value={formik.values.recipeName}
-                    type="text"
-                    placeholder="Enter recipe name"
-                    {...formik.getFieldProps("recipeName")}
+        <>
+          <Container className="mt-5">
+            <Form onSubmit={formik.handleSubmit}>
+              <Row>
+                <Col lg={6}>
+                  <Form.Group controlId="recipeName">
+                    <Form.Label>Recipe Name </Form.Label>
+                    <Form.Control
+                      name="recipeName"
+                      value={formik.values.recipeName}
+                      type="text"
+                      placeholder="Enter recipe name"
+                      {...formik.getFieldProps("recipeName")}
+                    />
+                  </Form.Group>
+                  {formik.touched.recipeName && formik.errors.recipeName ? (
+                    <div style={{ color: "red" }}>
+                      {formik.errors.recipeName}
+                    </div>
+                  ) : null}
+                </Col>
+                {/* <Col className="d-flex align-items-center">
+                  <Form.Group>
+                    <Form.Check
+                      type="radio"
+                      label="Public"
+                      name="visibility"
+                      value="1"
+                      checked={formik.values.visibility === "1"}
+                      inline
+                      onChange={formik.handleChange}
+                    />
+                    <Form.Check
+                      type="radio"
+                      label="Private"
+                      name="visibility"
+                      value="0"
+                      checked={formik.values.visibility === "0"}
+                      inline
+                      onChange={formik.handleChange}
+                    />
+                  </Form.Group>
+                </Col> */}
+              </Row>
+              <Row>
+                <Col>
+                  <Image
+                    src={`http://localhost:3001/${recipeImg?.imgPath}`}
+                    rounded
                   />
-                </Form.Group>
-                {formik.touched.recipeName && formik.errors.recipeName ? (
-                  <div style={{ color: "red" }}>{formik.errors.recipeName}</div>
-                ) : null}
-              </Col>
-              <Col className="d-flex align-items-center">
-                <Form.Group>
-                  <Form.Check
-                    type="radio"
-                    label="Public"
-                    name="visibility"
-                    value="1"
-                    checked={formik.values.visibility === "1"}
-                    inline
-                    onChange={formik.handleChange}
-                  />
-                  <Form.Check
-                    type="radio"
-                    label="Private"
-                    name="visibility"
-                    value="0"
-                    checked={formik.values.visibility === "0"}
-                    inline
-                    onChange={formik.handleChange}
-                  />
-                </Form.Group>
-              </Col>
-            </Row>
-            <Row>
-              <Col>
-                <Image
-                  src={`http://localhost:3001/${recipeImg?.imgPath}`}
-                  rounded
-                />
-                <Form.Group>
-                  <Form.File
-                    id="image"
-                    name="recipeImg"
-                    label="Upload Image"
-                    onChange={onSelectFile}
-                  />
-                </Form.Group>
-              </Col>
-            </Row>
+                  <Form.Group>
+                    <Form.File
+                      id="image"
+                      name="recipeImg"
+                      label="Upload Image"
+                      onChange={onSelectFile}
+                    />
+                  </Form.Group>
+                </Col>
+              </Row>
 
-            <Form.Group
-              controlId="recipeDescription"
-              {...formik.getFieldProps("recipeDescription")}
-            >
-              <Form.Label>Recipe Description</Form.Label>
-              <Form.Control
-                value={formik.values.recipeDescription}
-                as="textarea"
-                placeholder="short discription about the recipe"
-              />
-            </Form.Group>
+              <Form.Group
+                controlId="recipeDescription"
+                {...formik.getFieldProps("recipeDescription")}
+              >
+                <Form.Label>Recipe Description</Form.Label>
+                <Form.Control
+                  value={formik.values.recipeDescription}
+                  as="textarea"
+                  placeholder="short discription about the recipe"
+                />
+              </Form.Group>
 
-            <Form.Group controlId="dietType">
-              <Form.Label className="mr-3 categ-checks">Diet Type:</Form.Label>
-              {dietTypes.map((dietType) => (
-                <Form.Check
-                  type="checkbox"
-                  label={dietType.diet_type_name}
-                  name="dietType"
-                  value={dietType.id}
-                  onChange={formik.handleChange}
-                  checked={formik.values.dietType.includes(`${dietType.id}`)}
-                  id={dietType.id}
-                  inline
-                />
-              ))}
-            </Form.Group>
-            <Form.Group controlId="mealType">
-              <Form.Label className="mr-3 categ-checks">Meal Type:</Form.Label>
-              {mealTypes.map((mealType) => (
-                <Form.Check
-                  type="checkbox"
-                  label={mealType.meal_type_name}
-                  name="mealType"
-                  value={mealType.id}
-                  onChange={formik.handleChange}
-                  checked={formik.values.mealType.includes(`${mealType.id}`)}
-                  id={mealType.id}
-                  inline
-                />
-              ))}
-            </Form.Group>
-            <Accordion defaultActiveKey="0">
-              <Card>
-                <Accordion.Toggle as={Card.Header} eventKey="0">
-                  Add Ingredients
-                </Accordion.Toggle>
-                <Accordion.Collapse eventKey="0">
-                  <Card.Body>
-                    <Form.Group>
-                      <Row lg={5} md={2} sm={1} xs={1}>
-                        <Col>
-                          <Form.Label>Amount</Form.Label>
-                          <Form.Control
-                            ref={amountRef}
-                            type="number"
-                            min="1"
-                            onChange={(e) => onChangeIngredient(e, "amount")}
-                          />
-                        </Col>
-                        <Col>
-                          <Form.Label>Measurement</Form.Label>
-                          <Form.Control
-                            ref={measurementRef}
-                            as="select"
-                            defaultValue="Choose..."
-                            onChange={(e) =>
-                              onChangeIngredient(e, "measurement")
-                            }
-                          >
-                            <option>Choose...</option>
-                            {measurements.map((unit) => (
-                              <option value={unit.id}>
-                                {unit.measurement_name}
-                              </option>
-                            ))}
-                          </Form.Control>
-                        </Col>
-                        <Col>
-                          <Form.Label>Ingredient</Form.Label>
-                          <Form.Control
-                            ref={ingredientRef}
-                            as="select"
-                            defaultValue="Choose..."
-                            onChange={(e) =>
-                              onChangeIngredient(e, "ingredient")
-                            }
-                          >
-                            <option>Choose...</option>
-                            {ingredientsList.map((ingredient) => (
-                              <option value={ingredient.id}>
-                                {ingredient.ingredient_name}
-                              </option>
-                            ))}
-                          </Form.Control>
-                        </Col>
-                        <Col>
-                          <Form.Label>Notes</Form.Label>
-                          <Form.Control
-                            ref={notesRef}
-                            type="text"
-                            onChange={(e) => onChangeIngredient(e, "notes")}
-                          />
-                        </Col>
-                        <Col className="d-flex align-items-end add-btn">
-                          <Button
-                            variant="danger"
-                            id="instructions"
-                            style={{ height: "40px" }}
-                            onClick={handleAddIngredient}
-                          >
-                            Add
-                          </Button>
-                        </Col>
-                      </Row>
-                    </Form.Group>
-                    <Table striped borderless size="sm">
-                      <tbody>
-                        {ingredients.map((ingredient) => (
-                          <tr>
-                            <td style={{ width: "10%" }}>
-                              <MdDelete
-                                onClick={() => removeIngredient(ingredient)}
-                              />
-                            </td>
-                            <td>{ingredient.amount}</td>
-                            <td>
-                              {
-                                measurements[ingredient.measurement_id - 1]
-                                  ?.measurement_name
+              <Form.Group controlId="dietType">
+                <Form.Label className="mr-3 categ-checks">
+                  Diet Type:
+                </Form.Label>
+                {dietTypes.map((dietType) => (
+                  <Form.Check
+                    type="checkbox"
+                    label={dietType.diet_type_name}
+                    name="dietType"
+                    value={dietType.id}
+                    onChange={formik.handleChange}
+                    checked={formik.values.dietType.includes(`${dietType.id}`)}
+                    id={dietType.id}
+                    inline
+                  />
+                ))}
+              </Form.Group>
+              <Form.Group controlId="mealType">
+                <Form.Label className="mr-3 categ-checks">
+                  Meal Type:
+                </Form.Label>
+                {mealTypes.map((mealType) => (
+                  <Form.Check
+                    type="checkbox"
+                    label={mealType.meal_type_name}
+                    name="mealType"
+                    value={mealType.id}
+                    onChange={formik.handleChange}
+                    checked={formik.values.mealType.includes(`${mealType.id}`)}
+                    id={mealType.id}
+                    inline
+                  />
+                ))}
+              </Form.Group>
+              <Accordion defaultActiveKey="0">
+                <Card>
+                  <Accordion.Toggle as={Card.Header} eventKey="0">
+                    Add Ingredients
+                  </Accordion.Toggle>
+                  <Accordion.Collapse eventKey="0">
+                    <Card.Body>
+                      <Form.Group>
+                        <Row lg={5} md={2} sm={1} xs={1}>
+                          <Col>
+                            <Form.Label>Amount</Form.Label>
+                            <Form.Control
+                              ref={amountRef}
+                              type="number"
+                              min="1"
+                              onChange={(e) => onChangeIngredient(e, "amount")}
+                            />
+                          </Col>
+                          <Col>
+                            <Form.Label>Measurement</Form.Label>
+                            <Form.Control
+                              ref={measurementRef}
+                              as="select"
+                              defaultValue="Choose..."
+                              onChange={(e) =>
+                                onChangeIngredient(e, "measurement")
                               }
-                            </td>
-                            <td>
-                              {
-                                ingredientsList[ingredient.ingredient_id - 1]
-                                  ?.ingredient_name
+                            >
+                              <option>Choose...</option>
+                              {measurements.map((unit) => (
+                                <option value={unit.id}>
+                                  {unit.measurement_name}
+                                </option>
+                              ))}
+                            </Form.Control>
+                          </Col>
+                          <Col>
+                            <Form.Label>Ingredient</Form.Label>
+                            <Form.Control
+                              ref={ingredientRef}
+                              as="select"
+                              defaultValue="Choose..."
+                              onChange={(e) =>
+                                onChangeIngredient(e, "ingredient")
                               }
-                            </td>
-                            <td>{ingredient.notes}</td>
-                          </tr>
-                        )) || null}
-                      </tbody>
-                    </Table>
-                  </Card.Body>
-                </Accordion.Collapse>
-              </Card>
-              <Card>
-                <Accordion.Toggle as={Card.Header} eventKey="1">
-                  Add Cooking Instructions
-                </Accordion.Toggle>
-                <Accordion.Collapse eventKey="1">
-                  <Card.Body>
-                    <Form.Group>
-                      <Row lg={3} md={2} sm={1} xs={1}>
-                        <Col>
-                          <Form.Label>Step #</Form.Label>
-                          <Form.Control
-                            ref={stepNumRef}
-                            type="number"
-                            min="1"
-                            onChange={(e) =>
-                              onChangeInstruction(e, "step_number")
-                            }
-                          />
-                        </Col>
-                        <Col>
-                          <Form.Label>Instruction</Form.Label>
-                          <Form.Control
-                            ref={instructionRef}
-                            as="textarea"
-                            onChange={(e) =>
-                              onChangeInstruction(e, "step_description")
-                            }
-                          />
-                        </Col>
-                        <Col className="d-flex align-items-end add-btn">
-                          <Button
-                            variant="danger"
-                            style={{ height: "40px" }}
-                            onClick={handleAddInstruction}
-                          >
-                            Add
-                          </Button>
-                        </Col>
-                      </Row>
-                    </Form.Group>
-                    <Table striped borderless size="sm">
-                      <tbody>
-                        {instructions.map((instruction) => (
-                          <tr>
-                            <td style={{ width: "10%" }}>
-                              <MdDelete
-                                onClick={() => removeInstruction(instruction)}
-                              />
-                            </td>
-                            <td>{instruction.step_number}</td>
-                            <td>{instruction.step_description}</td>
-                          </tr>
-                        )) || null}
-                      </tbody>
-                    </Table>
-                  </Card.Body>
-                </Accordion.Collapse>
-              </Card>
-            </Accordion>
-            <Button
-              style={{fontWeight: "800"}}
-              variant="danger"
-              type="submit"
-              className="d-block mx-auto btn-success w-25 mt-5 mb-5"
-            >
-              {ctxRecipe.editMode ? "Save" : "Create"}
-            </Button>
-          </Form>
-        </Container>
+                            >
+                              <option>Choose...</option>
+                              {ingredientsList.map((ingredient) => (
+                                <option value={ingredient.id}>
+                                  {ingredient.ingredient_name}
+                                </option>
+                              ))}
+                            </Form.Control>
+                          </Col>
+                          <Col>
+                            <Form.Label>Notes</Form.Label>
+                            <Form.Control
+                              ref={notesRef}
+                              type="text"
+                              onChange={(e) => onChangeIngredient(e, "notes")}
+                            />
+                          </Col>
+                          <Col className="d-flex align-items-end add-btn">
+                            <Button
+                              variant="danger"
+                              id="instructions"
+                              style={{ height: "40px" }}
+                              onClick={handleAddIngredient}
+                            >
+                              Add
+                            </Button>
+                          </Col>
+                        </Row>
+                      </Form.Group>
+                      <Table striped borderless size="sm">
+                        <tbody>
+                          {ingredients.map((ingredient) => (
+                            <tr>
+                              <td style={{ width: "10%" }}>
+                                <MdDelete
+                                  onClick={() => removeIngredient(ingredient)}
+                                />
+                              </td>
+                              <td>{ingredient.amount}</td>
+                              <td>
+                                {
+                                  measurements[ingredient.measurement_id - 1]
+                                    ?.measurement_name
+                                }
+                              </td>
+                              <td>
+                                {
+                                  ingredientsList[ingredient.ingredient_id - 1]
+                                    ?.ingredient_name
+                                }
+                              </td>
+                              <td>{ingredient.notes}</td>
+                            </tr>
+                          )) || null}
+                        </tbody>
+                      </Table>
+                    </Card.Body>
+                  </Accordion.Collapse>
+                </Card>
+                <Card>
+                  <Accordion.Toggle as={Card.Header} eventKey="1">
+                    Add Cooking Instructions
+                  </Accordion.Toggle>
+                  <Accordion.Collapse eventKey="1">
+                    <Card.Body>
+                      <Form.Group>
+                        <Row lg={3} md={2} sm={1} xs={1}>
+                          <Col>
+                            <Form.Label>Step #</Form.Label>
+                            <Form.Control
+                              ref={stepNumRef}
+                              type="number"
+                              min="1"
+                              onChange={(e) =>
+                                onChangeInstruction(e, "step_number")
+                              }
+                            />
+                          </Col>
+                          <Col>
+                            <Form.Label>Instruction</Form.Label>
+                            <Form.Control
+                              ref={instructionRef}
+                              as="textarea"
+                              onChange={(e) =>
+                                onChangeInstruction(e, "step_description")
+                              }
+                            />
+                          </Col>
+                          <Col className="d-flex align-items-end add-btn">
+                            <Button
+                              variant="danger"
+                              style={{ height: "40px" }}
+                              onClick={handleAddInstruction}
+                            >
+                              Add
+                            </Button>
+                          </Col>
+                        </Row>
+                      </Form.Group>
+                      <Table striped borderless size="sm">
+                        <tbody>
+                          {instructions.map((instruction) => (
+                            <tr>
+                              <td style={{ width: "10%" }}>
+                                <MdDelete
+                                  onClick={() => removeInstruction(instruction)}
+                                />
+                              </td>
+                              <td>{instruction.step_number}</td>
+                              <td>{instruction.step_description}</td>
+                            </tr>
+                          )) || null}
+                        </tbody>
+                      </Table>
+                    </Card.Body>
+                  </Accordion.Collapse>
+                </Card>
+              </Accordion>
+              <Button
+                style={{ fontWeight: "800" }}
+                variant="danger"
+                type="submit"
+                className="d-block mx-auto btn-success w-25 mt-5 mb-5"
+              >
+                {ctxRecipe.editMode ? "Save" : "Create"}
+              </Button>
+            </Form>
+          </Container>
+          <Footer />
+        </>
       )}
     </>
   );

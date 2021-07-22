@@ -4,6 +4,7 @@ import { useFormik } from "formik";
 import Cookies from "js-cookie";
 import { useAuth } from "../AuthContext";
 import { userLogin } from "../DAL/userApi";
+import Footer from "./Footer.jsx";
 
 export default function Login() {
   const passwordFieldRef = useRef(null);
@@ -69,68 +70,78 @@ export default function Login() {
           variant="danger"
         />
       ) : (
-        <Container className="mt-5">
-          <Card className="form-card mx-auto">
-            <Card.Body>
-              <h1
-                className="text-center"
-                style={{ fontWeight: "800", padding: "10px" }}
-              >
-                Login
-              </h1>
-              <h2
-                className="text-center pb-5"
-                style={{ fontSize: "14pt", color: "#7d8ca3" }}
-              >
-                Welcome Back!
-              </h2>
-              <Form onSubmit={formik.handleSubmit}>
-                {attemptFailedError ? (
-                  <Alert variant="danger">invalid email or password</Alert>
-                ) : null}
-                <Form.Group controlId="email">
-                  <Form.Control
-                    type="email"
-                    placeholder="Enter email"
-                    {...formik.getFieldProps("email")}
-                    isValid={formik.touched.email && !formik.errors.email}
-                  />
-                  {formik.touched.email && formik.errors.email ? (
-                    <div className="text-danger">{formik.errors.email}</div>
-                  ) : null}
-                </Form.Group>
-
-                <Form.Group controlId="password">
-                  <Form.Control
-                    type="password"
-                    placeholder="Password"
-                    {...formik.getFieldProps("password")}
-                    ref={passwordFieldRef}
-                    isValid={formik.touched.password && !formik.errors.password}
-                  />
-                  {formik.touched.password && formik.errors.password ? (
-                    <div className="text-danger">{formik.errors.password}</div>
-                  ) : null}
-                </Form.Group>
-                <Form.Group controlId="showPasswordCheckbox">
-                  <Form.Check
-                    type="checkbox"
-                    label="show password"
-                    onClick={togglePasswordVisibilty}
-                  />
-                </Form.Group>
-                <Button
-                  style={{ fontWeight: "800" }}
-                  className="btn-success d-block mx-auto w-50"
-                  variant="danger"
-                  type="submit"
+        <>
+          <Container className="mt-5">
+            <Card
+              className="form-card mx-auto"
+              style={{ marginBottom: "138px" }}
+            >
+              <Card.Body>
+                <h1
+                  className="text-center"
+                  style={{ fontWeight: "800", padding: "10px" }}
                 >
                   Login
-                </Button>
-              </Form>
-            </Card.Body>
-          </Card>
-        </Container>
+                </h1>
+                <h2
+                  className="text-center pb-5"
+                  style={{ fontSize: "14pt", color: "#7d8ca3" }}
+                >
+                  Welcome Back!
+                </h2>
+                <Form onSubmit={formik.handleSubmit}>
+                  {attemptFailedError ? (
+                    <Alert variant="danger">invalid email or password</Alert>
+                  ) : null}
+                  <Form.Group controlId="email">
+                    <Form.Control
+                      type="email"
+                      placeholder="Enter email"
+                      {...formik.getFieldProps("email")}
+                      isValid={formik.touched.email && !formik.errors.email}
+                    />
+                    {formik.touched.email && formik.errors.email ? (
+                      <div className="text-danger">{formik.errors.email}</div>
+                    ) : null}
+                  </Form.Group>
+
+                  <Form.Group controlId="password">
+                    <Form.Control
+                      type="password"
+                      placeholder="Password"
+                      {...formik.getFieldProps("password")}
+                      ref={passwordFieldRef}
+                      isValid={
+                        formik.touched.password && !formik.errors.password
+                      }
+                    />
+                    {formik.touched.password && formik.errors.password ? (
+                      <div className="text-danger">
+                        {formik.errors.password}
+                      </div>
+                    ) : null}
+                  </Form.Group>
+                  <Form.Group controlId="showPasswordCheckbox">
+                    <Form.Check
+                      type="checkbox"
+                      label="show password"
+                      onClick={togglePasswordVisibilty}
+                    />
+                  </Form.Group>
+                  <Button
+                    style={{ fontWeight: "800" }}
+                    className="btn-success d-block mx-auto w-50"
+                    variant="danger"
+                    type="submit"
+                  >
+                    Login
+                  </Button>
+                </Form>
+              </Card.Body>
+            </Card>
+          </Container>
+          <Footer />
+        </>
       )}
     </>
   );

@@ -22,6 +22,7 @@ import {
   removeFavorite,
   setAsFavorite,
 } from "../DAL/userApi";
+import { useAuth } from "../AuthContext";
 
 export default function RecipePage() {
   const { id } = useParams();
@@ -31,6 +32,7 @@ export default function RecipePage() {
   const [spinnerOn, setSpinnerOn] = useState(true);
   const [isFavorite, setIsFavorite] = useState(false);
   const currUser = getCurrentUser();
+  const [auth] = useAuth();
 
   function onJsonResponse(response) {
     setRecipe(response);
@@ -58,17 +60,20 @@ export default function RecipePage() {
     setTimeout(() => {
       setSpinnerOn(false);
     }, 1000);
-    getIsFavorite(
-      (response) => {
-        if (response[0].count >= 1) {
-          setIsFavorite(true);
-        } else {
-          setIsFavorite(false);
-        }
-      },
-      currUser.id,
-      id
-    );
+
+    if (auth) {
+      getIsFavorite(
+        (response) => {
+          if (response[0].count >= 1) {
+            setIsFavorite(true);
+          } else {
+            setIsFavorite(false);
+          }
+        },
+        currUser.id,
+        id
+      );
+    }
     getRecipeById(onJsonResponse, id);
     getRecipeInstructions(instructionsJsonResponse, id);
     getRecipeIngredients(ingredientsJsonResponse, id);
@@ -98,27 +103,30 @@ export default function RecipePage() {
                   </Spinner>
                 )}
               </h1>
-              {isFavorite ? (
-                <MdFavorite
-                  className="mb-3"
-                  style={{
-                    fontSize: "1.7em",
-                    color: "#ba3b46",
-                    cursor: "pointer",
-                  }}
-                  onClick={handleFavorite}
-                />
-              ) : (
-                <MdFavoriteBorder
-                  className="mb-3"
-                  style={{
-                    fontSize: "1.7em",
-                    color: "#ba3b46",
-                    cursor: "pointer",
-                  }}
-                  onClick={handleFavorite}
-                />
-              )}
+              {auth ? (
+                isFavorite ? (
+                  <MdFavorite
+                    className="mb-3"
+                    style={{
+                      fontSize: "1.7em",
+                      color: "#ba3b46",
+                      cursor: "pointer",
+                    }}
+                    onClick={handleFavorite}
+                  />
+                ) : (
+                  <MdFavoriteBorder
+                    className="mb-3"
+                    style={{
+                      fontSize: "1.7em",
+                      color: "#ba3b46",
+                      cursor: "pointer",
+                    }}
+                    onClick={handleFavorite}
+                  />
+                )
+              ) : null}
+              {}
             </Col>
           </Row>
           <Row>

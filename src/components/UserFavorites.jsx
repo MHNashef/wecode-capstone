@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Container, Spinner, Col, Row, Alert } from "react-bootstrap";
 import RecipeCard from "./RecipeCard";
 import { getCurrentUser, getFavorites } from "../DAL/userApi";
+import Footer from "./Footer.jsx";
 
 export default function UserFavorites() {
   const [spinnerOn, setSpinnerOn] = useState(true);
@@ -37,7 +38,7 @@ export default function UserFavorites() {
             </div>
           </div>
           <Container>
-            <Row lg={4} md={2} sm={1} xs={1} className="mt-1">
+            <Row lg={4} md={2} sm={1} xs={1} className="mt-4 mb-5">
               {favoriteRecipes.length !== 0 ? (
                 favoriteRecipes?.map((recipe) => (
                   <Col>
@@ -57,6 +58,7 @@ export default function UserFavorites() {
               )}
             </Row>
           </Container>
+          <Footer />
         </>
       )}
     </>

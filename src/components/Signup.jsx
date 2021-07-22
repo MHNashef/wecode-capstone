@@ -18,6 +18,7 @@ import {
   getUserDiet,
   updateUser,
 } from "../DAL/userApi";
+import Footer from "./Footer.jsx";
 
 export default function Signup() {
   const [auth, setAuth] = useAuth();
@@ -123,7 +124,7 @@ export default function Signup() {
         setUpdatedSpinner(true);
         setTimeout(() => {
           history.push("/");
-        }, 1500);
+        }, 1000);
       } else {
         userSignup((resData) => {
           if (resData?.msg === "User created") {
@@ -149,6 +150,7 @@ export default function Signup() {
           variant="danger"
         />
       ) : (
+        <>
         <Container className="mt-5 mb-5">
           <Card className="form-card mx-auto">
             <Card.Body>
@@ -324,6 +326,8 @@ export default function Signup() {
             </Card.Body>
           </Card>
         </Container>
+        <Footer />
+        </>
       )}
     </>
   );
