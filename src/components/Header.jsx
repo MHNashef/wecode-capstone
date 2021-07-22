@@ -43,10 +43,10 @@ export default function Header() {
                   id="basic-nav-dropdown"
                 >
                   <NavDropdown.Item href="/userRecipes">
-                    My Recipes
+                    Your Recipes
                   </NavDropdown.Item>
                   <NavDropdown.Item href="/userFavorites">
-                    My favorites
+                    Your Favorites
                   </NavDropdown.Item>
                   <NavDropdown.Divider />
                   <NavDropdown.Item href="/editUser">
