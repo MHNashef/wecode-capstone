@@ -47,7 +47,6 @@ export default function Homepage() {
       searchStr,
       (res) => {
         resultCount = res[0].count;
-        console.log(res);
         if (maxPageResults >= resultCount) {
           getSearchRes(
             searchStr,
@@ -57,7 +56,6 @@ export default function Homepage() {
             sortByMostRecent
           );
         } else {
-          // get paginated results
           getSearchResPaged(
             searchStr,
             (res) => {
@@ -104,7 +102,7 @@ export default function Homepage() {
   function buildPageItems(resCount) {
     const maxRangeLength = 5;
     const tempItems = [];
-    const numberOfItems = Math.ceil(resCount / maxPageResults); // this is the last page
+    const numberOfItems = Math.ceil(resCount / maxPageResults); 
     const numberOfRanges = Math.ceil(numberOfItems / maxRangeLength);
     const currentRange = Math.ceil(currentPage / maxRangeLength);
     const rangeFirstPage = 1 + (currentRange - 1) * maxRangeLength;
@@ -183,7 +181,6 @@ export default function Homepage() {
               setAllRecipes(res);
             }, sortByMostRecent);
           } else {
-            // get paginated results
             getRecipesPaged(
               (res) => {
                 setAllRecipes(res);

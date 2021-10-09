@@ -17,7 +17,6 @@ function AuthProvider(props) {
     return sessionid ? true : false;
   });
 
-  //const value = React.useMemo(() => [auth, setAuth], [auth]);
   const value = [auth, setAuth];
 
   return <AuthContext.Provider value={value} {...props} />;

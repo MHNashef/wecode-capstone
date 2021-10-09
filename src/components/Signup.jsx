@@ -25,7 +25,7 @@ export default function Signup() {
   const passwordFieldRef = useRef(null);
   const [dietTypes, setDietTypes] = useState([]);
   const history = useHistory(null);
-  const [signup, setSignup] = useState(-1); // a tri-state flag
+  const [signup, setSignup] = useState(-1);
   const [currUser, setCurrUser] = useState([]);
   const [userDiet, setUserDiet] = useState([]);
   const localUserInfo = getCurrentUser();
@@ -55,12 +55,7 @@ export default function Signup() {
       setDietTypes(data);
     });
 
-    console.log("useEffect: " + signup);
   }, []);
-
-  console.log(currUser);
-  console.log(localUserInfo);
-  console.log(userDiet);
 
   function togglePasswordVisibilty() {
     passwordFieldRef.current.type =

@@ -19,7 +19,6 @@ export default function RecipeCard({
   const user = getCurrentUser();
 
   function viewRecipe({ target: { id } }) {
-    console.log(id);
     history.push(`recipe/${id}`);
   }
 
