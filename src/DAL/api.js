@@ -6,7 +6,6 @@ async function getRecipes(resCallback, orderBy, count) {
     if (!count) {
       myUrl += orderBy ? "" : "/popular";
     }
-    console.log(myUrl);
     const response = await axios.get(myUrl);
     resCallback(response.data);
   } catch (err) {
@@ -18,7 +17,6 @@ async function getRecipesPaged(resCallback, limit, page, orderBy) {
   try {
     let myUrl = `http://localhost:3001/recipes/l/${limit}/p/${page}`;
     myUrl += orderBy ? "" : "/popular";
-    console.log(myUrl);
 
     const response = await axios.get(myUrl);
     resCallback(response.data);
@@ -159,7 +157,6 @@ async function updateRecipe(recipeInfo) {
       "http://localhost:3001/recipes/update/recipe",
       recipeInfo
     );
-    console.log(response);
   } catch (err) {
     console.log(err);
   }
@@ -170,16 +167,12 @@ async function createRecipe(recipeInfo, resCB) {
       "http://localhost:3001/recipes/create/recipe",
       recipeInfo
     );
-    console.log(response);
   } catch (err) {
     console.log(err);
   }
 }
 
 async function uploadRecipeImage(fileData, callBack) {
-  // TBD: axios doesn't work, why?
-  // const fetchRes = await axios.post("http://localhost:3001/images/imgUpload", fileData)
-  console.log(fileData);
   const fetchRes = await fetch("http://localhost:3001/images/imgUpload", {
     method: "POST",
     headers: {

@@ -54,7 +54,6 @@ export default function Login() {
           setAuth(true);
         } else {
           setAttemptFailedError(true);
-          console.log("user login failed");
         }
       }, values);
     },

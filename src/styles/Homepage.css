@@ -5,10 +5,8 @@
 .parallax {
   background-image: url("../images/ting-tian-_79ZJS8pV70-unsplash.jpg");
 
-  /* Set a specific height */
   min-height: 470px;
 
-  /* Create the parallax scrolling effect */
   background-attachment: fixed;
   background-position: top;
   background-repeat: no-repeat;

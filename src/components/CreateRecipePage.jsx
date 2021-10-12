@@ -282,28 +282,6 @@ export default function CreateRecipePage() {
                     </div>
                   ) : null}
                 </Col>
-                {/* <Col className="d-flex align-items-center">
-                  <Form.Group>
-                    <Form.Check
-                      type="radio"
-                      label="Public"
-                      name="visibility"
-                      value="1"
-                      checked={formik.values.visibility === "1"}
-                      inline
-                      onChange={formik.handleChange}
-                    />
-                    <Form.Check
-                      type="radio"
-                      label="Private"
-                      name="visibility"
-                      value="0"
-                      checked={formik.values.visibility === "0"}
-                      inline
-                      onChange={formik.handleChange}
-                    />
-                  </Form.Group>
-                </Col> */}
               </Row>
               <Row>
                 <Col>
